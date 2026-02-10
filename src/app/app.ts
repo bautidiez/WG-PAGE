@@ -547,13 +547,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 contact: 'Contacto',
                 contactDesc: 'Nuestro equipo está disponible para resolver tus dudas.',
                 response: '⚡ Respuesta en menos de 24hs',
-                copyright: '© 2024 WorthGrowth AI. Todos los derechos reservados.',
+                copyright: '© 2024 WorthGrowth. Todos los derechos reservados.',
                 mainPage: 'Página principal →',
                 requestDemo: 'Solicitar Demo'
             },
             menu: {
                 close: '← Cerrar',
-                tagline: 'WorthGrowth AI'
+                tagline: 'WorthGrowth'
             }
         },
         en: {
@@ -680,13 +680,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 contact: 'Contact',
                 contactDesc: 'Our team is available to answer your questions.',
                 response: '⚡ Response in less than 24 hours',
-                copyright: '© 2024 WorthGrowth AI. All rights reserved.',
+                copyright: '© 2024 WorthGrowth. All rights reserved.',
                 mainPage: 'Main page →',
                 requestDemo: 'Request Demo'
             },
             menu: {
                 close: '← Close',
-                tagline: 'WorthGrowth AI'
+                tagline: 'WorthGrowth'
             }
         }
     };
