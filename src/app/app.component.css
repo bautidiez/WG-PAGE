@@ -582,7 +582,7 @@ section {
 }
 
 .hero-section {
-    padding: 0rem 1rem 2rem;
+    padding: 0.5rem 1rem 2rem;
     position: relative;
     z-index: 1;
     min-height: 100vh;
@@ -647,7 +647,7 @@ section {
 }
 
 .hero-title {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 800;
     font-family: "Montserrat", sans-serif;
     margin-bottom: 1rem;
@@ -684,8 +684,8 @@ section {
     display: block;
     color: #1e293b;
     font-weight: 600;
-    font-size: 2.6rem;
-    /* ✅ un poco más chico que el título en mobile */
+    font-size: 2rem;
+    /* Reduced from 2.6rem for better mobile fit */
     margin-top: 0.25rem;
 }
 
@@ -751,8 +751,14 @@ CAJA DE DESCRIPCIÓN MEJORADA
 
 @media (max-width: 767px) {
     .hero-description-box-enhanced {
-        padding: 1.5rem;
-        margin: 1.5rem 0;
+        padding: 1.25rem;
+        margin: 1rem 0;
+        border-radius: 15px;
+    }
+
+    .hero-description-enhanced {
+        font-size: 1rem;
+        line-height: 1.6;
     }
 }
 
