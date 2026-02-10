@@ -237,7 +237,7 @@ interface ExchangeRate {
     <img src="assets/mouse.png" alt="mouse" class="mouse-icon">
   </a>
 </div>
-</div> </section><!-- Footer --><footer class="footer"> <div class="container footer-content"> <div class="footer-grid-new"> <div class="footer-column-brand"> <div class="footer-logo-container"> <img src="assets/logo.png" alt="WorthGrowth" class="footer-logo-img"> <div class="footer-brand-name"> <span class="footer-brand-w">W</span>orth<span class="footer-brand-g">G</span>rowth </div> </div> <a href="https://worthgrowth.com/" target="_blank" class="footer-link-main"> {{ t('footer.mainPage') }} </a> </div>
+</div> </section><!-- Footer --><footer class="footer"> <div class="container footer-content"> <div class="footer-grid-new"> <div class="footer-column-brand"> <div class="footer-logo-container"> <img src="assets/logo.png" alt="WorthGrowth" class="footer-logo-img"> </div> <a href="https://worthgrowth.com/" target="_blank" class="footer-link-main"> {{ t('footer.mainPage') }} </a> </div>
 
   <!-- Navegación footer -->
   <div class="footer-column-nav">
