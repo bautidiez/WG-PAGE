@@ -1,0 +1,16 @@
+<section class="food-scene-container">
+    <div class="food-grid">
+        <!-- Loop through items with dynamic styles based on JS loop -->
+        <div *ngFor="let item of foodItems" class="food-item-wrapper" [style.width.px]="item.width"
+            [style.zIndex]="item.zIndex"
+            [style.transform]="'translate3d(' + item.x + 'px, ' + item.y + 'px, 0) rotate(' + item.rotation + 'deg)'"
+            (mouseenter)="item.isHovered = true" (mouseleave)="item.isHovered = false">
+
+            <!-- Image Container (Hover + Bite) -->
+            <div class="image-container">
+                <img [src]="item.src" [alt]="item.alt" class="food-img">
+            </div>
+
+        </div>
+    </div>
+</section>

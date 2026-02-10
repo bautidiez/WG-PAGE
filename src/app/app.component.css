@@ -1,5 +1,7 @@
 body {
-    zoom: 0.85;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    /* zoom: 0.85; REMOVED to fix background */
     min-height: 100vh;
 }
 
@@ -67,7 +69,8 @@ VARIABLES DE COLOR - MODO CLARO
     --text-color: #1e293b;
     --bg-secondary: #f8fafc;
     --border-color: #e2e8f0;
-    zoom: 0.85;
+    --border-color: #e2e8f0;
+    /* zoom: 0.85; REMOVED */
     display: block;
 }
 
@@ -76,7 +79,8 @@ CONTAINER PRINCIPAL
 ============================================ */
 .app-container {
     min-height: auto;
-    background: #ffffff;
+    background: transparent;
+    /* background: #ffffff; Removed to show Food Scene */
     color: #1e293b;
     font-family: 'Montserrat', sans-serif;
     position: relative;
@@ -84,6 +88,62 @@ CONTAINER PRINCIPAL
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    pointer-events: none;
+    /* ✅ Apply zoom here to content ONLY, leaving background fixed */
+    zoom: 0.85;
+    /* ✅ Allow clicks to pass through to background */
+    z-index: 10;
+}
+
+/* ✅ Re-enable interaction ONLY for specific interactive elements */
+/* Text elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+strong,
+em,
+li,
+label,
+/* Interactive containers/elements */
+.header,
+.hero-image,
+.benefits-orbital-container,
+.timeline-section .step-content,
+.video-placeholder,
+.pricing-grid,
+.footer,
+.floating-buttons,
+.side-menu,
+.nav-button,
+button,
+a,
+input,
+select,
+textarea,
+.card-content,
+.currency-selector,
+.exchange-info,
+.logo-container,
+.benefit-card-content,
+.step-day,
+.price-container {
+    pointer-events: auto;
+}
+
+/* Ensure layout containers pass events through */
+.app-container,
+.hero-content,
+.hero-section,
+.benefits-section,
+.timeline-section,
+.chatbot-video-section,
+.pricing-section {
+    pointer-events: none !important;
 }
 
 .three-canvas {

@@ -1,0 +1,107 @@
+/* Main Container - Full Screen Background */
+.food-scene-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #ffffff 0%, #f6f6f6 60%, #eeeeee 100%);
+    overflow: hidden;
+    z-index: 0;
+    /* Changed from -1 to allow interaction */
+    pointer-events: none;
+    /* Let clicks pass through empty space */
+}
+
+/* Food Grid Wrapper */
+.food-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    /* Re-enable for food items */
+}
+
+/* Base style for wrapper - Positioning handled via inline styles in HTML */
+.food-item-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: auto;
+    /* Ensure hover works */
+    will-change: transform;
+    /* Optimized for animation */
+}
+
+/* Inner Containers */
+.image-container {
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+}
+
+/* The Image Itself */
+.food-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-fit: contain;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    /* filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15)); REMOVED to avoid box shadow on non-transparent images */
+    mix-blend-mode: multiply;
+    /* Hides white background on images */
+    cursor: pointer;
+
+    /* MASK SETUP for BITE EFFECT */
+    -webkit-mask-image: url('/assets/food/bite-mask.svg');
+    mask-image: url('/assets/food/bite-mask.svg');
+
+    /* 
+       Logic: 
+       The mask is a 200x200 SVG. 
+       Bottom-left quadrant (0-100, 100-200) is solid white rect (opaque).
+       Top-right quadrant (100-200, 0-100) has the bite (black circles on white).
+       
+       We scale mask to 200%.
+       Ideally, position 'bottom left' shows the solid part.
+       Position 'top right' shows the bitten part.
+    */
+    -webkit-mask-size: 200%;
+    mask-size: 200%;
+
+    -webkit-mask-position: bottom left;
+    mask-position: bottom left;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+/* Interaction: Hover State */
+.food-item-wrapper:hover .image-container {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.food-item-wrapper:hover .food-img {
+    /* filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.25)); REMOVED */
+
+    /* Reveal Bite - Shift mask to show the bitten area */
+    -webkit-mask-position: top right;
+    mask-position: top right;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    /* Mobile: less complex */
+    .food-item-wrapper:hover .image-container {
+        transform: none;
+    }
+
+    .food-item-wrapper:hover .food-img {
+        mask-position: bottom left;
+        /* No bite on mobile */
+        filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+    }
+}

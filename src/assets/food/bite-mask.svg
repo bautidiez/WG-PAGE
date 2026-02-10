@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="biteMask">
+      <!-- White rectangle reveals everything -->
+      <rect x="0" y="0" width="200" height="200" fill="white"/>
+      <!-- Black circles hide parts (create the bite) -->
+      <!-- Adjusted to be in the top-right corner area -->
+      <circle cx="160" cy="40" r="35" fill="black"/>
+      <circle cx="190" cy="20" r="30" fill="black"/>
+      <circle cx="195" cy="70" r="25" fill="black"/>
+      <circle cx="140" cy="10" r="25" fill="black"/>
+      <circle cx="170" cy="60" r="20" fill="black"/>
+    </mask>
+  </defs>
+  <!-- The actual mask image to be used in CSS -->
+  <!-- We draw a black rect (opaque for CSS mask) applied with the SVG mask -->
+  <rect x="0" y="0" width="200" height="200" fill="black" mask="url(#biteMask)"/>
+</svg>

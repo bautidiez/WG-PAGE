@@ -1,7 +1,7 @@
-
 import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild, HostListener, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
+import { FoodSceneComponent } from './components/food-scene/food-scene.component';
 
 // --- INTERFACES ---
 interface Benefit {
@@ -25,11 +25,14 @@ interface ExchangeRate {
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FoodSceneComponent],
     styleUrl: './app.component.css',
     template: `
+<!-- NEW 3D FOOD SCENE -->
+<app-food-scene></app-food-scene>
 <div class="app-container" [class.loading]="isLoading"> <!-- Loading Screen --> <div class="loading-screen" *ngIf="isLoading"> <div class="loading-content"> <img src="assets/logo.png" alt="WorthGrowth Logo" class="loading-logo" width="120" height="120" fetchpriority="high"> <div class="loading-spinner"></div> </div> </div>
-<canvas #threeCanvas class="three-canvas"></canvas>
+
+<canvas #threeCanvas class="three-canvas" style="display: none;"></canvas>
 
 <!-- Header --><header class="header" [class.scrolled]="isScrolled"> <nav class="nav-container"> <div class="logo-container" (click)="scrollToTop()"> <div class="logo-badge"> <img src="assets/logo.png" alt="WorthGrowth" class="logo-img"> </div> </div>
 
@@ -728,7 +731,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setupVisibilityListener();
 
         // Three.js
-        if (this.threeCanvas) {
+        if (this.threeCanvas && this.scene) {
             this.initThree();
             this.animate(0);
         }
@@ -1133,6 +1136,8 @@ Mi consulta específica es sobre: ${context}
     }
 
     animate = (time: number) => {
+        if (!this.scene || !this.camera || !this.renderer) return;
+
         this.animationId = requestAnimationFrame(this.animate);
 
         for (let i = 0; i < this.particleCount; i++) {
