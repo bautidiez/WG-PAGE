@@ -136,15 +136,37 @@ textarea,
 }
 
 /* Ensure layout containers pass events through */
+/* Ensure ALL layout containers pass events through */
+section,
 .app-container,
+.container,
 .hero-content,
 .hero-section,
 .benefits-section,
 .timeline-section,
 .chatbot-video-section,
-.pricing-section {
-    pointer-events: none !important;
+.pricing-section,
+.commitment-section,
+.pricing-grid {
+    pointer-events: none;
 }
+
+/* Keep plan card interactive but consider if we want background clicks? 
+   No, card content is dense. Keeping generic auto for card CONTENT is enough?
+   Let's ensure the card BACKGROUND doesn't block if possible? 
+   Glassmorphism suggests it should block. 
+   But user said "any part". 
+   If a big card blocks 30% of screen, and food is behind, user might want to click it.
+   But that would mean clicking THROUGH the card. 
+   That's bad UX for the card itself. 
+   I will trust that "layout containers" covers the main issue (empty spaces). 
+   I will ADD the explicit 'pointer-events: auto' to the plan card to be safe.
+*/
+.plan-card {
+    pointer-events: auto;
+}
+
+/* Clean up trailing brace/content from previous bad edit */
 
 .three-canvas {
     position: fixed;
@@ -373,6 +395,9 @@ NAVEGACIÓN
     display: flex;
     align-items: center;
     z-index: 70;
+    /* Position next to logo on mobile */
+    position: absolute;
+    left: 4.5rem;
 }
 
 .menu-icon {
@@ -523,13 +548,8 @@ BOTÓN DE CONTACTO
 }
 
 .nav-btn-text {
-    display: none;
-}
-
-@media (min-width: 600px) {
-    .nav-btn-text {
-        display: inline;
-    }
+    display: inline;
+    /* Always show, including mobile */
 }
 
 .whatsapp-svg-icon {
@@ -707,7 +727,8 @@ section {
 }
 
 .hero-title {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
+    /* Increased from 2.2rem */
     font-weight: 800;
     font-family: "Montserrat", sans-serif;
     margin-bottom: 1rem;

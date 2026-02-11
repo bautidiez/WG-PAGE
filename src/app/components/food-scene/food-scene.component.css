@@ -92,16 +92,25 @@
 }
 
 /* Responsive */
+/* Responsive */
 @media (max-width: 768px) {
 
-    /* Mobile: less complex */
-    .food-item-wrapper:hover .image-container {
-        transform: none;
+    /* Mobile: less complex but INTERACTIVE */
+    .food-item-wrapper {
+        touch-action: manipulation;
+        /* Improve touch response */
     }
 
+    .food-item-wrapper:active .image-container,
+    .food-item-wrapper:hover .image-container {
+        transform: scale(1.15) rotate(5deg);
+    }
+
+    .food-item-wrapper:active .food-img,
     .food-item-wrapper:hover .food-img {
-        mask-position: bottom left;
-        /* No bite on mobile */
+        /* Reveal Bite - Shift mask to show the bitten area */
+        -webkit-mask-position: top right;
+        mask-position: top right;
         filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
     }
 }
