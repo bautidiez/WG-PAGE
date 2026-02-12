@@ -9,13 +9,14 @@ interface FoodItem {
     // Physics state
     x: number;
     y: number;
-    vx: number;
-    vy: number;
+
+    // Levitation state
+    originalY: number;
+    phase: number;    // Random start phase for sine wave
 
     // Visual properties
     width: number;
     rotation: number;
-    rotationSpeed: number;
     scale: number;
     zIndex: number;
 
@@ -64,7 +65,7 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private initItems(): void {
-        const itemCount = 20; // 20 items is good density
+        const itemCount = 18; // Increased from 12 to 18 for more density on sides
         const width = window.innerWidth;
         const height = window.innerHeight;
 
@@ -75,23 +76,53 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private createRandomItem(id: number, boundW: number, boundH: number): FoodItem {
         const asset = this.assets[Math.floor(Math.random() * this.assets.length)];
-        const scale = 0.4 + Math.random() * 0.5; // 0.4x to 0.9x (Smaller items)
+        // Reduce scale a bit
+        const scale = 0.4 + Math.random() * 0.4; // 0.4x to 0.8x
 
-        // Responsive base size
+        // Reponsive base size - Significantly smaller but visible
         const isMobile = window.innerWidth < 768;
-        const baseSize = isMobile ? 45 : 120; // Mobile: 45px (smaller), Desktop: 120px (restored to original large size)
+        const baseSize = isMobile ? 60 : 100;
+        const size = baseSize * scale;
 
-        // Random position within bounds
-        const x = Math.random() * (boundW - 100);
-        const y = Math.random() * (boundH - 100);
+        // Random position distribution - Biased towards sides
+        // 40% Left, 40% Right, 20% Uniform (but avoiding center)
+        const sideBias = Math.random();
 
-        // Velocity: "Gravitational" feel = steady but slow, drifting
-        // Giving them random directions
-        // Speed range: 0.2 to 0.8 pixels per frame (approx 12-48px per sec at 60fps)
-        const speed = 0.3 + Math.random() * 0.5;
-        const angle = Math.random() * Math.PI * 2;
-        const vx = Math.cos(angle) * speed;
-        const vy = Math.sin(angle) * speed;
+        // Center coordinates for exclusion logic
+        const cx = boundW / 2;
+        const cy = boundH / 2;
+        const forbiddenRadius = Math.min(boundW, boundH) * 0.25;
+
+        let x = 0, y = 0;
+        let attempts = 0;
+        let found = false;
+
+        while (!found && attempts < 50) {
+            if (sideBias < 0.4) {
+                // Left 20%
+                x = Math.random() * (boundW * 0.2 - size);
+            } else if (sideBias < 0.8) {
+                // Right 20% (starting from 80%)
+                x = (boundW * 0.8) + Math.random() * (boundW * 0.2 - size);
+            } else {
+                // Anywhere
+                x = Math.random() * (boundW - size);
+            }
+
+            y = Math.random() * (boundH - size);
+
+            // Check distance from center to item center
+            const dx = (x + size / 2) - cx;
+            const dy = (y + size / 2) - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist > forbiddenRadius) {
+                found = true;
+            }
+            attempts++;
+        }
+
+        // If we couldn't find a spot (rare), x,y are from last random attempt, which is fine.
 
         return {
             id,
@@ -99,11 +130,10 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
             alt: asset.alt,
             x,
             y,
-            vx,
-            vy,
-            width: baseSize * scale,
-            rotation: Math.random() * 360,
-            rotationSpeed: (Math.random() - 0.5) * 0.4, // Slow rotation
+            originalY: y,
+            phase: Math.random() * Math.PI * 2,
+            width: size,
+            rotation: 0, // No initial rotation
             scale,
             zIndex: Math.floor(scale * 10),
             isHovered: false
@@ -128,35 +158,23 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private updatePhysics(): void {
-        const boundW = window.innerWidth;
-        const boundH = window.innerHeight;
+        // Use a time basis for sine wave
+        const now = Date.now() / 1000; // Seconds
 
         for (const item of this.foodItems) {
             if (item.isHovered) continue; // Pause movement on hover for easier interaction
 
-            // Update Position
-            item.x += item.vx;
-            item.y += item.vy;
-            item.rotation += item.rotationSpeed;
+            // Levitation logic
+            // y = originalY + sin(time * speed + phase) * amplitude
+            // Amplitude: 10-15px
+            // Speed: 1-2 rad/s
 
-            // Bounce off walls (Walls are screen ends)
-            // Check X
-            if (item.x <= 0) {
-                item.x = 0;
-                item.vx *= -1;
-            } else if (item.x + item.width >= boundW) {
-                item.x = boundW - item.width;
-                item.vx *= -1;
-            }
+            const amplitude = 12;
+            const speed = 1.0;
 
-            // Check Y
-            if (item.y <= 0) {
-                item.y = 0;
-                item.vy *= -1;
-            } else if (item.y + item.width >= boundH) { // Assuming square-ish aspect for simplicity of bounds
-                item.y = boundH - item.width;
-                item.vy *= -1;
-            }
+            item.y = item.originalY + Math.sin(now * speed + item.phase) * amplitude;
+
+            // No x update, no rotation update
         }
 
         // We are outside Angular zone.

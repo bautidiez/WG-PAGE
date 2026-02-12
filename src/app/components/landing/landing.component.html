@@ -1,0 +1,318 @@
+<!-- NEW 3D FOOD SCENE -->
+<app-food-scene></app-food-scene>
+<!-- Loading Screen -->
+<div class="loading-screen" *ngIf="isLoading">
+    <div class="loading-content"> <img src="assets/logo.png" alt="WorthGrowth Logo" class="loading-logo" width="120"
+            height="120" fetchpriority="high">
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<canvas #threeCanvas class="three-canvas" style="display: none;"></canvas>
+
+<!-- Header -->
+<header class="header" [class.scrolled]="isScrolled">
+    <nav class="nav-container">
+        <div class="logo-container" (click)="scrollToTop()">
+            <div class="logo-badge"> <img src="assets/logo.png" alt="WorthGrowth" class="logo-img"> </div>
+        </div>
+
+        <!-- Selector de idioma -->
+        <div class="language-dropdown">
+            <button class="lang-dropdown-btn" (click)="toggleLangDropdown()">
+                <img [src]="getCurrentFlagUrl()" class="flag-icon" [alt]="currentLanguage">
+                <span class="arrow-down">▼</span>
+            </button>
+
+            <div class="lang-dropdown-menu" [class.open]="isLangDropdownOpen">
+                <button (click)="changeLanguage('es')" class="lang-option" [class.active]="currentLanguage === 'es'">
+                    <img src="assets/flags/es.png" class="flag-icon" alt="Español">
+                    <span>Español</span>
+                </button>
+                <button (click)="changeLanguage('en')" class="lang-option" [class.active]="currentLanguage === 'en'">
+                    <img src="assets/flags/usa.png" class="flag-icon" alt="English">
+                    <span>English</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú hamburguesa solo móvil -->
+        <button class="menu-toggle-btn" (click)="toggleMenu()">
+            <span class="menu-icon">{{ isMenuOpen ? '✕' : '☰' }}</span>
+        </button>
+
+        <!-- Links desktop -->
+        <div class="nav-links-desktop">
+            <a href="#inicio" class="nav-link">{{ t('nav.home') }}</a>
+            <a href="#servicio" class="nav-link">{{ t('nav.services') }}</a>
+            <a href="#video" class="nav-link">{{ t('nav.video') }}</a>
+            <a href="#precios" class="nav-link">{{ t('nav.pricing') }}</a>
+        </div>
+
+        <button class="nav-button" (click)="openWhatsApp('Consulta General Header')">
+            <svg class="whatsapp-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                    fill="#25D366" />
+            </svg>
+            <span class="nav-btn-text">{{ t('nav.contact') }}</span>
+        </button>
+    </nav>
+</header><!-- Side Menu -->
+<div class="side-menu" [class.open]="isMenuOpen"> <button class="close-menu-btn" (click)="closeMenu()"> {{
+        t('menu.close') }} </button>
+    <div class="menu-logo"> <span class="logo-text-menu">WG</span>
+        <p class="menu-tagline">{{ t('menu.tagline') }}</p>
+    </div> <a href="#inicio" (click)="closeMenu()">{{ t('nav.home') }}</a> <a href="#servicio" (click)="closeMenu()">{{
+        t('nav.services') }}</a> <a href="#video" (click)="closeMenu()">{{ t('nav.video') }}</a> <a href="#precios"
+        (click)="closeMenu()">{{ t('nav.pricing') }}</a>
+</div>
+<div class="app-container" [class.loading]="isLoading">
+    <!-- Hero Section -->
+    <section class="hero-section" id="inicio">
+        <div class="container">
+            <div class="hero-layout">
+                <div class="hero-content">
+                    <h1 class="hero-title montserrat-extrabold"> <span class="gradient-text">{{ t('hero.title')
+                            }}</span> <span class="subtitle-dark">{{ t('hero.subtitle') }}</span> </h1>
+
+                    <div class="hero-cta-container">
+                        <button class="primary-button" (click)="openWhatsApp('Demo de Hero')">
+                            {{ t('hero.cta') }}
+                            <span class="arrow">→</span>
+                        </button>
+                        <p class="hero-cta-hint">{{ t('hero.hint') }}</p>
+                    </div>
+                </div>
+
+                <div class="hero-image">
+                    <img src="assets/stock_1.png" alt="AI Chatbot Illustration" class="hero-img" loading="eager"
+                        decoding="async" fetchpriority="high" width="850" height="auto">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="benefits-section" id="servicio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ t('benefits.title') }}</h2>
+                <p class="section-subtitle">{{ t('benefits.subtitle') }}</p>
+            </div>
+
+            <div class="benefits-orbital-container">
+                <!-- Imagen central -->
+                <div class="benefits-center-image">
+                    <img src="assets/stock_2.png" alt="AI Benefits" class="central-stock-img" (load)="onImageLoad()"
+                        (error)="onImageError($event)">
+                </div>
+
+                <!-- Beneficios orbitales -->
+                <div *ngFor="let benefit of getBenefitsTranslated(); let i = index" class="benefit-card-orbital"
+                    [class.active]="selectedBenefit === i" [style.transform]="getBenefitOrbitalPosition(i)"
+                    (click)="selectBenefit(i)">
+
+                    <div class="benefit-card-content">
+                        <img class="benefit-icon" [src]="'assets/benefits/logo' + (i + 1) + '.png'"
+                            [alt]="'Icono beneficio ' + (i + 1)" loading="lazy" decoding="async">
+
+                        <h4 class="benefit-title">{{ benefit.title }}</h4>
+                    </div>
+
+                    <!-- Descripción expandida -->
+                    <div class="benefit-description" *ngIf="selectedBenefit === i">
+                        <p>{{ benefit.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- Timeline Section -->
+    <section class="timeline-section" id="proceso">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ t('timeline.title') }}</h2>
+                <p class="section-subtitle">{{ t('timeline.subtitle') }}</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-line">
+                    <div class="timeline-line-fill"></div>
+                </div>
+
+                <div class="timeline-step" *ngFor="let step of getTimelineSteps(); let i = index"
+                    [class.active]="activeStep >= (i + 1)">
+                    <div class="step-dot"></div>
+                    <div class="step-content">
+                        <div class="step-day">{{ step.day }}</div>
+                        <h3 class="step-title">{{ step.title }}</h3>
+                        <p class="step-description">{{ step.description }}</p>
+                        <ul class="step-checklist">
+                            <li *ngFor="let item of step.checklist">✓ {{ item }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- Video Section -->
+    <section class="chatbot-video-section" id="video">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ t('video.title') }}</h2>
+                <p class="section-subtitle">{{ t('video.subtitle') }}</p>
+            </div>
+            <div class="video-placeholder">
+                <p class="video-cta-text">{{ t('video.placeholder') }}</p> <button class="primary-button"
+                    (click)="openWhatsApp('Demo Video')"> {{ t('video.cta') }} </button>
+            </div>
+        </div>
+    </section><!-- Pricing Section -->
+    <section class="pricing-section" id="precios">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{{ t('pricing.title') }}</h2>
+                <p class="section-subtitle">{{ t('pricing.subtitle') }}</p>
+
+                <div class="currency-selector">
+                    <button class="currency-btn" [class.active]="currentCurrency === 'USD'"
+                        (click)="currentCurrency = 'USD'">
+                        USD ($)
+                    </button>
+                    <button class="currency-btn" [class.active]="currentCurrency === 'ARS'"
+                        (click)="currentCurrency = 'ARS'">
+                        ARS ($)
+                    </button>
+                </div>
+
+                <div class="exchange-info" *ngIf="currentCurrency === 'ARS'">
+                    <span class="exchange-icon">💱</span>
+                    <span>{{ getExchangeInfo() }}</span>
+                    <button class="refresh-btn" (click)="fetchExchangeRate()" [disabled]="isLoadingRate">
+                        <span [class.spinning]="isLoadingRate">🔄</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="plan-card" *ngFor="let plan of getPlansTranslated(); let i = index"
+                    [class.highlight]="i === 1">
+                    <div class="plan-header">
+                        <span class="plan-badge">PLAN</span>
+                        <h3 class="plan-name">{{ plan.name }}</h3>
+                    </div>
+
+                    <div class="price-container">
+                        <p class="plan-price">
+                            {{ formatPrice(plansNumeric[i].priceUSD) }}
+                            <span class="currency-label">{{ getCurrencyLabel() }}</span>
+                            <span class="price-period">{{ t('pricing.perMonth') }}</span>
+                        </p>
+                    </div>
+
+                    <ul class="plan-features">
+                        <li *ngFor="let feature of plan.features">✓ {{ feature }}</li>
+                    </ul>
+
+                    <button class="plan-button" (click)="openWhatsApp('Plan ' + plan.name, true)">
+                        {{ t('pricing.hire') }} <span class="arrow">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cta-meeting">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-primary);">
+                    {{ t('pricing.needMore') }}
+                </h3>
+                <p style="margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.6;">
+                    {{ t('pricing.meetingDesc') }}
+                </p>
+                <p style="margin-bottom: 1.5rem; color: var(--color-light);">
+                    {{ t('pricing.meetingTopics') }}
+                </p>
+                <button class="secondary-button" (click)="openWhatsApp('Solicitud Reunión Detallada')">
+                    📅 {{ t('pricing.scheduleMeeting') }}
+                </button>
+            </div>
+        </div>
+    </section><!-- Commitment Section -->
+    <section class="commitment-section">
+        <div class="container">
+            <h2 class="commitment-title">{{ t('commitment.title') }}</h2>
+
+            <div class="commitment-grid-fullwidth">
+                <div class="commitment-item-animated" *ngFor="let item of getCommitmentItems()">
+                    <span class="commitment-check">✓</span>
+                    <div>
+                        <h4>{{ item.title }}</h4>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commitment-button-container">
+                <a href="https://worthgrowth.com/" target="_blank" class="commitment-link">
+                    {{ t('commitment.cta') }}
+                    <img src="assets/mouse.png" alt="mouse" class="mouse-icon">
+                </a>
+            </div>
+        </div>
+    </section><!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-grid-new">
+                <div class="footer-column-brand">
+                    <div class="footer-logo-container"> <img src="assets/logo.png" alt="WorthGrowth"
+                            class="footer-logo-img"> </div> <a href="https://worthgrowth.com/" target="_blank"
+                        class="footer-link-main"> {{ t('footer.mainPage') }} </a>
+                </div>
+
+                <!-- Navegación footer -->
+                <div class="footer-column-nav">
+                    <h4 class="footer-heading">{{ t('footer.navigation') }}</h4>
+
+                    <a href="#inicio" class="footer-nav-link">
+                        {{ t('nav.home') }}
+                    </a>
+
+                    <a href="#servicio" class="footer-nav-link">
+                        {{ t('nav.services') }}
+                    </a>
+
+                    <a href="#video" class="footer-nav-link">
+                        {{ t('nav.video') }}
+                    </a>
+
+                    <a href="#precios" class="footer-nav-link">
+                        {{ t('nav.pricing') }}
+                    </a>
+
+                    <a href="" (click)="openWhatsApp('Solicitud Demo Footer'); $event.preventDefault()"
+                        class="footer-nav-link" style="cursor: pointer; font-weight: 600;">
+                        {{ t('footer.requestDemo') }}
+                    </a>
+                </div>
+
+                <div class="footer-column-contact">
+                    <h4 class="footer-heading">{{ t('footer.contact') }}</h4>
+                    <p class="footer-text">{{ t('footer.contactDesc') }}</p>
+                    <a href="https://wa.me/5493584171716" target="_blank" class="footer-contact">
+                        📱 +54 9 358 417-1716
+                    </a>
+                    <a href="mailto:bautistadiez@worthgrowth.com" class="footer-contact">
+                        ✉️ bautistadiez&#64;worthgrowth.com
+                    </a>
+                    <p class="footer-response">{{ t('footer.response') }}</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright-text">{{ t('footer.copyright') }}</p>
+            </div>
+        </div>
+    </footer><!-- Floating Buttons -->
+    <button class="whatsapp-float" [class.visible]="isScrolled" (click)="openWhatsApp('Consulta Rápida Flotante')"
+        title="WhatsApp">
+        <svg class="whatsapp-svg-float" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                fill="white" />
+        </svg>
+    </button>

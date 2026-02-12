@@ -54,41 +54,34 @@
     /* Hides white background on images */
     cursor: pointer;
 
+    /* PREVENT CLIPPING: Add padding so the visual content is safer from mask edges */
+    box-sizing: border-box;
+    padding: 10px;
+
     /* MASK SETUP for BITE EFFECT */
-    -webkit-mask-image: url('/assets/food/bite-mask.svg');
-    mask-image: url('/assets/food/bite-mask.svg');
-
-    /* 
-       Logic: 
-       The mask is a 200x200 SVG. 
-       Bottom-left quadrant (0-100, 100-200) is solid white rect (opaque).
-       Top-right quadrant (100-200, 0-100) has the bite (black circles on white).
-       
-       We scale mask to 200%.
-       Ideally, position 'bottom left' shows the solid part.
-       Position 'top right' shows the bitten part.
-    */
-    -webkit-mask-size: 200%;
-    mask-size: 200%;
-
-    -webkit-mask-position: bottom left;
-    mask-position: bottom left;
-
+    -webkit-mask-image: url('/assets/food/bite-mask.svg?v=3');
+    mask-image: url('/assets/food/bite-mask.svg?v=3');
+    /* 200% width (2 states), 100% height */
+    -webkit-mask-size: 200% 100%;
+    mask-size: 200% 100%;
+    /* Start at Left (Solid) */
+    -webkit-mask-position: 0% 0%;
+    mask-position: 0% 0%;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-}
 
-/* Interaction: Hover State */
-.food-item-wrapper:hover .image-container {
-    transform: scale(1.15) rotate(5deg);
+    /* Ensure transitions cover the mask position */
+    transition: transform 0.4s ease, filter 0.3s ease, -webkit-mask-position 0s linear, mask-position 0s linear;
 }
 
 .food-item-wrapper:hover .food-img {
     /* filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.25)); REMOVED */
 
-    /* Reveal Bite - Shift mask to show the bitten area */
-    -webkit-mask-position: top right;
-    mask-position: top right;
+    /* Reveal Bite - Shift to Right (Bitten) */
+    -webkit-mask-position: 100% 0%;
+    mask-position: 100% 0%;
+    transition: mask-position 0s linear;
+    /* Instant switch */
 }
 
 /* Responsive */
@@ -103,14 +96,14 @@
 
     .food-item-wrapper:active .image-container,
     .food-item-wrapper:hover .image-container {
-        transform: scale(1.15) rotate(5deg);
+        transform: scale(1.15);
     }
 
     .food-item-wrapper:active .food-img,
     .food-item-wrapper:hover .food-img {
-        /* Reveal Bite - Shift mask to show the bitten area */
-        -webkit-mask-position: top right;
-        mask-position: top right;
+        /* Reveal Bite */
+        -webkit-mask-position: 100% 0%;
+        mask-position: 100% 0%;
         filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
     }
 }

@@ -1,19 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Horizontal Sprite Sheet: 200x100 -->
+  <!-- Left Half (0-100): Solid (Normal State) -->
+  <!-- Right Half (100-200): Bitten (Hover State) -->
+
   <defs>
-    <mask id="biteMask">
-      <!-- White rectangle reveals everything -->
-      <rect x="0" y="0" width="200" height="200" fill="white"/>
-      <!-- Black circles hide parts (create the bite) -->
-      <!-- Adjusted to be in the top-right corner area -->
-      <circle cx="160" cy="40" r="35" fill="black"/>
-      <circle cx="190" cy="20" r="30" fill="black"/>
-      <circle cx="195" cy="70" r="25" fill="black"/>
-      <circle cx="140" cy="10" r="25" fill="black"/>
-      <circle cx="170" cy="60" r="20" fill="black"/>
+    <!-- Mask to punch holes (Alpha definition) -->
+    <!-- White = Opaque, Black = Transparent -->
+    <mask id="bite-holes">
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
+        <!-- Holes -->
+        <circle cx="80" cy="20" r="18" fill="black"/>
+        <circle cx="95" cy="10" r="15" fill="black"/>
+        <circle cx="98" cy="35" r="12" fill="black"/>
+        <circle cx="70" cy="5" r="12" fill="black"/>
+        <circle cx="85" cy="30" r="10" fill="black"/>
+        <circle cx="60" cy="15" r="8" fill="black"/>
     </mask>
   </defs>
-  <!-- The actual mask image to be used in CSS -->
-  <!-- We draw a black rect (opaque for CSS mask) applied with the SVG mask -->
-  <rect x="0" y="0" width="200" height="200" fill="black" mask="url(#biteMask)"/>
+
+  <!-- Left: Solid Rectangle -->
+  <rect x="0" y="0" width="100" height="100" fill="black"/>
+
+  <!-- Right: Bitten Shape -->
+  <g transform="translate(100, 0)">
+    <!-- Apply mask to a rect to create holes -->
+    <rect x="0" y="0" width="100" height="100" fill="black" mask="url(#bite-holes)"/>
+  </g>
 </svg>
