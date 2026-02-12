@@ -780,7 +780,7 @@ section {
 
 @media (max-width: 767px) {
     .hero-title {
-        font-size: 5rem !important;
+        font-size: 4rem !important;
         /* Forced Huge size */
         text-align: center;
         line-height: 1.1;
@@ -1908,6 +1908,8 @@ BENEFITS SECTION - DISEÑO ORBITAL CORREGIDO
         /* Larger for mobile */
         top: 30% !important;
         /* Moved UP (was 40%) */
+        left: 10% !important;
+        /* Move slightly more to the left (was 15%) */
     }
 }
 
