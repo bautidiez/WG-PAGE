@@ -76,7 +76,10 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
     private createRandomItem(id: number, boundW: number, boundH: number): FoodItem {
         const asset = this.assets[Math.floor(Math.random() * this.assets.length)];
         const scale = 0.4 + Math.random() * 0.5; // 0.4x to 0.9x (Smaller items)
-        const baseSize = 90; // Reduced from 120
+
+        // Responsive base size
+        const isMobile = window.innerWidth < 768;
+        const baseSize = isMobile ? 45 : 120; // Mobile: 45px (smaller), Desktop: 120px (restored to original large size)
 
         // Random position within bounds
         const x = Math.random() * (boundW - 100);

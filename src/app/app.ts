@@ -30,7 +30,7 @@ interface ExchangeRate {
     template: `
 <!-- NEW 3D FOOD SCENE -->
 <app-food-scene></app-food-scene>
-<div class="app-container" [class.loading]="isLoading"> <!-- Loading Screen --> <div class="loading-screen" *ngIf="isLoading"> <div class="loading-content"> <img src="assets/logo.png" alt="WorthGrowth Logo" class="loading-logo" width="120" height="120" fetchpriority="high"> <div class="loading-spinner"></div> </div> </div>
+<!-- Loading Screen --> <div class="loading-screen" *ngIf="isLoading"> <div class="loading-content"> <img src="assets/logo.png" alt="WorthGrowth Logo" class="loading-logo" width="120" height="120" fetchpriority="high"> <div class="loading-spinner"></div> </div> </div>
 
 <canvas #threeCanvas class="three-canvas" style="display: none;"></canvas>
 
@@ -74,7 +74,9 @@ interface ExchangeRate {
   </svg>
   <span class="nav-btn-text">{{ t('nav.contact') }}</span>
 </button>
-</nav> </header><!-- Side Menu --><div class="side-menu" [class.open]="isMenuOpen"> <button class="close-menu-btn" (click)="closeMenu()"> {{ t('menu.close') }} </button> <div class="menu-logo"> <span class="logo-text-menu">WG</span> <p class="menu-tagline">{{ t('menu.tagline') }}</p> </div> <a href="#inicio" (click)="closeMenu()">{{ t('nav.home') }}</a> <a href="#servicio" (click)="closeMenu()">{{ t('nav.services') }}</a> <a href="#video" (click)="closeMenu()">{{ t('nav.video') }}</a> <a href="#precios" (click)="closeMenu()">{{ t('nav.pricing') }}</a> </div><!-- Hero Section --><section class="hero-section" id="inicio"> <div class="container"> <div class="hero-layout"> <div class="hero-content"> <h1 class="hero-title montserrat-extrabold"> <span class="gradient-text">{{ t('hero.title') }}</span> <span class="subtitle-dark">{{ t('hero.subtitle') }}</span> </h1>
+</nav> </header><!-- Side Menu --><div class="side-menu" [class.open]="isMenuOpen"> <button class="close-menu-btn" (click)="closeMenu()"> {{ t('menu.close') }} </button> <div class="menu-logo"> <span class="logo-text-menu">WG</span> <p class="menu-tagline">{{ t('menu.tagline') }}</p> </div> <a href="#inicio" (click)="closeMenu()">{{ t('nav.home') }}</a> <a href="#servicio" (click)="closeMenu()">{{ t('nav.services') }}</a> <a href="#video" (click)="closeMenu()">{{ t('nav.video') }}</a> <a href="#precios" (click)="closeMenu()">{{ t('nav.pricing') }}</a> </div>
+<div class="app-container" [class.loading]="isLoading">
+<!-- Hero Section --><section class="hero-section" id="inicio"> <div class="container"> <div class="hero-layout"> <div class="hero-content"> <h1 class="hero-title montserrat-extrabold"> <span class="gradient-text">{{ t('hero.title') }}</span> <span class="subtitle-dark">{{ t('hero.subtitle') }}</span> </h1>
 
     <div class="hero-cta-container">
       <button class="primary-button" (click)="openWhatsApp('Demo de Hero')">
