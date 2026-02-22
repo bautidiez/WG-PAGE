@@ -1,3 +1,14 @@
+:host {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
 /* Main Container - Full Screen Background */
 .food-scene-container {
     position: fixed;
@@ -5,12 +16,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(circle at center, #ffffff 0%, #f6f6f6 60%, #eeeeee 100%);
+    /* Rich multi-stop gradient — soft purple haze matching brand */
+    background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(236, 72, 153, 0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, #fefefe 0%, #f7f3ff 50%, #f0ebff 100%);
     overflow: hidden;
-    z-index: 0;
-    /* Changed from -1 to allow interaction */
+    z-index: -1;
     pointer-events: none;
-    /* Let clicks pass through empty space */
 }
 
 /* Food Grid Wrapper */
@@ -20,8 +33,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: auto;
-    /* Re-enable for food items */
+    pointer-events: none;
+    /* Items individually re-enable via .food-item-wrapper */
 }
 
 /* Base style for wrapper - Positioning handled via inline styles in HTML */
@@ -29,8 +42,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: auto;
-    /* Ensure hover works */
+    pointer-events: none;
+    /* Decorative only — clicks pass through to page buttons */
     will-change: transform;
     /* Optimized for animation */
 }

@@ -698,16 +698,18 @@ section {
     z-index: 1;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 20vh;
     background-color: transparent;
 }
 
 @media (min-width: 768px) {
     .hero-section {
-        padding: 2rem 1.5rem 3rem;
+        padding: 5rem 1.5rem 3rem;
+        /* Added strong top padding on desktop */
+        padding-top: 15vh;
         min-height: calc(100vh / 0.85);
         height: auto;
-        /* IMPORTANTE: quitar el height: 100vh */
         transform-origin: top center;
     }
 }
@@ -742,16 +744,20 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* Vuelve a center */
     width: 100%;
     min-width: 450px;
     order: 1;
     padding-top: 0;
-    margin-top: 0;
+    /* Quito pad forzado */
+    margin-top: 5;
+    position: relative;
+    z-index: 5;
 }
 
 @media (max-width: 767px) {
     .hero-content {
-        margin-top: -50px;
+        margin-top: -60px;
         /* Pull content up significantly for mobile */
     }
 }
@@ -772,7 +778,7 @@ section {
     font-weight: 800;
     font-family: "Montserrat", sans-serif;
     margin-bottom: 1rem;
-    margin-top: -1rem;
+    margin-top: 0rem;
     line-height: 1.1;
     color: #1e293b;
     text-shadow: none;
@@ -987,85 +993,97 @@ CTA CONTAINER
     opacity: 0.8;
 }
 
+.demo-link-text {
+    display: inline-block;
+    color: #7c3aed;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    margin-top: 0.75rem;
+    position: relative;
+    z-index: 10;
+}
+
+.demo-link-text:hover {
+    color: #ec4899;
+    text-decoration: underline;
+}
+
 /* ============================================
 IMAGEN HERO
 ============================================ */
 .hero-image {
-    position: relative;
-    width: 100%;
-    max-width: 950px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-60%);
+    /* Ancla default centrada al contenedor de vuelta */
+    width: 65%;
+    max-width: none;
     height: auto;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-end;
     animation: float 6s ease-in-out infinite;
     padding: 0;
-    margin: 0 auto;
-    margin-left: 0 !important;
-    /* Fixed: Reset margin for mobile visibility */
-    /* TEST - SHOULD MOVE LEFT */
-    order: 2;
-    overflow: visible;
-    justify-content: center;
-    /* Ensure centering */
+    margin: 0;
+    z-index: 0;
+    pointer-events: none;
 }
 
 @media (max-width: 767px) {
     .hero-image {
-        width: 130% !important;
-        /* Slightly smaller again */
-        margin-left: -15% !important;
-        /* Center it back (15% is half of excess 30%) */
-        margin-top: -140px !important;
-        /* Keep it up */
-        display: flex !important;
-        justify-content: center !important;
+        position: relative;
+        width: 100%;
+        margin-top: -100px;
+        display: flex;
+        justify-content: center;
+        transform: scale(1.4);
+        right: auto;
+        top: auto;
+        order: 2;
+        /* Importante para que vaya abajo del texto */
     }
 
     .hero-img {
-        width: 100% !important;
-        max-width: none !important;
-        /* Ensure image fills the 200% wrapper */
+        width: 100%;
+        max-width: none;
+        opacity: 0.6;
     }
 }
 
 @media (min-width: 768px) {
     .hero-image {
-        max-width: none;
-        width: 950%;
-        /* ✅ aumentado para hacer la imagen mucho más grande */
-        justify-content: flex-end;
-        margin-top: -4.5cm;
-        margin-left: -39cm !important;
-        grid-column: 2;
-        grid-row: 1;
+        width: 70%;
+        right: -5%;
+        top: 50%;
+        /* relative to center */
+        transform: translateY(-20%) scale(1.2);
+        /* Bajar un toque la imagen respecto al centro */
+    }
+}
+
+@media (min-width: 1200px) {
+    .hero-image {
+        width: 65%;
+        right: 5%;
+        top: 1%;
+        transform: translateY(-15%) scale(1.25) translateX(25%);
+        /* Bajar igual */
     }
 }
 
 .hero-img {
     width: 100%;
-    max-width: 1100px;
     height: auto;
-    filter: drop-shadow(0 20px 40px rgba(139, 92, 246, 0.25));
+    max-width: none;
+    /* Eliminar restricción */
+    filter: drop-shadow(0 20px 40px rgba(139, 92, 246, 0.2));
     border-radius: 20px;
-    margin: 0 auto;
-    /* Default for mobile: no margin-left shift */
-    margin-left: 0 !important;
-}
-
-@media (min-width: 968px) {
-    .hero-img {
-        max-width: 1200px;
-        margin-left: 60rem !important;
-        /* Restore shift for desktop */
-    }
-}
-
-@media (min-width: 1400px) {
-    .hero-img {
-        max-width: 1300px;
-        /* ✅ Tamaño ajustado */
-    }
+    opacity: 0.92;
+    transform-origin: right center;
 }
 
 @keyframes float {
@@ -3344,71 +3362,4 @@ AJUSTES RESPONSIVE PARA CELULARES Y TABLETS
     .footer {
         padding: 3rem 1rem 1.5rem;
     }
-}
-
-/* ============================================
-   LOADING SCREEN
-============================================ */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #ffffff;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.loading-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    animation: fadeIn 0.5s ease-out;
-}
-
-.loading-logo {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #7c3aed;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.app-container.loading {
-    overflow: hidden;
-    height: 100vh;
 }

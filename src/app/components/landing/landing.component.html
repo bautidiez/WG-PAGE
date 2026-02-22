@@ -81,12 +81,13 @@
                             {{ t('hero.cta') }}
                             <span class="arrow">→</span>
                         </button>
+                        <a class="demo-link-text" (click)="goToDemo()">Probar Demo Gratis &rarr;</a>
                         <p class="hero-cta-hint">{{ t('hero.hint') }}</p>
                     </div>
                 </div>
 
                 <div class="hero-image">
-                    <img src="assets/stock_1.png" alt="AI Chatbot Illustration" class="hero-img" loading="eager"
+                    <img [src]="getHeroImage()" alt="AI Chatbot Gastronómico" class="hero-img" loading="eager"
                         decoding="async" fetchpriority="high" width="850" height="auto">
                 </div>
             </div>

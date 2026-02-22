@@ -1,0 +1,185 @@
+<app-food-scene></app-food-scene>
+<div class="demo-page">
+
+    <!-- HEADER -->
+    <header class="demo-header">
+        <a routerLink="/" class="back-link">{{ t('demo.backLink') }}</a>
+        <div class="demo-title-wrap">
+            <span class="demo-badge">{{ t('demo.badge') }}</span>
+            <h1 class="demo-title">{{ t('demo.title') }}</h1>
+            <p class="demo-subtitle">{{ t('demo.subtitle') }}</p>
+        </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <main class="demo-main">
+
+        <!-- LEFT — FORM -->
+        <section class="demo-form-panel">
+            <div class="form-card">
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🍽</span>
+                        {{ t('demo.form.menuTitle') }}
+                        <span class="label-hint">{{ t('demo.form.menuHint') }}</span>
+                    </label>
+                    <textarea class="form-textarea" id="input-menu" [(ngModel)]="formData.menu"
+                        [placeholder]="t('demo.form.menuPlaceholder')" rows="9">
+PIZZAS
+Muzzarella - $3500
+Napolitana - $4000
+
+EMPANADAS
+De carne - $700
+De pollo - $700" rows="9">
+          </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🕐</span>
+                        {{ t('demo.form.hoursTitle') }}
+                        <span class="label-hint">{{ t('demo.form.hoursHint') }}</span>
+                    </label>
+                    <textarea class="form-textarea" id="input-horarios" [(ngModel)]="formData.horarios"
+                        [placeholder]="t('demo.form.hoursPlaceholder')" rows="5">
+Lunes a viernes: 10 a 20hs
+Sábados: 10 a 14hs
+Domingos: cerrado" rows="5">
+          </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">📍</span>
+                        {{ t('demo.form.locationTitle') }}
+                        <span class="label-hint">{{ t('demo.form.locationHint') }}</span>
+                    </label>
+                    <textarea class="form-textarea" id="input-ubicacion" [(ngModel)]="formData.ubicacion"
+                        [placeholder]="t('demo.form.locationPlaceholder')" rows="3">
+          </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">📲</span>
+                        {{ t('demo.form.socialTitle') }}
+                        <span class="label-hint">{{ t('demo.form.socialHint') }}</span>
+                    </label>
+                    <textarea class="form-textarea" id="input-redes" [(ngModel)]="formData.redes"
+                        [placeholder]="t('demo.form.socialPlaceholder')" rows="4">
+          </textarea>
+                </div>
+
+                <button class="btn-generate" id="btn-generar"
+                    [disabled]="isGenerating || (!formData.menu.trim() && !formData.ubicacion.trim())"
+                    (click)="generateFicha()">
+                    <span *ngIf="!isGenerating">{{ t('demo.form.btnGenerate') }}</span>
+                    <span *ngIf="isGenerating" class="generating-text">
+                        <span class="dot-anim"></span> {{ t('demo.form.btnGenerating') }}
+                    </span>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- RIGHT — PREVIEW -->
+        <section class="demo-preview-panel">
+
+            <!-- PLACEHOLDER -->
+            <div class="preview-placeholder" *ngIf="!isGenerated && !isGenerating">
+                <div class="placeholder-icon">📋</div>
+                <p class="placeholder-title">{{ t('demo.preview.placeholderTitle') }}</p>
+                <p class="placeholder-hint">{{ t('demo.preview.placeholderHint') }}</p>
+            </div>
+
+            <!-- LOADING -->
+            <div class="preview-loading" *ngIf="isGenerating">
+                <div class="spinner-ring"></div>
+                <p>{{ t('demo.preview.loading') }}</p>
+            </div>
+
+            <!-- FICHA RESULT -->
+            <div class="ficha-card" *ngIf="isGenerated && fichaResult">
+
+                <!-- ACTION BUTTONS -->
+                <div class="ficha-actions">
+                    <button class="btn-copy" id="btn-copiar" [class.copied]="isCopied" (click)="copyToClipboard()">
+                        <span *ngIf="!isCopied">{{ t('demo.preview.btnCopy') }}</span>
+                        <span *ngIf="isCopied">{{ t('demo.preview.btnCopied') }}</span>
+                    </button>
+                    <button class="btn-reset" id="btn-nueva" (click)="resetDemo()">{{ t('demo.preview.btnReset')
+                        }}</button>
+                </div>
+
+                <!-- ACTIVAR AGENTE IA -->
+                <div class="activar-section">
+                    <button class="btn-activar" id="btn-activar" (click)="activarAgente()">
+                        <span class="activar-icon">⚡</span>
+                        {{ t('demo.preview.btnActivate') }}
+                        <span class="activar-arrow">→</span>
+                    </button>
+                    <p class="activar-hint">{{ t('demo.preview.activateHint') }}</p>
+                </div>
+
+                <!-- NOMBRE Y RUBRO -->
+                <div class="ficha-header">
+                    <h2 class="ficha-nombre">{{ fichaResult.nombre }}</h2>
+                    <span class="ficha-rubro">{{ fichaResult.rubro }}</span>
+                </div>
+
+                <hr class="ficha-divider" />
+
+                <!-- DESCRIPCIÓN -->
+                <div class="ficha-section">
+                    <h3 class="ficha-section-title">{{ t('demo.preview.descTitle') }}</h3>
+                    <p class="ficha-text">{{ fichaResult.descripcion }}</p>
+                </div>
+
+                <!-- HORARIOS -->
+                <div class="ficha-section" *ngIf="fichaResult.horarios.length > 0">
+                    <h3 class="ficha-section-title">{{ t('demo.preview.hoursTitle') }}</h3>
+                    <div class="horario-row" *ngFor="let h of fichaResult.horarios">
+                        <span class="horario-dias">{{ h.dias }}</span>
+                        <span class="horario-horas" *ngIf="h.horas">{{ h.horas }}</span>
+                    </div>
+                </div>
+
+                <!-- UBICACIÓN -->
+                <div class="ficha-section" *ngIf="fichaResult.ubicacion">
+                    <h3 class="ficha-section-title">{{ t('demo.preview.locationTitle') }}</h3>
+                    <p class="ficha-text">{{ fichaResult.ubicacion }}</p>
+                </div>
+
+                <!-- CONTACTO -->
+                <div class="ficha-section" *ngIf="fichaResult.contacto.length > 0">
+                    <h3 class="ficha-section-title">{{ t('demo.preview.socialTitle') }}</h3>
+                    <p class="ficha-text" *ngFor="let c of fichaResult.contacto">{{ c }}</p>
+                </div>
+
+                <!-- PRODUCTOS -->
+                <div class="ficha-section" *ngIf="fichaResult.productos.length > 0">
+                    <h3 class="ficha-section-title">{{ t('demo.preview.menuTitle') }}</h3>
+                    <div class="productos-categoria" *ngFor="let cat of fichaResult.productos">
+                        <h4 class="categoria-nombre">{{ cat.categoria }}</h4>
+                        <div class="producto-row" *ngFor="let item of cat.items">
+                            <span class="producto-nombre">{{ item.nombre }}</span>
+                            <span class="producto-precio" *ngIf="item.precio">{{ item.precio }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESTACADOS -->
+                <div class="ficha-section destacados-section" *ngIf="fichaResult.destacados.length > 0">
+                    <h3 class="ficha-section-title">⭐</h3>
+                    <div class="destacados-list">
+                        <span class="destacado-tag" *ngFor="let d of fichaResult.destacados">{{ d }}</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</div>
