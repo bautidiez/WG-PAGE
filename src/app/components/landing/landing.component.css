@@ -1037,10 +1037,12 @@ IMAGEN HERO
     .hero-image {
         position: relative;
         width: 100%;
-        margin-top: -100px;
+        margin-top: -60px;
+        /* Moved up slightly */
         display: flex;
         justify-content: center;
-        transform: scale(1.4);
+        transform: scale(1.4) translateY(-10px);
+        /* Less Y translation */
         right: auto;
         top: auto;
         order: 2;
@@ -1058,7 +1060,7 @@ IMAGEN HERO
     .hero-image {
         width: 70%;
         right: -5%;
-        top: 50%;
+        top: 70%;
         /* relative to center */
         transform: translateY(-20%) scale(1.2);
         /* Bajar un toque la imagen respecto al centro */
@@ -1069,7 +1071,7 @@ IMAGEN HERO
     .hero-image {
         width: 65%;
         right: 5%;
-        top: 1%;
+        top: 8%;
         transform: translateY(-15%) scale(1.25) translateX(25%);
         /* Bajar igual */
     }
@@ -1855,6 +1857,8 @@ BENEFITS SECTION - DISEÑO ORBITAL CORREGIDO
 ============================================ */
 .benefits-section {
     padding: 3rem 1rem;
+    margin-top: -3rem;
+    /* Pulled up for mobile */
     position: relative;
     z-index: 1;
     min-height: auto;
@@ -1865,6 +1869,8 @@ BENEFITS SECTION - DISEÑO ORBITAL CORREGIDO
 @media (min-width: 768px) {
     .benefits-section {
         padding: 2rem 1.5rem;
+        margin-top: -6rem;
+        /* Pulled up significantly for desktop */
         min-height: 100vh;
         transform-origin: top center;
     }
@@ -3298,12 +3304,14 @@ AJUSTES RESPONSIVE PARA CELULARES Y TABLETS
 
 
     .hero-img {
-        max-width: 360px;
+        max-width: 500px;
+        /* Increased from 440px */
     }
 
     /* ---------- BENEFICIOS ---------- */
     .benefits-section {
         padding: 2.5rem 1rem 2.5rem;
+        margin-top: -3rem !important;
     }
 
     .benefits-orbital-container {
