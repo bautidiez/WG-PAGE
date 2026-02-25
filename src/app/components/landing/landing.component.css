@@ -690,6 +690,9 @@ HERO SECTION
 ============================================ */
 section {
     scroll-margin-top: 100px;
+    position: relative;
+    z-index: 10;
+    /* Ensure all sections act as foreground layers over the isolated background */
 }
 
 .hero-section {
@@ -752,7 +755,8 @@ section {
     /* Quito pad forzado */
     margin-top: 5;
     position: relative;
-    z-index: 5;
+    z-index: 15;
+    /* Ensure this is always above the food scene */
 }
 
 @media (max-width: 767px) {
@@ -1029,7 +1033,8 @@ IMAGEN HERO
     animation: float 6s ease-in-out infinite;
     padding: 0;
     margin: 0;
-    z-index: 0;
+    z-index: 15;
+    /* Sit above the background */
     pointer-events: none;
 }
 

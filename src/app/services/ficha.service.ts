@@ -66,12 +66,11 @@ export class FichaService {
     }
 
     private generarDescripcion(nombre: string, rubro: string, productos: ProductoCategoria[], horarios: HorarioRow[], rawMenu: string): string {
-        const numCategorias = productos.length;
         const numItems = productos.reduce((acc, cat) => acc + cat.items.length, 0);
         const tiene_delivery = /delivery|pedido|envio|envío|domicilio/i.test(rawMenu);
         const tiene_local = /local|salon|salón|mesa|lugar/i.test(rawMenu);
         let desc = `${nombre} es un emprendimiento de ${rubro.toLowerCase()} con atención personalizada.`;
-        if (numCategorias > 0) desc += ` Ofrecemos ${numCategorias > 1 ? numCategorias + ' categorías de productos' : 'una variedad de productos'} con ${numItems} opciones disponibles.`;
+        if (numItems > 0) desc += ` Ofrecemos una excelente variedad de especialidades y productos para nuestros clientes.`;
         if (tiene_delivery) desc += ' Hacemos delivery a domicilio.';
         if (tiene_local) desc += ' Contamos con atención en el local.';
         return desc;

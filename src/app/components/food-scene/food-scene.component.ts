@@ -8,9 +8,9 @@ interface FoodItem {
     id: number;
     src: string;
     alt: string;
-    x: number;
-    y: number;
-    originalY: number;
+    xPercent: number;
+    yPercent: number;
+    floatY: number;
     phase: number;
     width: number;
     rotation: number;
@@ -68,15 +68,43 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private initItems(): void {
-        const count = 22;
+        const isMobile = window.innerWidth < 768;
+        const isDemo = window.location.pathname.includes('/demo');
+        // Reduce count significantly on demo page, keep high on landing page
+        const count = isDemo ? (isMobile ? 25 : 50) : (isMobile ? 55 : 120);
         const w = window.innerWidth;
-        const h = window.innerHeight;
+
+        // We use a multiple of viewport height to guarantee logical spread over 5 standard screens
+        // regardless of whether the DOM has fully rendered yet on init.
+        const h = window.innerHeight * 5.5;
+
+        // Calculate forbidden zones dynamically based on actual DOM elements on the first screen
+        const forbiddenRects: { left: number, right: number, top: number, bottom: number }[] = [];
+        if (this.isBrowser) {
+            // Target the main containers we want to keep clean
+            const selectors = isDemo ?
+                '.demo-form-panel, .demo-preview-panel, .demo-title-wrap' :
+                '.hero-content, .hero-image';
+
+            const elements = document.querySelectorAll(selectors);
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                // Add generous padding block (60px) around the content where food cannot spawn
+                forbiddenRects.push({
+                    left: rect.left - 60,
+                    right: rect.right + 60,
+                    top: rect.top + window.scrollY - 60,
+                    bottom: rect.bottom + window.scrollY + 60
+                });
+            });
+        }
+
         for (let i = 0; i < count; i++) {
-            this.foodItems.push(this.createItem(i, w, h));
+            this.foodItems.push(this.createItem(i, w, h, forbiddenRects));
         }
     }
 
-    private createItem(id: number, bw: number, bh: number): FoodItem {
+    private createItem(id: number, bw: number, bh: number, forbiddenRects: { left: number, right: number, top: number, bottom: number }[]): FoodItem {
         const asset = this.assets[Math.floor(Math.random() * this.assets.length)];
         const scale = 0.35 + Math.random() * 0.45; // 0.35–0.80x
         const isMobile = bw < 768;
@@ -86,11 +114,11 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
         const roll = Math.random();
         let x: number, y: number;
         const maxAttempts = 60;
-        const cx = bw / 2, cy = bh / 2;
-        const forbidR = Math.min(bw, bh) * 0.28;
-
         let attempts = 0;
+        let overlaps = false;
+
         do {
+            overlaps = false;
             if (roll < 0.4) {
                 x = Math.random() * (bw * 0.22);
             } else if (roll < 0.8) {
@@ -99,15 +127,40 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
                 x = Math.random() * (bw - size);
             }
             y = Math.random() * (bh - size);
+
+            // Prevent spawning in the top 50% of the very first screen (Hero section header/nav area)
+            if (typeof window !== 'undefined' && y < window.innerHeight * 0.5) {
+                overlaps = true;
+            }
+
+            // Check bounding boxes for collision
+            if (!overlaps) {
+                for (const rect of forbiddenRects) {
+                    const centerX = x + size / 2;
+                    const centerY = y + size / 2;
+                    if (centerX > rect.left && centerX < rect.right && centerY > rect.top && centerY < rect.bottom) {
+                        overlaps = true;
+                        break;
+                    }
+                }
+            }
+
             attempts++;
-        } while (
-            Math.hypot(x + size / 2 - cx, y + size / 2 - cy) < forbidR &&
-            attempts < maxAttempts
-        );
+        } while (overlaps && attempts < maxAttempts);
+
+        // Fallback: If area is extremely congested, push the item safely outside the 1st screen text bounds 
+        if (overlaps) {
+            x = Math.random() < 0.5 ? Math.random() * (bw * 0.05) : bw - size - Math.random() * (bw * 0.05);
+            if (y < window.innerHeight) {
+                y += window.innerHeight; // push below the fold
+            }
+        }
 
         return {
             id, src: asset.src, alt: asset.alt,
-            x, y, originalY: y,
+            xPercent: (x / bw) * 100,
+            yPercent: (y / bh) * 100,
+            floatY: 0,
             phase: Math.random() * Math.PI * 2,
             width: size, rotation: 0,
             scale, zIndex: Math.floor(scale * 10),
@@ -127,9 +180,9 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
         const now = Date.now() / 1000;
         for (const item of this.foodItems) {
             if (item.isHovered || !item.el) continue;
-            item.y = item.originalY + Math.sin(now * 1.0 + item.phase) * 13;
+            item.floatY = Math.sin(now * 1.0 + item.phase) * 13;
             // Direct DOM update — no Angular CD needed
-            item.el.style.transform = `translate3d(${item.x}px,${item.y}px,0)`;
+            item.el.style.transform = `translate3d(0,${item.floatY}px,0)`;
         }
     }
 

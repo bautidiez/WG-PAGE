@@ -1,9 +1,9 @@
 <section class="food-scene-container">
     <div class="food-grid">
         <div *ngFor="let item of foodItems" class="food-item-wrapper" [style.width.px]="item.width"
-            [style.zIndex]="item.zIndex" [style.transform]="'translate3d(' + item.x + 'px,' + item.y + 'px,0)'"
-            (mouseenter)="onEnter(item)" (mouseleave)="onLeave(item)" (touchstart)="onEnter(item)"
-            (touchend)="onLeave(item)">
+            [style.zIndex]="item.zIndex" [style.left.%]="item.xPercent" [style.top.%]="item.yPercent"
+            [style.transform]="'translate3d(0,' + item.floatY + 'px,0)'" (mouseenter)="onEnter(item)"
+            (mouseleave)="onLeave(item)" (touchstart)="onEnter(item)" (touchend)="onLeave(item)">
 
             <div class="image-container">
                 <img [src]="item.src" [alt]="item.alt" class="food-img" loading="lazy">

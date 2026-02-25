@@ -1,5 +1,4 @@
-<!-- NEW 3D FOOD SCENE -->
-<app-food-scene></app-food-scene>
+<!-- Removed 3D FOOD SCENE from here to inside app-container -->
 <!-- Loading Screen -->
 <div class="loading-screen" *ngIf="isLoading">
     <div class="loading-content"> <img src="assets/logo.png" alt="WorthGrowth Logo" class="loading-logo" width="120"
@@ -68,6 +67,8 @@
         (click)="closeMenu()">{{ t('nav.pricing') }}</a>
 </div>
 <div class="app-container" [class.loading]="isLoading">
+    <!-- NEW 3D FOOD SCENE IN CONTAINER -->
+    <app-food-scene></app-food-scene>
     <!-- Hero Section -->
     <section class="hero-section" id="inicio">
         <div class="container">

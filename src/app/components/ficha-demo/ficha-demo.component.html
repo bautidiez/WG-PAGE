@@ -1,4 +1,3 @@
-<app-food-scene></app-food-scene>
 <div class="demo-page">
 
     <!-- HEADER -->
@@ -18,69 +17,236 @@
         <section class="demo-form-panel">
             <div class="form-card">
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="label-icon">🍽</span>
-                        {{ t('demo.form.menuTitle') }}
-                        <span class="label-hint">{{ t('demo.form.menuHint') }}</span>
-                    </label>
-                    <textarea class="form-textarea" id="input-menu" [(ngModel)]="formData.menu"
-                        [placeholder]="t('demo.form.menuPlaceholder')" rows="9">
-PIZZAS
-Muzzarella - $3500
-Napolitana - $4000
+                <!-- STEP 1: BÁSICOS Y PRODUCTOS -->
+                <div *ngIf="currentStep === 1" class="wizard-step fade-in">
+                    <!-- DATOS BÁSICOS -->
+                    <div class="form-section">
+                        <h3 class="section-heading"><span class="label-icon">🏢</span> Datos Básicos</h3>
+                        <div class="form-row">
+                            <div class="form-group flex-2">
+                                <label class="form-label">Nombre del Negocio</label>
+                                <input type="text" class="form-input" [(ngModel)]="modernData.nombre"
+                                    placeholder="Ej: La Pizzería de Pepe">
+                            </div>
+                            <div class="form-group flex-1">
+                                <label class="form-label">Rubro</label>
+                                <div class="custom-select-wrapper">
+                                    <select class="form-select" [(ngModel)]="modernData.rubro">
+                                        <option value="Gastronomía">Gastronomía</option>
+                                        <option value="Indumentaria / Moda">Indumentaria / Moda</option>
+                                        <option value="Centro de Salud / Kinesiología">Centro de Salud</option>
+                                        <option value="Estética / Peluquería">Estética / Peluquería</option>
+                                        <option value="Taller Mecánico / Automotriz">Taller Mecánico</option>
+                                        <option value="Servicios Generales">Servicios</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ubicación</label>
+                            <input type="text" class="form-input" [(ngModel)]="modernData.ubicacion"
+                                placeholder="Ej: Av. Corrientes 1234, CABA">
+                        </div>
+                    </div>
 
-EMPANADAS
-De carne - $700
-De pollo - $700" rows="9">
-          </textarea>
-                </div>
+                    <!-- PRODUCTOS DINÁMICOS -->
+                    <div class="form-section">
+                        <h3 class="section-heading"><span class="label-icon">📋</span> Productos o Servicios Estrella
+                        </h3>
+                        <p class="section-desc">Escribí brevemente tus principales opciones (ej: "Pizza Muzzarella" y
+                            "5000").</p>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="label-icon">🕐</span>
-                        {{ t('demo.form.hoursTitle') }}
-                        <span class="label-hint">{{ t('demo.form.hoursHint') }}</span>
-                    </label>
-                    <textarea class="form-textarea" id="input-horarios" [(ngModel)]="formData.horarios"
-                        [placeholder]="t('demo.form.hoursPlaceholder')" rows="5">
-Lunes a viernes: 10 a 20hs
-Sábados: 10 a 14hs
-Domingos: cerrado" rows="5">
-          </textarea>
-                </div>
+                        <div class="product-rows-container">
+                            <div class="product-row" *ngFor="let prod of modernData.productosList; let i = index">
+                                <input type="text" class="form-input flex-2" [(ngModel)]="prod.nombre"
+                                    placeholder="Nombre del producto/servicio">
+                                <input type="text" class="form-input flex-1 amount-input" [(ngModel)]="prod.precio"
+                                    placeholder="Precio (opcional)">
+                                <button class="btn-remove" (click)="quitarProducto(i)" title="Quitar fila">✕</button>
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="label-icon">📍</span>
-                        {{ t('demo.form.locationTitle') }}
-                        <span class="label-hint">{{ t('demo.form.locationHint') }}</span>
-                    </label>
-                    <textarea class="form-textarea" id="input-ubicacion" [(ngModel)]="formData.ubicacion"
-                        [placeholder]="t('demo.form.locationPlaceholder')" rows="3">
-          </textarea>
-                </div>
+                        <button class="btn-add-row" (click)="agregarProducto()">
+                            <span class="plus-icon">+</span> Agregar Producto
+                        </button>
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="label-icon">📲</span>
-                        {{ t('demo.form.socialTitle') }}
-                        <span class="label-hint">{{ t('demo.form.socialHint') }}</span>
-                    </label>
-                    <textarea class="form-textarea" id="input-redes" [(ngModel)]="formData.redes"
-                        [placeholder]="t('demo.form.socialPlaceholder')" rows="4">
-          </textarea>
-                </div>
+                    <div class="wizard-nav right">
+                        <button class="btn-next" (click)="nextStep()">Siguiente →</button>
+                    </div>
+                </div> <!-- END STEP 1 -->
 
-                <button class="btn-generate" id="btn-generar"
-                    [disabled]="isGenerating || (!formData.menu.trim() && !formData.ubicacion.trim())"
-                    (click)="generateFicha()">
-                    <span *ngIf="!isGenerating">{{ t('demo.form.btnGenerate') }}</span>
-                    <span *ngIf="isGenerating" class="generating-text">
-                        <span class="dot-anim"></span> {{ t('demo.form.btnGenerating') }}
-                    </span>
-                </button>
+                <!-- STEP 2: HORARIOS -->
+                <div *ngIf="currentStep === 2" class="wizard-step fade-in">
+                    <!-- HORARIOS POR DÍA -->
+                    <div class="form-section">
+                        <div class="section-heading-row">
+                            <h3 class="section-heading"><span class="label-icon">🕐</span> Horarios de Apertura</h3>
+                            <button class="btn-text-action" (click)="aplicarHorarioTodos()"
+                                title="Copia el Lunes a Mar-Vie">
+                                Aplicar Lunes a todos
+                            </button>
+                        </div>
 
+                        <div class="checkbox-group" *ngFor="let dia of modernData.dias">
+                            <label class="checkbox-header">
+                                <input type="checkbox" [(ngModel)]="dia.activo">
+                                <span class="custom-checkbox"></span>
+                                <span class="checkbox-label" [class.text-disabled]="!dia.activo">{{ dia.nombre }}</span>
+                            </label>
+                            <div class="time-inputs" *ngIf="dia.activo">
+                                <select class="form-select time-select" [(ngModel)]="dia.startH">
+                                    <option value="" disabled>HH</option>
+                                    <option *ngFor="let h of hoursList" [value]="h">{{h}}</option>
+                                </select>
+                                <span>:</span>
+                                <select class="form-select time-select" [(ngModel)]="dia.startM">
+                                    <option value="" disabled>MM</option>
+                                    <option *ngFor="let m of minutesList" [value]="m">{{m}}</option>
+                                </select>
+                                <span class="time-sep">a</span>
+                                <select class="form-select time-select" [(ngModel)]="dia.endH">
+                                    <option value="" disabled>HH</option>
+                                    <option *ngFor="let h of hoursList" [value]="h">{{h}}</option>
+                                </select>
+                                <span>:</span>
+                                <select class="form-select time-select" [(ngModel)]="dia.endM">
+                                    <option value="" disabled>MM</option>
+                                    <option *ngFor="let m of minutesList" [value]="m">{{m}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav space-between">
+                        <button class="btn-prev" (click)="prevStep()">← Atrás</button>
+                        <button class="btn-next" (click)="nextStep()">Siguiente →</button>
+                    </div>
+                </div> <!-- END STEP 2 -->
+
+                <!-- STEP 3: CONTACTO Y EXTRAS -->
+                <div *ngIf="currentStep === 3" class="wizard-step fade-in">
+                    <!-- REDES DE CONTACTO -->
+                    <div class="form-section">
+                        <h3 class="section-heading"><span class="label-icon">📲</span> Canales de Contacto</h3>
+
+                        <div class="checkbox-group">
+                            <label class="checkbox-header">
+                                <input type="checkbox" [(ngModel)]="modernData.hasWhatsapp">
+                                <span class="custom-checkbox"></span>
+                                <span class="checkbox-label">WhatsApp</span>
+                            </label>
+                            <div class="contact-inputs whatsapp-row" *ngIf="modernData.hasWhatsapp">
+                                <div class="custom-flag-select">
+                                    <div class="selected-flag" (click)="toggleCountryDropdown()">
+                                        <img [src]="'https://flagcdn.com/w20/' + selectedCountry.iso + '.png'"
+                                            width="20" alt="flag">
+                                        <span class="country-code">{{selectedCountry.code}}</span>
+                                        <span class="dropdown-arrow">▼</span>
+                                    </div>
+                                    <div class="flag-dropdown-list" *ngIf="showCountryDropdown">
+                                        <div class="flag-option" *ngFor="let country of countryCodes"
+                                            (click)="selectCountry(country)">
+                                            <img [src]="'https://flagcdn.com/w20/' + country.iso + '.png'" width="20"
+                                                alt="flag">
+                                            <span class="country-name">{{country.name}}</span>
+                                            <span class="country-code">{{country.code}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-input" [(ngModel)]="modernData.whatsapp"
+                                    placeholder="Ej: 9 11 1234-5678">
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <label class="checkbox-header">
+                                <input type="checkbox" [(ngModel)]="modernData.hasInstagram">
+                                <span class="custom-checkbox"></span>
+                                <span class="checkbox-label">Instagram</span>
+                            </label>
+                            <div class="contact-inputs" *ngIf="modernData.hasInstagram">
+                                <input type="text" class="form-input" [(ngModel)]="modernData.instagram"
+                                    placeholder="Ej: @minegocio">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MÉTODOS DE PAGO -->
+                    <div class="form-section">
+                        <h3 class="section-heading"><span class="label-icon">💳</span> Métodos de Pago</h3>
+                        <p class="section-desc">Seleccioná cómo pueden pagarte e incluí links o alias opcionales. (Podés
+                            marcar uno o varios)</p>
+
+                        <div class="payment-methods-container">
+                            <div class="payment-method-block">
+                                <label class="toggle-pill">
+                                    <input type="checkbox" [(ngModel)]="modernData.pagoTransferencia">
+                                    <span class="pill-pad">📱 Transferencia / Billetera Virtual</span>
+                                </label>
+                                <div class="contact-inputs payment-detail-input" *ngIf="modernData.pagoTransferencia">
+                                    <input type="text" class="form-input" [(ngModel)]="modernData.aliasTransferencia"
+                                        placeholder="Alias o CVU (Opcional)">
+                                </div>
+                            </div>
+
+                            <div class="payment-method-block">
+                                <label class="toggle-pill">
+                                    <input type="checkbox" [(ngModel)]="modernData.pagoTarjeta">
+                                    <span class="pill-pad">💳 Tarjetas de Débito/Crédito</span>
+                                </label>
+                                <div class="contact-inputs payment-detail-input" *ngIf="modernData.pagoTarjeta">
+                                    <input type="text" class="form-input" [(ngModel)]="modernData.linkPagoTarjeta"
+                                        placeholder="Link de pago (Opcional)">
+                                </div>
+                            </div>
+
+                            <div class="toggles-grid mt-2">
+                                <label class="toggle-pill">
+                                    <input type="checkbox" [(ngModel)]="modernData.pagoLocal">
+                                    <span class="pill-pad">🏪 Cobro en Local</span>
+                                </label>
+                                <label class="toggle-pill">
+                                    <input type="checkbox" [(ngModel)]="modernData.pagoEfectivo">
+                                    <span class="pill-pad">💵 Efectivo</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DETALLES ADICIONALES -->
+                    <div class="form-section last-section">
+                        <h3 class="section-heading"><span class="label-icon">✨</span> Detalles Adicionales</h3>
+
+                        <div class="toggles-grid">
+                            <label class="toggle-pill">
+                                <input type="checkbox" [(ngModel)]="modernData.petfriendly">
+                                <span class="pill-pad">🐶 Petfriendly</span>
+                            </label>
+                            <label class="toggle-pill">
+                                <input type="checkbox" [(ngModel)]="modernData.delivery">
+                                <span class="pill-pad">🛵 Delivery / Envíos</span>
+                            </label>
+                            <label class="toggle-pill">
+                                <input type="checkbox" [(ngModel)]="modernData.retiroLocal">
+                                <span class="pill-pad">🛍️ Retiro en el local</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav space-between">
+                        <button class="btn-prev" (click)="prevStep()">← Atrás</button>
+                        <button class="btn-generate wizard-submit" id="btn-generar"
+                            [disabled]="isGenerating || (!modernData.nombre.trim() && modernData.productosList.length === 0)"
+                            (click)="generateFicha()">
+                            <span *ngIf="!isGenerating">{{ t('demo.form.btnGenerate') }}</span>
+                            <span *ngIf="isGenerating" class="generating-text">
+                                <span class="dot-anim"></span> {{ t('demo.form.btnGenerating') }}
+                            </span>
+                        </button>
+                    </div>
+                </div> <!-- END STEP 3 -->
             </div>
         </section>
 
@@ -180,6 +346,5 @@ Domingos: cerrado" rows="5">
 
             </div>
         </section>
-
     </main>
 </div>
