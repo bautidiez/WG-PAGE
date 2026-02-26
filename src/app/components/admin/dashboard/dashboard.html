@@ -1,0 +1,46 @@
+<div class="dashboard-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+</div>
+
+<div class="dashboard-container fade-in" *ngIf="!isLoading && userData">
+    <div class="dashboard-header">
+        <div>
+            <h2>¡Hola, {{ userData.empresa || userData.nombre }}! 👋</h2>
+            <p class="subtitle">Bienvenido a tu panel de control central.</p>
+        </div>
+        <div class="status-badge" [ngClass]="userData.estadoSuscripcion">
+            {{ userData.estadoSuscripcion === 'trial' ? 'En Período de Prueba' : 'Suscripción Activa' }}
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Tarjeta del QR -->
+        <div class="dashboard-card qr-card">
+            <h3>Tu Código QR</h3>
+            <p class="card-desc">Tus clientes pueden escanear esto o podés usarlo para vincular WhatsApp.</p>
+
+            <div class="qr-wrapper" *ngIf="userData.qrUrl">
+                <img [src]="userData.qrUrl" alt="Código QR de tu negocio" class="qr-image" />
+            </div>
+
+            <div class="qr-placeholder" *ngIf="!userData.qrUrl">
+                <p>Generando código QR...</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Métricas -->
+        <div class="dashboard-card metrics-card">
+            <h3>Dispositivos Vinculados</h3>
+
+            <div class="metric-number">
+                {{ vinculacionesCount }}
+            </div>
+            <p class="card-desc">Dispositivos activos comunicándose con tu chatbot.</p>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" (click)="editData()">⚙️ Editar Datos</button>
+                <button class="btn btn-primary" (click)="manageSubscription()">💳 Administrar Suscripción</button>
+            </div>
+        </div>
+    </div>
+</div>

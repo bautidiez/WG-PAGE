@@ -1,0 +1,239 @@
+.subscription-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.btn-back {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 30px;
+    transition: color 0.2s;
+}
+
+.btn-back:hover {
+    color: #1e293b;
+}
+
+.header-text {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.header-text h2 {
+    color: #1e293b;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.alert-expire {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    border: 1px solid #fecaca;
+    display: inline-block;
+    margin: 0;
+}
+
+.alert-trial {
+    background-color: #f0fdf4;
+    color: #15803d;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    border: 1px solid #bbf7d0;
+    display: inline-block;
+    margin: 0;
+}
+
+.plans-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.plan-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-card h3 {
+    margin: 0 0 15px 0;
+    color: #334155;
+    font-size: 1.5rem;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 30px;
+}
+
+.price span {
+    font-size: 1.2rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    flex-grow: 1;
+}
+
+.features li {
+    color: #475569;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+}
+
+.btn-subscribe {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #7c3aed;
+    background: white;
+    color: #7c3aed;
+}
+
+.btn-subscribe:hover {
+    background: #f5f3ff;
+}
+
+/* Featured / Prime Styling */
+.plan-card.featured {
+    border: 2px solid #7c3aed;
+    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15);
+    transform: scale(1.02);
+}
+
+.badge {
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+}
+
+.btn-subscribe.prime {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.btn-subscribe.prime:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Active Subscription State */
+.active-subscription-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.active-subscription-card h3 {
+    color: #1e293b;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.active-subscription-card p {
+    color: #64748b;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.btn-portal {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-portal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(30, 41, 59, 0.2);
+}
+
+/* Utils */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(124, 58, 237, 0.2);
+    border-radius: 50%;
+    border-top-color: #7c3aed;
+    animation: spin 1s linear infinite;
+    margin: 100px auto;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .plan-card.featured {
+        transform: scale(1);
+    }
+}

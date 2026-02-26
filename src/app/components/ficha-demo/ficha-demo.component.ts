@@ -100,6 +100,15 @@ export class FichaDemoComponent {
     isCopied = false;
     isGenerating = false;
 
+    selectedFileName: string = '';
+
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.selectedFileName = file.name;
+        }
+    }
+
     // UI State for Wizard
     currentStep: number = 1;
 

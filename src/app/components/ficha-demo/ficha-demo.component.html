@@ -52,12 +52,23 @@
 
                     <!-- PRODUCTOS DINÁMICOS -->
                     <div class="form-section">
-                        <h3 class="section-heading"><span class="label-icon">📋</span> Productos o Servicios Estrella
-                        </h3>
+                        <h3 class="section-heading"><span class="label-icon">📋</span> Productos o Servicios</h3>
                         <p class="section-desc">Escribí brevemente tus principales opciones (ej: "Pizza Muzzarella" y
                             "5000").</p>
 
-                        <div class="product-rows-container">
+                        <div class="file-upload-container-top">
+                            <p class="section-desc">O si preferís, subí tu menú/catálogo completo en formato PDF, Word o
+                                Excel.</p>
+                            <input type="file" id="menuFile" (change)="onFileSelected($event)"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx" class="file-input-hidden">
+                            <label for="menuFile" class="btn-upload">
+                                <span class="upload-icon">📁</span> {{ selectedFileName || 'Seleccionar Archivo...' }}
+                            </label>
+                        </div>
+
+                        <div class="separator-text">o cargalos manualmente</div>
+
+                        <div class="product-rows-container mt-2">
                             <div class="product-row" *ngFor="let prod of modernData.productosList; let i = index">
                                 <input type="text" class="form-input flex-2" [(ngModel)]="prod.nombre"
                                     placeholder="Nombre del producto/servicio">
@@ -68,7 +79,7 @@
                         </div>
 
                         <button class="btn-add-row" (click)="agregarProducto()">
-                            <span class="plus-icon">+</span> Agregar Producto
+                            <span class="plus-icon">+</span> Agregar Producto o Servicio
                         </button>
                     </div>
 

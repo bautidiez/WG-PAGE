@@ -1,0 +1,42 @@
+<div class="vincular-container">
+    <div class="vincular-card fade-in">
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Verificando negocio...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="!isLoading && errorMsg" class="error-state">
+            <div class="icon-error">❌</div>
+            <h3>Oops</h3>
+            <p>{{ errorMsg }}</p>
+        </div>
+
+        <!-- Valid State: Pending Connection -->
+        <div *ngIf="!isLoading && isValid && !linkSuccess" class="action-state">
+            <div class="icon-connect">🔗</div>
+            <h2>Vincular Dispositivo</h2>
+            <p>Estás a punto de conectar tu teléfono o sesión web para operar con:</p>
+            <h3 class="business-name">{{ businessName }}</h3>
+            <p class="desc-small">Al confirmar, el asistente IA de este negocio quedará vinculado a tu dispositivo.</p>
+
+            <button class="btn-confirm" (click)="confirmConnection()" [disabled]="isLinking"
+                [class.loading]="isLinking">
+                <span *ngIf="!isLinking">Quiero Vincularme</span>
+                <span *ngIf="isLinking">Aprobando conexión...</span>
+            </button>
+        </div>
+
+        <!-- Success State -->
+        <div *ngIf="linkSuccess" class="success-state fade-in">
+            <div class="icon-success">✅</div>
+            <h2>¡Vinculación Exitosa!</h2>
+            <p>Tu dispositivo ahora está emparejado correctamente con <strong>{{ businessName }}</strong>.</p>
+            <p class="desc-small">El asistente virtual o panel de pedidos ya puede comunicarse con vos.</p>
+            <p class="safe-close">Ya puedes cerrar esta ventana.</p>
+        </div>
+
+    </div>
+</div>

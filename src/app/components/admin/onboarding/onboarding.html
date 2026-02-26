@@ -1,0 +1,40 @@
+<div class="onboarding-container fade-in">
+    <div class="onboarding-card">
+        <div class="header-text">
+            <h2>¡Te damos la bienvenida! 🎉</h2>
+            <p>Para configurar tu Panel Admin y habilitar tu código QR, necesitamos algunos datos básicos de tu negocio.
+            </p>
+        </div>
+
+        <form (ngSubmit)="guardarDatos()" #onboardingForm="ngForm" class="onboarding-form">
+
+            <div class="form-group">
+                <label for="empresa">Nombre de la Empresa / Negocio *</label>
+                <input type="text" id="empresa" name="empresa" [(ngModel)]="onboardingData.nombreEmpresa" required
+                    placeholder="Ej: La Pizzería de Pepe" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono de Contacto (WhatsApp) *</label>
+                <input type="tel" id="telefono" name="telefono" [(ngModel)]="onboardingData.telefono" required
+                    placeholder="Ej: +54 9 11 1234 5678" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección Comercial *</label>
+                <input type="text" id="direccion" name="direccion" [(ngModel)]="onboardingData.direccion" required
+                    placeholder="Ej: Av. Corrientes 1234, CABA" class="form-control">
+            </div>
+
+            <div class="error-msg" *ngIf="error">
+                {{ error }}
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="isSaving || onboardingForm.invalid"
+                [class.loading]="isSaving">
+                <span *ngIf="!isSaving">Comenzar mi Prueba de 7 Días ✨</span>
+                <span *ngIf="isSaving">Guardando y generando QR...</span>
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="subscription-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+</div>
+
+<div class="subscription-container fade-in" *ngIf="!isLoading && userData">
+
+    <button class="btn-back" (click)="goBack()" *ngIf="!isTrialExpired && userData.estadoSuscripcion !== 'vencida'">
+        ← Volver al Dashboard
+    </button>
+
+    <div class="header-text">
+        <h2>Administrador de Suscripción 💳</h2>
+        <p *ngIf="isTrialExpired || userData.estadoSuscripcion === 'vencida'" class="alert-expire">
+            Tu período de prueba ha expirado. Por favor, selecciona un plan para seguir utilizando la plataforma.
+        </p>
+        <p *ngIf="!isTrialExpired && userData.estadoSuscripcion === 'trial'" class="alert-trial">
+            Estás disfrutando de tu prueba de 7 días. ¡Elegí un plan para no tener interrupciones!
+        </p>
+    </div>
+
+    <div class="plans-grid" *ngIf="userData.estadoSuscripcion === 'trial' || userData.estadoSuscripcion === 'vencida'">
+
+        <!-- Plan Mensual -->
+        <div class="plan-card">
+            <h3>Plan Mensual</h3>
+            <div class="price">$15.000 <span>/mes</span></div>
+            <ul class="features">
+                <li>✅ Dispositivos ilimitados</li>
+                <li>✅ Soporte 24/7</li>
+                <li>✅ Edición de respuestas en vivo</li>
+            </ul>
+            <button class="btn-subscribe" (click)="selectPlan('price_mensual_id')">Suscribirme Mensual</button>
+        </div>
+
+        <!-- Plan Anual (Destacado) -->
+        <div class="plan-card featured">
+            <div class="badge">Ahorrá 2 Meses</div>
+            <h3>Plan Anual</h3>
+            <div class="price">$150.000 <span>/año</span></div>
+            <ul class="features">
+                <li>✅ Todo lo del plan mensual</li>
+                <li>✅ Facturación simplificada</li>
+                <li>✅ 2 Meses bonificados</li>
+            </ul>
+            <button class="btn-subscribe prime" (click)="selectPlan('price_anual_id')">Suscribirme Anual</button>
+        </div>
+    </div>
+
+    <!-- Usuario ya suscrito -->
+    <div class="active-subscription-card" *ngIf="userData.estadoSuscripcion === 'activa'">
+        <h3>¡Tu suscripción está activa! 🎉</h3>
+        <p>Gracias por confiar en nosotros. Podés descargar tus facturas o cancelar tu plan desde el Portal Seguro de
+            Stripe.</p>
+
+        <button class="btn-portal" (click)="openCustomerPortal()">
+            ⚙️ Administrar Facturación en Stripe
+        </button>
+    </div>
+
+</div>

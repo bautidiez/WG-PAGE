@@ -1,0 +1,53 @@
+<div class="settings-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+</div>
+
+<div class="settings-container fade-in" *ngIf="!isLoading">
+
+    <button class="btn-back" (click)="goBack()">
+        ← Volver al Dashboard
+    </button>
+
+    <div class="settings-card">
+        <div class="header-text">
+            <h2>⚙️ Configuración del Perfil</h2>
+            <p>Editá los datos básicos de tu negocio.</p>
+        </div>
+
+        <form (ngSubmit)="saveChanges()" #settingsForm="ngForm" class="settings-form">
+
+            <div class="form-group">
+                <label for="empresa">Nombre de la Empresa</label>
+                <input type="text" id="empresa" name="empresa" [(ngModel)]="settingsData.nombreEmpresa" required
+                    class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono (WhatsApp)</label>
+                <input type="text" id="telefono" name="telefono" [(ngModel)]="settingsData.telefono" required
+                    class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección Comercial</label>
+                <input type="text" id="direccion" name="direccion" [(ngModel)]="settingsData.direccion" required
+                    class="form-control">
+            </div>
+
+            <!-- Alertas -->
+            <div class="error-msg zoom-in" *ngIf="errorMsg">
+                {{ errorMsg }}
+            </div>
+
+            <div class="success-msg zoom-in" *ngIf="successMsg">
+                {{ successMsg }}
+            </div>
+
+            <button type="submit" class="btn-submit" [disabled]="isSaving || settingsForm.invalid"
+                [class.loading]="isSaving">
+                <span *ngIf="!isSaving">Guardar Cambios</span>
+                <span *ngIf="isSaving">Guardando...</span>
+            </button>
+        </form>
+    </div>
+</div>

@@ -110,7 +110,7 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
         const isMobile = bw < 768;
         const size = (isMobile ? 55 : 95) * scale;
 
-        // Distribute: 40% left strip, 40% right strip, 20% top/bottom strips
+        // Distribute strictly: 50% left margin (15%), 50% right margin (15%)
         const roll = Math.random();
         let x: number, y: number;
         const maxAttempts = 60;
@@ -119,12 +119,12 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
 
         do {
             overlaps = false;
-            if (roll < 0.4) {
-                x = Math.random() * (bw * 0.22);
-            } else if (roll < 0.8) {
-                x = bw * 0.78 + Math.random() * (bw * 0.22 - size);
+            if (roll < 0.5) {
+                // Left margin
+                x = Math.random() * (bw * 0.15);
             } else {
-                x = Math.random() * (bw - size);
+                // Right margin
+                x = bw * 0.85 + Math.random() * (bw * 0.15 - size);
             }
             y = Math.random() * (bh - size);
 
