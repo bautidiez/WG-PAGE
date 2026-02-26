@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -13,8 +13,9 @@ import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
   styleUrl: './settings.css'
 })
 export class Settings implements OnInit {
-  private auth = inject(Auth);
+  private authService = inject(AuthService);
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
   private router = inject(Router);
 
   settingsData = {
@@ -29,22 +30,22 @@ export class Settings implements OnInit {
   errorMsg = '';
 
   async ngOnInit() {
-    this.auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        await this.loadCurrentData(user.uid);
-      } else {
-        this.router.navigate(['/login']);
-      }
-    });
+    // ✅ El guard YA garantiza que hay usuario autenticado
+    const user = this.authService.currentUser();
+    if (user) {
+      await this.loadCurrentData(user.uid);
+    }
   }
 
   async loadCurrentData(uid: string) {
     try {
-      const userDocRef = doc(this.firestore, `users/${uid}`);
-      const docSnap = await getDoc(userDocRef);
+      const data = await runInInjectionContext(this.injector, async () => {
+        const userDocRef = doc(this.firestore, `users/${uid}`);
+        const docSnap = await getDoc(userDocRef);
+        return docSnap.exists() ? docSnap.data() : null;
+      });
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+      if (data) {
         this.settingsData = {
           nombreEmpresa: data['empresa'] || '',
           telefono: data['telefono'] || '',
@@ -70,14 +71,16 @@ export class Settings implements OnInit {
 
     this.isSaving = true;
     try {
-      const user = this.auth.currentUser;
+      const user = this.authService.currentUser();
       if (!user) return;
 
-      const userDocRef = doc(this.firestore, `users/${user.uid}`);
-      await updateDoc(userDocRef, {
-        empresa: this.settingsData.nombreEmpresa,
-        telefono: this.settingsData.telefono,
-        direccion: this.settingsData.direccion
+      await runInInjectionContext(this.injector, async () => {
+        const userDocRef = doc(this.firestore, `users/${user.uid}`);
+        await updateDoc(userDocRef, {
+          empresa: this.settingsData.nombreEmpresa,
+          telefono: this.settingsData.telefono,
+          direccion: this.settingsData.direccion
+        });
       });
 
       this.successMsg = '¡Tus datos fueron actualizados correctamente!';

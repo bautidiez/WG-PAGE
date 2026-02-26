@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
     selector: 'app-onboarding',
@@ -13,8 +13,9 @@ import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
     styleUrl: './onboarding.css'
 })
 export class Onboarding {
-    private auth = inject(Auth);
+    private authService = inject(AuthService);
     private firestore = inject(Firestore);
+    private injector = inject(Injector);
     private router = inject(Router);
 
     onboardingData = {
@@ -35,7 +36,7 @@ export class Onboarding {
 
         this.isSaving = true;
         try {
-            const user = this.auth.currentUser;
+            const user = this.authService.currentUser();
             if (!user) {
                 this.router.navigate(['/login']);
                 return;
@@ -45,17 +46,19 @@ export class Onboarding {
             const vinculacionUrl = `https://tudominio.com/vincular/${user.uid}`;
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(vinculacionUrl)}`;
 
-            // 2. Actualizar documento en Firestore
-            const userDocRef = doc(this.firestore, `users/${user.uid}`);
-            await updateDoc(userDocRef, {
-                empresa: this.onboardingData.nombreEmpresa,
-                telefono: this.onboardingData.telefono,
-                direccion: this.onboardingData.direccion,
-                datosCompletados: true,
-                qrUrl: qrUrl
+            // 2. Actualizar documento en Firestore dentro del injection context
+            await runInInjectionContext(this.injector, async () => {
+                const userDocRef = doc(this.firestore, `users/${user.uid}`);
+                await updateDoc(userDocRef, {
+                    empresa: this.onboardingData.nombreEmpresa,
+                    telefono: this.onboardingData.telefono,
+                    direccion: this.onboardingData.direccion,
+                    datosCompletados: true,
+                    qrUrl: qrUrl
+                });
             });
 
-            // 3. Redirigir al dashboard (ya que está en trial de 7 días)
+            // 3. Redirigir al dashboard
             this.router.navigate(['/admin/dashboard']);
 
         } catch (error) {

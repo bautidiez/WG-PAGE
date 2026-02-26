@@ -1,4 +1,15 @@
-<div class="onboarding-container fade-in">
+<!-- Global Standardized Loader -->
+<div class="full-page-loader" *ngIf="isSaving">
+    <div class="loader-content">
+        <img src="assets/logo.png" alt="WG Logo" class="loader-logo">
+        <div class="loader-footer">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Guardando datos y generando QR</p>
+        </div>
+    </div>
+</div>
+
+<div class="onboarding-container fade-in" *ngIf="!isSaving">
     <div class="onboarding-card">
         <div class="header-text">
             <h2>¡Te damos la bienvenida! 🎉</h2>

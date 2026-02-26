@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* ==========================================================
+   GLOBAL RELOAD / LOADING STYLES (WG BRAND)
+   ========================================================== */
+
+.full-page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    gap: 2rem;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem; /* Más cerca del logo */
+}
+
+.loader-logo {
+    height: 140px; /* Un poco más grande como se pidió antes */
+    width: auto;
+    object-fit: contain;
+    animation: pulse-logo 2s infinite ease-in-out;
+}
+
+.loader-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.loader-spinner {
+    width: 1.1rem; /* Mismo tamaño que las letras */
+    height: 1.1rem;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #7c3aed;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loader-text {
+    color: #7c3aed;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-logo {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.95); opacity: 0.8; }
+}

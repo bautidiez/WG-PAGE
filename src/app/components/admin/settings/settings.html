@@ -1,8 +1,15 @@
-<div class="settings-container" *ngIf="isLoading">
-    <div class="spinner"></div>
+<!-- Global Standardized Loader -->
+<div class="full-page-loader" *ngIf="isLoading || isSaving">
+    <div class="loader-content">
+        <img src="assets/logo.png" alt="WG Logo" class="loader-logo">
+        <div class="loader-footer">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">{{ isSaving ? 'Guardando cambios' : 'Cargando ajustes' }}</p>
+        </div>
+    </div>
 </div>
 
-<div class="settings-container fade-in" *ngIf="!isLoading">
+<div class="settings-container fade-in" *ngIf="!isLoading && !isSaving">
 
     <button class="btn-back" (click)="goBack()">
         ← Volver al Dashboard

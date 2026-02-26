@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { StripeService } from '../../../services/stripe';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-subscription',
@@ -13,9 +13,10 @@ import { StripeService } from '../../../services/stripe';
   styleUrl: './subscription.css',
 })
 export class Subscription implements OnInit {
-  private auth = inject(Auth);
+  private authService = inject(AuthService);
   private firestore = inject(Firestore);
   private stripeService = inject(StripeService);
+  private injector = inject(Injector);
   private router = inject(Router);
 
   userData: any = null;
@@ -23,31 +24,30 @@ export class Subscription implements OnInit {
   isTrialExpired = false;
 
   async ngOnInit() {
-    this.auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        await this.loadSubscriptionData(user.uid);
-      } else {
-        this.router.navigate(['/login']);
-      }
-    });
+    // ✅ El guard YA garantiza que hay usuario autenticado
+    const user = this.authService.currentUser();
+    if (user) {
+      await this.loadSubscriptionData(user.uid);
+    }
   }
 
   async loadSubscriptionData(uid: string) {
     try {
       this.isLoading = true;
-      const userDocRef = doc(this.firestore, `users/${uid}`);
-      const docSnap = await getDoc(userDocRef);
+      
+      this.userData = await runInInjectionContext(this.injector, async () => {
+        const userDocRef = doc(this.firestore, `users/${uid}`);
+        const docSnap = await getDoc(userDocRef);
+        return docSnap.exists() ? docSnap.data() : null;
+      });
 
-      if (docSnap.exists()) {
-        this.userData = docSnap.data();
-
+      if (this.userData) {
         // Validar si es un trial vencido
         const now = new Date();
         const trialEnd = new Date(this.userData.fechaFinTrial);
         if (this.userData.estadoSuscripcion === 'trial' && now > trialEnd) {
           this.isTrialExpired = true;
         }
-
       }
     } catch (error) {
       console.error("Error cargando suscripción:", error);
@@ -57,18 +57,20 @@ export class Subscription implements OnInit {
   }
 
   async selectPlan(planId: string) {
-    if (!this.auth.currentUser) return;
+    const user = this.authService.currentUser();
+    if (!user) return;
     try {
-      await this.stripeService.createCheckoutSession(this.auth.currentUser.uid, planId);
+      await this.stripeService.createCheckoutSession(user.uid, planId);
     } catch (error) {
       console.error("Error abriendo Stripe Checkout:", error);
     }
   }
 
   async openCustomerPortal() {
-    if (!this.auth.currentUser) return;
+    const user = this.authService.currentUser();
+    if (!user) return;
     try {
-      await this.stripeService.createPortalSession(this.auth.currentUser.uid);
+      await this.stripeService.createPortalSession(user.uid);
     } catch (error) {
       console.error("Error abriendo Portal:", error);
     }

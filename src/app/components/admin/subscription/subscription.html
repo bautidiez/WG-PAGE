@@ -1,5 +1,12 @@
-<div class="subscription-container" *ngIf="isLoading">
-    <div class="spinner"></div>
+<!-- Global Standardized Loader -->
+<div class="full-page-loader" *ngIf="isLoading">
+    <div class="loader-content">
+        <img src="assets/logo.png" alt="WG Logo" class="loader-logo">
+        <div class="loader-footer">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Cargando planes</p>
+        </div>
+    </div>
 </div>
 
 <div class="subscription-container fade-in" *ngIf="!isLoading && userData">

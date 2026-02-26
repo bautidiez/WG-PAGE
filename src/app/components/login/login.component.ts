@@ -1,140 +1,281 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
-    <div class="login-container">
-      <div class="login-card">
-        <h2>Acceso Administrativo</h2>
-        <p class="subtitle">Ingresa con tu cuenta de Google</p>
-        
-        <button (click)="login()" class="google-btn" [disabled]="isLoading" [class.loading]="isLoading">
-          <svg *ngIf="!isLoading" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px" style="display: block;">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-          </svg>
-          <span *ngIf="isLoading" class="spinner"></span>
-          {{ isLoading ? 'Conectando...' : 'Ingresar con Google' }}
-        </button>
-
-        <p *ngIf="error" class="error-msg">{{ error }}</p>
+    <!-- Mientras verifica si hay redirect pendiente -->
+    @if (authService.isLoading()) {
+      <div class="full-page-loader">
+        <div class="loader-content">
+          <img src="assets/logo.png" alt="WG Logo" class="loader-logo">
+          <div class="loader-footer">
+            <div class="loader-spinner"></div>
+            <p class="loader-text">Iniciando sesión segura</p>
+          </div>
+        </div>
       </div>
-    </div>
+    } @else {
+      <div class="login-page">
+        <!-- Background decorative elements -->
+        <div class="bg-circle circle-1"></div>
+        <div class="bg-circle circle-2"></div>
+
+        <div class="login-card">
+          <div class="logo-container">
+            <img src="assets/logo.png" alt="WG Logo" class="login-logo">
+          </div>
+          
+          <h2 class="montserrat-bold">Bienvenido</h2>
+          <p class="subtitle montserrat-regular">Gestiona tu negocio con la tecnología de WG</p>
+
+          <div class="login-actions">
+            <button 
+              class="google-btn" 
+              (click)="login()" 
+              [disabled]="authService.isRedirecting()">
+              
+              @if (authService.isRedirecting()) {
+                <span class="loader-small"></span>
+                <span>Conectando...</span>
+              } @else {
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                <span>Ingresar con Google</span>
+              }
+            </button>
+          </div>
+
+          @if (error) {
+            <div class="error-container">
+              <span class="error-icon">⚠️</span>
+              <p class="error-msg">{{ error }}</p>
+            </div>
+          }
+
+          <div class="card-footer">
+            <p>© 2024 WG Digital Soluctions</p>
+          </div>
+        </div>
+      </div>
+    }
   `,
   styles: [`
-    .login-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #f0f2f5;
-      font-family: 'Inter', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+
+    :host {
+      --color-primary: #7c3aed;
+      --color-secondary: #8b5cf6;
+      --color-white: #ffffff;
+      --color-bg: #f8fafc;
+      --color-text: #1e293b;
+      --color-text-light: #64748b;
+      --color-border: #e2e8f0;
+      font-family: 'Montserrat', sans-serif;
     }
-    .login-card {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-    }
-    h2 {
-      margin-top: 0;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
-    .subtitle {
-      color: #666;
-      margin-bottom: 2rem;
-    }
-    .google-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .google-btn:hover {
-      background-color: #f8f9fa;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .google-btn.loading {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-    .spinner {
+
+    .montserrat-bold { font-weight: 700; }
+    .montserrat-regular { font-weight: 400; }
+
+    .loader-small {
       width: 18px;
       height: 18px;
-      border: 3px solid rgba(0, 0, 0, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid #fff;
       border-radius: 50%;
-      border-top-color: #333;
-      animation: spin 1s ease-in-out infinite;
+      animation: spin-small 1s linear infinite;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+
+    @keyframes spin-small {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
+
+    .login-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: var(--color-bg);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative backgrounds */
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.4;
+    }
+    .circle-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--color-primary);
+      top: -100px;
+      right: -100px;
+    }
+    .circle-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--color-secondary);
+      bottom: -50px;
+      left: -50px;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--color-white);
+      border-radius: 32px;
+      padding: 48px;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo-container {
+      margin-bottom: 32px;
+    }
+
+    .login-logo {
+      height: 72px;
+      object-fit: contain;
+    }
+
+    h2 {
+      color: var(--color-text);
+      font-size: 32px;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--color-text-light);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .google-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--color-white);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .google-btn:hover:not(:disabled) {
+      background: #fafafa;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: var(--color-primary);
+    }
+
+    .google-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: var(--color-bg);
+    }
+
+    /* Transition to primary on redirecting */
+    .google-btn[disabled]:not(:hover) {
+       background: var(--color-primary);
+       color: white;
+       border: none;
+    }
+
+    .google-btn img {
+      width: 22px;
+    }
+
+    .error-container {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      background: #fef2f2;
+      border-radius: 12px;
+      border: 1px solid #fee2e2;
+    }
+
+    .error-icon { font-size: 18px; }
+
     .error-msg {
-      color: #d32f2f;
-      margin-top: 1rem;
-      font-size: 0.9rem;
+      color: #dc2626;
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .card-footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .card-footer p {
+      color: var(--color-text-light);
+      font-size: 13px;
     }
   `]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   authService = inject(AuthService);
-  router = inject(Router);
-  ngZone = inject(NgZone);
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
   error = '';
-  isLoading = false;
 
-  async login() {
-    this.isLoading = true;
-    this.error = '';
-    try {
-      const credential = await this.authService.loginWithGoogle();
-      const user = credential.user;
+  async ngOnInit(): Promise<void> {
+    await this.authService.authReady;
+    this.cdr.detectChanges();
 
-      // Wrap the Firestore call strictly inside the Angular NgZone
-      await this.ngZone.run(async () => {
-        const userData = await this.authService.handleUserLogin(credential);
-
-        if (!userData.datosCompletados) {
-          // Si le faltan datos (usuario nuevo o que no terminó), va al onboarding
-          await this.router.navigate(['/admin/onboarding']);
-        } else if (userData.estadoSuscripcion === 'activa' || userData.trialActivo) {
-          // Si pago o está en trial, al dashboard
+    if (this.authService.isAuthenticated()) {
+      // Tiene sesión activa → verificar datos y navegar
+      const user = this.authService.currentUser();
+      if (user) {
+        try {
+          const userData = await this.authService.saveUserToFirestore(user);
+          if (!userData.datosCompletados) {
+            await this.router.navigate(['/admin/onboarding']);
+          } else if (userData.trialActivo || userData.estadoSuscripcion === 'activa') {
+            await this.router.navigate(['/admin/dashboard']);
+          } else {
+            await this.router.navigate(['/admin/subscription']);
+          }
+        } catch {
           await this.router.navigate(['/admin/dashboard']);
-        } else {
-          // Si no, tiene vencido el trial o la suscripción
-          await this.router.navigate(['/admin/subscription']);
         }
-      });
-      
-    } catch (err: any) {
-      console.error('Login error:', err);
-      this.ngZone.run(() => {
-        this.error = 'Error al iniciar sesión. Intenta nuevamente.';
-      });
-    } finally {
-      this.ngZone.run(() => {
-        this.isLoading = false;
-      });
+      }
     }
+  }
+
+  login(): void {
+    this.error = '';
+    this.authService.loginWithGoogle().catch(err => {
+      if (err?.code !== 'auth/popup-closed-by-user') {
+        this.error = 'Error al conectar con Google. Reintenta.';
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

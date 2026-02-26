@@ -1,22 +1,18 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Auth, authState } from '@angular/fire/auth';
-import { map, take } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-    const auth = inject(Auth);
+export const authGuard: CanActivateFn = async () => {
+    const authService = inject(AuthService);
     const router = inject(Router);
 
-    return authState(auth).pipe(
-        take(1),
-        map(user => {
-            if (user) {
-                return true; // Authorize access
-            } else {
-                // Redirigir al login y guardar la URL que intentaron acceder (opcional)
-                router.navigate(['/login']);
-                return false;
-            }
-        })
-    );
+    // ✅ ESPERAR hasta que sepamos si hay usuario o no (incluyendo resultados de redirect)
+    await authService.authReady;
+
+    if (authService.isAuthenticated()) {
+        return true;
+    }
+
+    // No autenticado → login
+    return router.createUrlTree(['/login']);
 };
