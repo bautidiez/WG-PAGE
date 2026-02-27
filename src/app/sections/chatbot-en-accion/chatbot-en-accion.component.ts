@@ -97,6 +97,8 @@ export class ChatbotEnAccionComponent implements OnInit {
   userTypingText = '';
   private playAbort = false;
 
+  availableIntents: any[] = [];
+
   private intentIcons: Record<string, string> = {
     PEDIR: '🍔',
     PRECIOS: '💰',
@@ -117,19 +119,20 @@ export class ChatbotEnAccionComponent implements OnInit {
     PROMOS: 'Descuentos y combos vigentes',
   };
 
-  get availableIntents() {
+  ngOnInit() {
+    this.demoService.loadScenarios();
+    this.loadAvailableIntents();
+  }
+
+  private loadAvailableIntents() {
     const supported = this.demoService.getSupportedIntents(this.rubro);
     const labels = this.demoService.getUI()?.intents || {};
-    return supported.map(i => ({
+    this.availableIntents = supported.map(i => ({
       value: i,
       label: labels[i] || i,
       icon: this.intentIcons[i] || '💬',
       hint: this.intentHints[i] || ''
     }));
-  }
-
-  ngOnInit() {
-    this.demoService.loadScenarios();
   }
 
   toggleIntent(intent: Intent) {

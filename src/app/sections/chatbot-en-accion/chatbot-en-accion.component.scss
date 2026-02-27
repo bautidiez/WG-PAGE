@@ -286,36 +286,36 @@
     align-items: center;
     height: auto;
     gap: 1.5rem;
-    max-width: 400px;
+    width: 100%;
+    max-width: 450px;
     margin: 1.5rem auto 0;
   }
 
   .panel-col {
     flex: none;
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
   }
 
   .selection-panel {
     height: auto;
-    max-height: 400px;
+    max-height: 450px;
   }
 
   .wa-col {
     flex: none;
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
   }
 
   .wa-frame {
-    height: 560px;
+    height: 580px;
   }
 }
 
 @media (max-width: 420px) {
   .chatbot-layout {
-    max-width: 100%;
-    padding: 0 12px;
+    padding: 0 1rem;
   }
 
   .panel-col,
@@ -324,7 +324,7 @@
   }
 
   .wa-frame {
-    height: 520px;
+    height: 540px;
     border-radius: 14px;
   }
 
@@ -333,14 +333,14 @@
   }
 
   .panel-header {
-    padding: 1.2rem 1.2rem 0.8rem;
+    padding: 1.25rem 1.25rem 0.75rem;
   }
 
   .option-row {
-    padding: 0.65rem 1.2rem;
+    padding: 0.7rem 1.25rem;
   }
 
   .panel-footer {
-    padding: 0.8rem 1.2rem;
+    padding: 0.75rem 1.25rem;
   }
 }

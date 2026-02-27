@@ -1,8 +1,8 @@
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    /* zoom: 0.85; REMOVED to fix background */
     min-height: 100vh;
+    background: #ffffff;
 }
 
 /*
@@ -80,7 +80,6 @@ CONTAINER PRINCIPAL
 .app-container {
     min-height: auto;
     background: transparent;
-    /* background: #ffffff; Removed to show Food Scene */
     color: #1e293b;
     font-family: 'Montserrat', sans-serif;
     position: relative;
@@ -88,11 +87,6 @@ CONTAINER PRINCIPAL
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    pointer-events: none;
-    /* ✅ Apply zoom here to content ONLY, leaving background fixed */
-    zoom: 0.85;
-    /* ✅ Allow clicks to pass through to background */
-    z-index: 10;
 }
 
 /* ✅ Re-enable interaction ONLY for specific interactive elements */
@@ -186,16 +180,15 @@ section,
 }
 
 .container {
-    max-width: 1400px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.5rem;
-    overflow: visible;
+    padding: 0 1.25rem; /* ~20px padding */
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
     .container {
-        padding: 0 1rem;
-        /* Reduced padding for mobile */
+        padding: 0 2rem;
     }
 }
 
@@ -259,10 +252,9 @@ HEADER
 }
 
 .nav-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0.25rem 1rem;
-    /* ✅ Added padding back to align with container */
+    padding: 0.5rem 0.75rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -271,8 +263,8 @@ HEADER
 
 @media (min-width: 768px) {
     .nav-container {
-        padding: 0.4rem 2rem;
-        /* ✅ Reducido de 0.6rem */
+        padding: 0.75rem 1.5rem;
+        gap: 1.5rem;
     }
 }
 
@@ -293,12 +285,11 @@ LOGO
 }
 
 .logo-badge {
-    width: 50px;
-    /* antes 50px */
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: transparent;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -307,9 +298,8 @@ LOGO
 
 @media (min-width: 768px) {
     .logo-badge {
-        width: 55px;
-        /* antes 60px */
-        height: 55px;
+        width: 50px;
+        height: 50px;
     }
 }
 
@@ -372,18 +362,20 @@ NAVEGACIÓN
         display: flex !important;
     }
 
-    .menu-toggle-btn {
-        display: none !important;
-    }
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 70;
 }
 
-@media (max-width: 1199px) {
-    .nav-links-desktop {
-        display: none !important;
-    }
-
+@media (min-width: 1200px) {
     .menu-toggle-btn {
-        display: flex !important;
+        display: none !important;
     }
 }
 
@@ -422,16 +414,8 @@ NAVEGACIÓN
 }
 
 .menu-toggle-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    z-index: 70;
-    /* Position next to logo on mobile */
-    position: absolute;
-    left: 4.5rem;
+    background: rgba(124, 58, 237, 0.05);
+    border-radius: 8px;
 }
 
 .menu-icon {
@@ -468,21 +452,18 @@ SELECTOR DE IDIOMA
 }
 
 .lang-dropdown-btn {
-    background: rgba(129, 140, 248, 0.12);
+    background: rgba(129, 140, 248, 0.1);
     border: none;
     color: #4b5563;
-    padding: 0.4rem 0.75rem;
+    padding: 0.4rem 0.6rem;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     display: flex;
     align-items: center;
-    gap: 0.1rem;
-    /* Tighter gap */
-    margin-right: -20px;
-    /* Move even closer to contact button */
+    gap: 0.25rem;
 }
 
 @media (min-width: 768px) {
@@ -572,29 +553,29 @@ BOTÓN DE CONTACTO
     background: linear-gradient(135deg, #7c3aed, #8b5cf6);
     color: #ffffff;
     border: none;
-    padding: 0.6rem 1.1rem;
+    padding: 0.5rem 0.85rem;
     border-radius: 9999px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.75rem;
     transition: all 0.3s;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    order: 3;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+@media (min-width: 375px) {
+    .nav-button {
+        padding: 0.6rem 1.1rem;
+        font-size: 0.85rem;
+    }
 }
 
 @media (min-width: 768px) {
     .nav-button {
         padding: 0.75rem 1.5rem;
         font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 767px) {
-    .nav-button {
-        margin-right: 20px;
-        /* Move contact button to the left */
     }
 }
 
@@ -1087,22 +1068,22 @@ IMAGEN HERO
     .hero-image {
         position: relative;
         width: 100%;
-        margin-top: -60px;
-        /* Moved up slightly */
+        margin-top: -20px;
         display: flex;
         justify-content: center;
-        transform: scale(1.4) translateY(-10px);
-        /* Less Y translation */
+        transform: translateY(0);
         right: auto;
         top: auto;
         order: 2;
-        /* Importante para que vaya abajo del texto */
+        overflow: visible;
+        padding: 0 1rem;
     }
 
     .hero-img {
         width: 100%;
-        max-width: none;
-        opacity: 0.6;
+        max-width: 320px;
+        opacity: 0.8;
+        filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.15));
     }
 }
 
@@ -1307,12 +1288,13 @@ INFO DE COTIZACIÓN
     justify-content: center;
     gap: 0.75rem;
     margin-top: 1rem;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     background: rgba(139, 92, 246, 0.08);
     border-radius: 12px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: #475569;
-    max-width: 400px;
+    width: 100%;
+    max-width: 320px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1420,19 +1402,21 @@ SECCIÓN DE VIDEO
 }
 
 .video-placeholder {
-    margin-top: 2rem;
-    padding: 1.5rem 1rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem 0.75rem;
     background: rgba(255, 255, 255, 0.98);
     border-radius: 1rem;
-    border: 2px solid rgba(139, 92, 246, 0.25);
+    border: 2px solid rgba(139, 92, 246, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
     .video-placeholder {
         padding: 2.5rem 1rem;
+        margin-top: 2.5rem;
     }
 }
 
@@ -1454,9 +1438,8 @@ TIMELINE DE IMPLEMENTACIÓN
 
 @media (max-width: 767px) {
     .timeline-section {
-        margin-top: -5rem !important;
-        /* Adjusted down slightly */
-        padding-top: 0;
+        margin-top: 2rem !important;
+        padding: 2rem 1rem;
     }
 }
 
@@ -1498,15 +1481,13 @@ TIMELINE DE IMPLEMENTACIÓN
 /* Línea de progreso */
 .timeline-line {
     position: absolute;
-    left: 0.5rem;
+    left: 1.25rem;
     top: 0;
     bottom: 0;
-    width: 3px;
+    width: 2px;
     height: 100%;
-    background: rgba(139, 92, 246, 0.15);
-    border-radius: 2px;
+    background: rgba(139, 92, 246, 0.1);
     z-index: 0;
-    overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -1719,12 +1700,11 @@ TIMELINE DE IMPLEMENTACIÓN
 
 @media (min-width: 768px) {
     .step-content {
-        padding: 1rem 1.5rem 1rem;
+        padding: 1.25rem 1.5rem;
         min-height: 160px;
         width: 100%;
         background: linear-gradient(145deg,
                 rgba(255, 255, 255, 0.12),
-                /* ✅ Aún más translúcido en desktop */
                 rgba(224, 231, 255, 0.03));
     }
 }
@@ -1976,14 +1956,12 @@ BENEFITS SECTION - DISEÑO ORBITAL CORREGIDO
 
 @media (max-width: 767px) {
     .benefits-center-image {
-        width: 350px !important;
-        /* Larger for mobile */
-        height: 350px !important;
-        /* Larger for mobile */
-        top: 30% !important;
-        /* Moved UP (was 40%) */
-        left: 10% !important;
-        /* Move slightly more to the left (was 15%) */
+        width: 280px !important;
+        height: 280px !important;
+        top: 25% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        opacity: 0.5;
     }
 }
 
@@ -2480,29 +2458,33 @@ ADMIN CTA SECTION
     border: 1px solid rgba(236, 72, 153, 0.3);
 }
 
-.admin-title {
-    font-size: 2.2rem;
+/* HERO TITLES - FLUID TYPOGRAPHY */
+.hero-title {
+    font-size: clamp(2.25rem, 8vw, 4.25rem); /* From 36px to 68px approx */
+    line-height: 1.1;
     font-weight: 800;
     color: #1e293b;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
 }
 
-@media (min-width: 768px) {
-    .admin-title {
-        font-size: 2.8rem;
+.hero-subtitle {
+    font-size: clamp(1rem, 4vw, 1.5rem); /* From 16px to 24px approx */
+    line-height: 1.5;
+    color: #64748b;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+}
+
+@media (max-width: 767px) {
+    .hero-title {
+        margin-bottom: 1rem;
+    }
+    .hero-subtitle {
+        margin-bottom: 2rem;
+        padding: 0 0.5rem;
     }
 }
-
-.admin-subtitle {
-    font-size: 1.1rem;
-    color: #475569;
-    line-height: 1.6;
-    margin-bottom: 2.5rem;
-    max-width: 500px;
-}
-
 .admin-features {
     display: flex;
     flex-wrap: wrap;
