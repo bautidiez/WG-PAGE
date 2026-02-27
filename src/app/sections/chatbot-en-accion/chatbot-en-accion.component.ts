@@ -15,47 +15,59 @@ type DemoState = 'config' | 'playing' | 'done';
   imports: [CommonModule, WhatsappMockComponent],
   providers: [ChatbotDemoService],
   template: `
-    <div class="demo-container">
+    <div class="demo-layout">
 
-      <!-- STATE: Config / Intent Selection -->
-      <div class="demo-state config-state" *ngIf="state === 'config'">
-        <h3 class="config-title">¿Qué querés simular?</h3>
-        <p class="config-subtitle">Elegí una o más opciones y mirá cómo responde el chatbot</p>
+      <!-- LEFT: Selector Panel -->
+      <div class="selector-col">
+        <div class="selector-panel" [class.dimmed]="state === 'playing'">
 
-        <div class="intent-grid">
-          <button *ngFor="let intent of availableIntents"
-                  class="intent-chip"
-                  [class.selected]="selectedIntents.has(intent.value)"
-                  (click)="toggleIntent(intent.value)">
-            <span class="chip-icon">{{ intent.icon }}</span>
-            <span class="chip-label">{{ intent.label }}</span>
-          </button>
+          <h3 class="selector-title">¿Qué querés simular?</h3>
+          <p class="selector-hint">Tocá las opciones y mirá cómo responde</p>
+
+          <!-- Scroll-picker style selector -->
+          <div class="picker-list">
+            <button *ngFor="let intent of availableIntents; let i = index"
+                    class="picker-item"
+                    [class.active]="selectedIntents.has(intent.value)"
+                    (click)="toggleIntent(intent.value)">
+              <span class="picker-icon">{{ intent.icon }}</span>
+              <span class="picker-label">{{ intent.label }}</span>
+              <span class="picker-check" *ngIf="selectedIntents.has(intent.value)">✓</span>
+            </button>
+          </div>
+
+          <!-- Selected count + button -->
+          <div class="selector-footer">
+            <span class="selected-count" *ngIf="selectedIntents.size > 0">
+              {{ selectedIntents.size }} seleccionad{{ selectedIntents.size === 1 ? 'o' : 'os' }}
+            </span>
+            <button class="btn-simulate"
+                    *ngIf="state !== 'playing'"
+                    [disabled]="selectedIntents.size === 0"
+                    (click)="startSimulation()">
+              {{ state === 'done' ? '🔄 Simular de nuevo' : '▶ Simular' }}
+            </button>
+            <div class="playing-indicator" *ngIf="state === 'playing'">
+              <span class="dot-pulse"></span>
+              Reproduciendo…
+            </div>
+          </div>
+
         </div>
-
-        <button class="btn-simulate"
-                [disabled]="selectedIntents.size === 0"
-                (click)="startSimulation()">
-          ▶ Simular conversación
-        </button>
       </div>
 
-      <!-- STATE: Playing chat -->
-      <div class="demo-state chat-state" *ngIf="state === 'playing' || state === 'done'">
-        <app-whatsapp-mock
-          [messages]="displayedMessages"
-          [isTyping]="isTyping"
-          [businessName]="currentBusinessName"
-          [onlineLabel]="ui.online || 'en línea'"
-          [typingLabel]="ui.typing || 'escribiendo…'"
-          [inputPlaceholder]="ui.inputPlaceholder || 'Mensaje (demo)'"
-          [userTypingText]="userTypingText">
-        </app-whatsapp-mock>
-
-        <!-- Done overlay -->
-        <div class="done-overlay" *ngIf="state === 'done'">
-          <button class="btn-new-sim" (click)="resetToConfig()">
-            🔄 Nueva simulación
-          </button>
+      <!-- RIGHT: WhatsApp Mock (always visible, fixed size) -->
+      <div class="wa-col">
+        <div class="wa-container">
+          <app-whatsapp-mock
+            [messages]="displayedMessages"
+            [isTyping]="isTyping"
+            [businessName]="currentBusinessName"
+            [onlineLabel]="ui.online || 'en línea'"
+            [typingLabel]="ui.typing || 'escribiendo…'"
+            [inputPlaceholder]="ui.inputPlaceholder || 'Mensaje (demo)'"
+            [userTypingText]="userTypingText">
+          </app-whatsapp-mock>
         </div>
       </div>
 
@@ -69,16 +81,13 @@ export class ChatbotEnAccionComponent implements OnInit {
   private translation = inject(TranslationService);
   private cdr = inject(ChangeDetectorRef);
 
-  // State machine
   state: DemoState = 'config';
 
-  // Config state
   selectedIntents = new Set<Intent>();
   private readonly rubro = Rubro.HAMBURGUESERIA;
 
-  // Chat state
   displayedMessages: ChatLine[] = [];
-  currentBusinessName = '';
+  currentBusinessName = 'Burger Club';
   isTyping = false;
   userTypingText = '';
   private playAbort = false;
@@ -124,12 +133,10 @@ export class ChatbotEnAccionComponent implements OnInit {
     await this.delay(100);
     this.playAbort = false;
 
-    // Reset chat
     this.displayedMessages = [];
     this.isTyping = false;
     this.userTypingText = '';
 
-    // Pick random style and extras for variety
     const styles = [Style.FORMAL, Style.NEUTRO, Style.CANCHERO];
     const randomStyle = styles[Math.floor(Math.random() * styles.length)];
     const possibleExtras = [Extra.DELIVERY, Extra.PAGO_EFECTIVO, Extra.PAGO_TARJETA, Extra.URGENTE, Extra.PET_FRIENDLY, Extra.COMER_LOCAL];
@@ -143,32 +150,19 @@ export class ChatbotEnAccionComponent implements OnInit {
       lang: 'es'
     };
 
-    // Switch to playing state
     this.state = 'playing';
     this.cdr.detectChanges();
 
-    // Generate
     const { scenario, script } = this.demoService.simulate(config);
     this.currentBusinessName = scenario.businessName;
     this.cdr.detectChanges();
 
-    // Play
     await this.playConversation(script);
 
     if (!this.playAbort) {
       this.state = 'done';
       this.cdr.detectChanges();
     }
-  }
-
-  resetToConfig() {
-    this.playAbort = true;
-    this.state = 'config';
-    this.displayedMessages = [];
-    this.isTyping = false;
-    this.userTypingText = '';
-    this.selectedIntents.clear();
-    this.cdr.detectChanges();
   }
 
   private async playConversation(lines: ChatLine[]) {
@@ -202,7 +196,6 @@ export class ChatbotEnAccionComponent implements OnInit {
     this.userTypingText = '';
     this.cdr.detectChanges();
     const chunkSize = fullText.length > 40 ? 5 : fullText.length > 20 ? 3 : 2;
-
     for (let i = 0; i < fullText.length; i += chunkSize) {
       if (this.playAbort) return;
       this.userTypingText = fullText.substring(0, i + chunkSize);

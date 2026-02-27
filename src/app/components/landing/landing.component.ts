@@ -216,8 +216,10 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
                     setTimeout(() => { this.activeStep = 4; this.cdr.detectChanges(); }, initialDelay + stepDelay * 3);
                 });
             });
-        }, { threshold: 0.15 });
-        observer.observe(section);
+        }, { threshold: 0.4 });
+        // Observe the timeline container (line+steps), not the whole section
+        const target = section.querySelector('.timeline-container') || section;
+        observer.observe(target);
     }
 
     ngOnDestroy(): void {
