@@ -1,0 +1,327 @@
+[
+  {
+    "id": "h1", "rubro": "hamburgueseria", "businessName": "Burger Club",
+    "address": "123 Main Street, Downtown",
+    "hoursText": "Monday to Saturday 11:00 AM - 11:00 PM\nSundays 12:00 PM - 10:00 PM",
+    "instagram": "@burgerclub",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Classic Burger", "price": 12 },
+      { "name": "Double Patty", "price": 15 },
+      { "name": "California Burger", "price": 14 },
+      { "name": "BBQ Bacon Burger", "price": 16 },
+      { "name": "Veggie Burger", "price": 13 },
+      { "name": "French Fries", "price": 6 },
+      { "name": "Onion Rings", "price": 7 }
+    ]
+  },
+  {
+    "id": "h2", "rubro": "hamburgueseria", "businessName": "The Grill House",
+    "address": "456 Oak Avenue",
+    "hoursText": "Tuesday to Sunday 5:00 PM - 1:00 AM",
+    "instagram": "@thegrillhouse",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": true },
+    "items": [
+      { "name": "Smash Burger", "price": 11 },
+      { "name": "Triple Stack", "price": 19 },
+      { "name": "Crispy Chicken Burger", "price": 13 },
+      { "name": "Cheddar Melt", "price": 14 },
+      { "name": "Loaded Fries", "price": 8 },
+      { "name": "Nuggets x6", "price": 7 }
+    ]
+  },
+  {
+    "id": "h3", "rubro": "hamburgueseria", "businessName": "Monster Burger Co.",
+    "address": "789 Elm Street",
+    "hoursText": "Every day 11:30 AM - 12:00 AM",
+    "instagram": "@monsterburgerco",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": true },
+    "items": [
+      { "name": "The Monster", "price": 18 },
+      { "name": "Mini Monster", "price": 12 },
+      { "name": "Chicken Wrap", "price": 11 },
+      { "name": "BBQ Boneless", "price": 13 },
+      { "name": "Monster Combo (burger+fries+drink)", "price": 22 }
+    ]
+  },
+
+  {
+    "id": "l1", "rubro": "lomiteria", "businessName": "Quick Subs",
+    "address": "900 Broadway",
+    "hoursText": "Monday to Saturday 7:00 PM - 2:00 AM\nSundays 8:00 PM - 1:00 AM",
+    "instagram": "@quicksubs",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Classic Sub", "price": 12 },
+      { "name": "Special Sub", "price": 14 },
+      { "name": "Chicken Sub", "price": 11 },
+      { "name": "Super Sub", "price": 16 },
+      { "name": "French Fries", "price": 5 },
+      { "name": "Breaded Cutlet Sub", "price": 10 }
+    ]
+  },
+  {
+    "id": "l2", "rubro": "lomiteria", "businessName": "Don's Sandwich Shop",
+    "address": "1450 Park Avenue",
+    "hoursText": "Wednesday to Monday 7:30 PM - 1:00 AM",
+    "instagram": "@donssandwiches",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Don's Special Sub", "price": 13 },
+      { "name": "Italian Sub", "price": 15 },
+      { "name": "Chicken Parm Sub", "price": 12 },
+      { "name": "Loaded Hot Dog", "price": 8 },
+      { "name": "Bacon Fries", "price": 9 }
+    ]
+  },
+  {
+    "id": "l3", "rubro": "lomiteria", "businessName": "24h Subs & More",
+    "address": "Highway 9, Unit 3",
+    "hoursText": "Open 24 hours, every day",
+    "instagram": "@24hsubs",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Classic Sub", "price": 10 },
+      { "name": "Premium Sub", "price": 15 },
+      { "name": "Pulled Pork Sandwich", "price": 13 },
+      { "name": "Cheese Pizza", "price": 12 },
+      { "name": "Empanadas x6", "price": 9 }
+    ]
+  },
+
+  {
+    "id": "e1", "rubro": "estetica", "businessName": "BeautyLab Salon",
+    "address": "550 Fashion Blvd, 2nd Floor",
+    "hoursText": "Monday to Friday 9:00 AM - 8:00 PM\nSaturdays 9:00 AM - 2:00 PM",
+    "instagram": "@beautylabsalon",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Haircut", "price": 45 },
+      { "name": "Full color treatment", "price": 120 },
+      { "name": "Gel manicure", "price": 50 },
+      { "name": "Deep facial cleansing", "price": 75 },
+      { "name": "Leg waxing", "price": 60 },
+      { "name": "Blowout", "price": 35 }
+    ]
+  },
+  {
+    "id": "e2", "rubro": "estetica", "businessName": "Glow Studio",
+    "address": "800 Sunset Drive",
+    "hoursText": "Monday to Saturday 10:00 AM - 9:00 PM",
+    "instagram": "@glowstudio",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Balayage highlights", "price": 180 },
+      { "name": "Keratin treatment", "price": 150 },
+      { "name": "Spa pedicure", "price": 55 },
+      { "name": "Eyebrow shaping", "price": 25 },
+      { "name": "Individual eyelash extensions", "price": 90 }
+    ]
+  },
+  {
+    "id": "e3", "rubro": "estetica", "businessName": "Nails & More",
+    "address": "120 Rose Lane",
+    "hoursText": "Tuesday to Saturday 10:00 AM - 7:00 PM",
+    "instagram": "@nailsandmore",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Classic manicure", "price": 30 },
+      { "name": "Acrylic nails", "price": 85 },
+      { "name": "Nail art (per nail)", "price": 8 },
+      { "name": "Gel polish", "price": 45 },
+      { "name": "Hand spa treatment", "price": 40 }
+    ]
+  },
+
+  {
+    "id": "s1", "rubro": "centro_salud", "businessName": "Wellness Medical Center",
+    "address": "1020 Health Drive",
+    "hoursText": "Monday to Friday 8:00 AM - 8:00 PM\nSaturdays 8:00 AM - 1:00 PM",
+    "instagram": "@wellnessmedcenter",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "General consultation", "price": 80 },
+      { "name": "Pediatric consultation", "price": 90 },
+      { "name": "Ultrasound", "price": 150 },
+      { "name": "Lab work", "price": 120 },
+      { "name": "Nutrition consultation", "price": 75 }
+    ]
+  },
+  {
+    "id": "s2", "rubro": "centro_salud", "businessName": "HealthPlus Clinic",
+    "address": "380 Central Blvd",
+    "hoursText": "Monday to Friday 7:30 AM - 9:00 PM\nSaturdays 8:00 AM - 2:00 PM",
+    "instagram": "@healthplusclinic",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "General checkup", "price": 70 },
+      { "name": "Dermatology", "price": 95 },
+      { "name": "Cardiology", "price": 110 },
+      { "name": "Physical therapy", "price": 60 },
+      { "name": "General dentistry", "price": 55 }
+    ]
+  },
+  {
+    "id": "s3", "rubro": "centro_salud", "businessName": "Dr. Mitchell's Office",
+    "address": "650 Oakwood Lane, Suite 200",
+    "hoursText": "Monday to Friday 9:00 AM - 6:00 PM",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Orthopedic consultation", "price": 100 },
+      { "name": "General consultation", "price": 75 },
+      { "name": "Medical certificate", "price": 30 },
+      { "name": "Blood pressure & glucose check", "price": 25 }
+    ]
+  },
+
+  {
+    "id": "i1", "rubro": "indumentaria", "businessName": "Urban Style",
+    "address": "Central Mall, Store 12",
+    "hoursText": "Monday to Saturday 10:00 AM - 9:00 PM\nSundays 4:00 PM - 8:00 PM",
+    "instagram": "@urbanstyle",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Oversized T-shirt", "price": 35 },
+      { "name": "Slouchy jeans", "price": 65 },
+      { "name": "Bomber jacket", "price": 95 },
+      { "name": "Hoodie", "price": 55 },
+      { "name": "Urban sneakers", "price": 120 },
+      { "name": "Snapback cap", "price": 20 }
+    ]
+  },
+  {
+    "id": "i2", "rubro": "indumentaria", "businessName": "Fashion & Vibe",
+    "address": "2000 River Road",
+    "hoursText": "Monday to Saturday 9:30 AM - 8:30 PM",
+    "instagram": "@fashionandvibe",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Casual dress", "price": 50 },
+      { "name": "Printed blouse", "price": 32 },
+      { "name": "Wide-leg pants", "price": 42 },
+      { "name": "Faux leather jacket", "price": 85 },
+      { "name": "Necklace accessory", "price": 15 }
+    ]
+  },
+  {
+    "id": "i3", "rubro": "indumentaria", "businessName": "Threads & Co.",
+    "address": "150 Cedar Street",
+    "hoursText": "Tuesday to Saturday 10:00 AM - 8:00 PM",
+    "instagram": "@threadsandco",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": false },
+    "items": [
+      { "name": "Linen shirt", "price": 45 },
+      { "name": "Cargo pants", "price": 55 },
+      { "name": "Basic tee 3-pack", "price": 40 },
+      { "name": "Cotton shorts", "price": 30 },
+      { "name": "Leather belt", "price": 28 }
+    ]
+  },
+
+  {
+    "id": "t1", "rubro": "taller_mecanico", "businessName": "Lopez Auto Repair",
+    "address": "Route 5, Warehouse 2",
+    "hoursText": "Monday to Friday 8:00 AM - 6:00 PM\nSaturdays 8:00 AM - 1:00 PM",
+    "instagram": "@lopezautorepair",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Full service", "price": 250 },
+      { "name": "Oil & filter change", "price": 80 },
+      { "name": "Wheel alignment & balancing", "price": 90 },
+      { "name": "Brake pad replacement", "price": 120 },
+      { "name": "Diagnostic scan", "price": 60 }
+    ]
+  },
+  {
+    "id": "t2", "rubro": "taller_mecanico", "businessName": "AutoFix Center",
+    "address": "4500 Highway Loop",
+    "hoursText": "Monday to Friday 7:30 AM - 7:00 PM\nSaturdays 8:00 AM - 2:00 PM",
+    "instagram": "@autofixcenter",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Full service + diagnostic", "price": 300 },
+      { "name": "Timing belt replacement", "price": 400 },
+      { "name": "Clutch repair", "price": 450 },
+      { "name": "Shock absorber replacement", "price": 350 },
+      { "name": "Pre-inspection check", "price": 75 }
+    ]
+  },
+  {
+    "id": "t3", "rubro": "taller_mecanico", "businessName": "Express Mechanics",
+    "address": "720 Willow Street",
+    "hoursText": "Monday to Saturday 8:00 AM - 8:00 PM",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Battery replacement", "price": 180 },
+      { "name": "AC repair", "price": 160 },
+      { "name": "Tire replacement (x4)", "price": 600 },
+      { "name": "Pre-trip inspection", "price": 100 }
+    ]
+  },
+
+  {
+    "id": "g1", "rubro": "gimnasio", "businessName": "Iron House Gym",
+    "address": "3200 Main Avenue, Ground Floor",
+    "hoursText": "Monday to Friday 6:00 AM - 11:00 PM\nSaturdays 8:00 AM - 2:00 PM\nSundays 9:00 AM - 1:00 PM",
+    "instagram": "@ironhousegym",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Monthly gym membership", "price": 50 },
+      { "name": "Quarterly gym membership", "price": 120 },
+      { "name": "Spinning class", "price": 10 },
+      { "name": "Functional training class", "price": 8 },
+      { "name": "Personal training (monthly)", "price": 95 },
+      { "name": "All-access pass (gym + classes)", "price": 70 }
+    ]
+  },
+  {
+    "id": "g2", "rubro": "gimnasio", "businessName": "CrossFit Arena",
+    "address": "Route 20, Warehouse 8",
+    "hoursText": "Monday to Friday 7:00 AM - 10:00 PM\nSaturdays 8:00 AM - 12:00 PM",
+    "instagram": "@crossfitarena",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": true, "comerLocal": false },
+    "services": [
+      { "name": "Monthly CrossFit membership", "price": 60 },
+      { "name": "Quarterly CrossFit plan", "price": 150 },
+      { "name": "Trial class", "price": 0 },
+      { "name": "Open Gym access", "price": 40 },
+      { "name": "Individual coaching session", "price": 25 }
+    ]
+  },
+  {
+    "id": "g3", "rubro": "gimnasio", "businessName": "Fitness Zone",
+    "address": "450 Elm Street",
+    "hoursText": "Monday to Saturday 6:30 AM - 10:30 PM\nSundays 9:00 AM - 2:00 PM",
+    "instagram": "@fitnesszone",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Monthly pass", "price": 40 },
+      { "name": "6-month pass", "price": 200 },
+      { "name": "Yoga class", "price": 8 },
+      { "name": "Pilates class", "price": 10 },
+      { "name": "Zumba class", "price": 7 },
+      { "name": "Nutritionist consultation", "price": 20 }
+    ]
+  }
+]

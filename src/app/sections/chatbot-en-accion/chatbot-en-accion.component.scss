@@ -1,0 +1,49 @@
+/* ─── Chatbot en Acción — Layout ─────────────────────── */
+
+:host {
+  display: block;
+  pointer-events: auto;
+}
+
+.chatbot-simulation-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  pointer-events: auto;
+}
+
+.sim-panel-col {
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: auto;
+}
+
+.wa-mock-col {
+  display: flex;
+  justify-content: flex-start;
+  pointer-events: auto;
+}
+
+/* ─── Responsive ──────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .chatbot-simulation-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 520px;
+  }
+
+  .sim-panel-col,
+  .wa-mock-col {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatbot-simulation-wrapper {
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}

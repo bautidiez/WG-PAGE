@@ -9,30 +9,55 @@
     </div>
 </div>
 
-<div class="onboarding-container fade-in" *ngIf="!isSaving">
+<!-- PASO 1: Formulario -->
+<div class="onboarding-container fade-in" *ngIf="!isSaving && !showConfirmation">
+    <!-- Admin Top Bar -->
+    <div class="admin-topbar">
+        <div class="admin-topbar-left">
+            <img src="assets/logo.png" alt="WG" class="admin-topbar-logo" routerLink="/">
+        </div>
+        <div class="admin-topbar-nav">
+            <button class="topbar-btn" routerLink="/">&#x1F3E0; Landing</button>
+            <button class="topbar-btn btn-logout" (click)="authService.logout()">&#x1F6AA; Cerrar sesi&#xF3;n</button>
+        </div>
+    </div>
+
     <div class="onboarding-card">
         <div class="header-text">
-            <h2>¡Te damos la bienvenida! 🎉</h2>
-            <p>Para configurar tu Panel Admin y habilitar tu código QR, necesitamos algunos datos básicos de tu negocio.
-            </p>
+            <h2>&#xA1;Te damos la bienvenida! &#x1F389;</h2>
+            <p>Para configurar tu Panel Admin y habilitar tu c&#xF3;digo QR, necesitamos algunos datos b&#xE1;sicos de tu negocio.</p>
         </div>
 
-        <form (ngSubmit)="guardarDatos()" #onboardingForm="ngForm" class="onboarding-form">
+        <form (ngSubmit)="mostrarConfirmacion()" #onboardingForm="ngForm" class="onboarding-form">
 
             <div class="form-group">
                 <label for="empresa">Nombre de la Empresa / Negocio *</label>
                 <input type="text" id="empresa" name="empresa" [(ngModel)]="onboardingData.nombreEmpresa" required
-                    placeholder="Ej: La Pizzería de Pepe" class="form-control">
+                    placeholder="Ej: La Pizzer&#xED;a de Pepe" class="form-control">
             </div>
 
             <div class="form-group">
-                <label for="telefono">Teléfono de Contacto (WhatsApp) *</label>
-                <input type="tel" id="telefono" name="telefono" [(ngModel)]="onboardingData.telefono" required
-                    placeholder="Ej: +54 9 11 1234 5678" class="form-control">
+                <label for="telefono">Tel&#xE9;fono de Contacto (WhatsApp) *</label>
+                <div class="phone-input-group">
+                    <div class="phone-prefix-custom" (click)="toggleCountryDropdown()">
+                        <img [src]="getSelectedFlag()" class="flag-img" alt="flag">
+                        <span>{{ onboardingData.codigoPais }}</span>
+                        <span class="dropdown-arrow">&#x25BE;</span>
+                    </div>
+                    <div class="country-dropdown" *ngIf="showCountryDropdown">
+                        <div class="country-option" *ngFor="let c of countries" (click)="selectCountry(c)">
+                            <img [src]="c.flag" class="flag-img" alt="flag">
+                            <span>{{ c.name }}</span>
+                            <span class="country-code">{{ c.code }}</span>
+                        </div>
+                    </div>
+                    <input type="tel" id="telefono" name="telefono" [(ngModel)]="onboardingData.telefono" required
+                        placeholder="9 11 1234 5678" class="form-control phone-number">
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="direccion">Dirección Comercial *</label>
+                <label for="direccion">Direcci&#xF3;n Comercial *</label>
                 <input type="text" id="direccion" name="direccion" [(ngModel)]="onboardingData.direccion" required
                     placeholder="Ej: Av. Corrientes 1234, CABA" class="form-control">
             </div>
@@ -41,11 +66,43 @@
                 {{ error }}
             </div>
 
-            <button type="submit" class="btn-submit" [disabled]="isSaving || onboardingForm.invalid"
-                [class.loading]="isSaving">
-                <span *ngIf="!isSaving">Comenzar mi Prueba de 7 Días ✨</span>
-                <span *ngIf="isSaving">Guardando y generando QR...</span>
+            <button type="submit" class="btn-submit" [disabled]="onboardingForm.invalid">
+                Revisar mis datos &#x2728;
             </button>
         </form>
+    </div>
+</div>
+
+<!-- PASO 2: Confirmacion -->
+<div class="onboarding-container fade-in" *ngIf="!isSaving && showConfirmation">
+    <div class="onboarding-card">
+        <div class="header-text">
+            <h2>&#xBF;Est&#xE1;n correctos tus datos? &#x2705;</h2>
+            <p>Revis&#xE1; la informaci&#xF3;n antes de continuar. Siempre podr&#xE1;s editarlos despu&#xE9;s desde tu panel.</p>
+        </div>
+
+        <div class="confirmation-data">
+            <div class="data-row">
+                <span class="data-label">&#x1F3EA; Empresa</span>
+                <span class="data-value">{{ onboardingData.nombreEmpresa }}</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">&#x1F4F1; Tel&#xE9;fono</span>
+                <span class="data-value"><img [src]="getSelectedFlag()" class="flag-img-small" alt="flag"> {{ onboardingData.codigoPais }} {{ onboardingData.telefono }}</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">&#x1F4CD; Direcci&#xF3;n</span>
+                <span class="data-value">{{ onboardingData.direccion }}</span>
+            </div>
+        </div>
+
+        <div class="error-msg" *ngIf="error">
+            {{ error }}
+        </div>
+
+        <div class="confirmation-buttons">
+            <button class="btn-secondary" (click)="volverAEditar()">&#x270F;&#xFE0F; Corregir datos</button>
+            <button class="btn-submit" (click)="guardarDatos()">Comenzar mi Prueba de 7 D&#xED;as &#x1F680;</button>
+        </div>
     </div>
 </div>

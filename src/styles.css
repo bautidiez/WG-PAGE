@@ -66,3 +66,65 @@
     0%, 100% { transform: scale(1); opacity: 1; }
     50% { transform: scale(0.95); opacity: 0.8; }
 }
+
+/* ==========================================================
+   ADMIN TOP NAVIGATION BAR
+   ========================================================== */
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: white;
+    border-bottom: 1px solid #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.admin-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-topbar-logo {
+    height: 32px;
+    cursor: pointer;
+}
+
+.admin-topbar-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-topbar .topbar-btn {
+    background: none;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.admin-topbar .topbar-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+.admin-topbar .topbar-btn.btn-logout {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.admin-topbar .topbar-btn.btn-logout:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+}

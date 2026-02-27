@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import * as THREE from 'three';
 import { FoodSceneComponent } from '../food-scene/food-scene.component';
 import { Router, RouterModule } from '@angular/router';
+import { ChatbotEnAccionComponent } from '../../sections/chatbot-en-accion/chatbot-en-accion.component';
 import { TranslationService } from '../../services/translation.service';
 import { WhatsAppService } from '../../services/whatsapp.service';
 import { ExchangeRateService } from '../../services/exchange-rate.service';
@@ -13,7 +14,7 @@ import { ExchangeRateService } from '../../services/exchange-rate.service';
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [CommonModule, FoodSceneComponent, RouterModule],
+    imports: [CommonModule, FoodSceneComponent, RouterModule, ChatbotEnAccionComponent],
     styleUrl: './landing.component.css',
     templateUrl: './landing.component.html'
 })
@@ -175,16 +176,47 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     animateTimeline(): void {
         const section = document.querySelector('.timeline-section');
         if (!section) return;
+
+        // Respect prefers-reduced-motion — show everything immediately
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) {
+            this.activeStep = 4;
+            const fill = section.querySelector('.timeline-line-fill');
+            if (fill) fill.classList.add('animate');
+            return;
+        }
+
+        // Already animated in this session? Show final state instantly
+        if (sessionStorage.getItem('wg-timeline-animated') === '1') {
+            this.activeStep = 4;
+            const fill = section.querySelector('.timeline-line-fill');
+            if (fill) fill.classList.add('animate');
+            return;
+        }
+
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.activeStep = 1;
-                    setTimeout(() => this.activeStep = 2, 500);
-                    setTimeout(() => this.activeStep = 3, 1000);
-                    setTimeout(() => this.activeStep = 4, 1500);
-                }
+                if (!entry.isIntersecting) return;
+
+                // Fire once, then disconnect
+                observer.disconnect();
+                sessionStorage.setItem('wg-timeline-animated', '1');
+
+                // 1. Start line drawing animation
+                const fill = section.querySelector('.timeline-line-fill');
+                if (fill) fill.classList.add('animate');
+
+                // 2. Reveal steps sequentially with stagger
+                const stepDelay = 800; // ms between each step
+                const initialDelay = 400; // wait before first step
+                this.ngZone.run(() => {
+                    setTimeout(() => { this.activeStep = 1; this.cdr.detectChanges(); }, initialDelay);
+                    setTimeout(() => { this.activeStep = 2; this.cdr.detectChanges(); }, initialDelay + stepDelay);
+                    setTimeout(() => { this.activeStep = 3; this.cdr.detectChanges(); }, initialDelay + stepDelay * 2);
+                    setTimeout(() => { this.activeStep = 4; this.cdr.detectChanges(); }, initialDelay + stepDelay * 3);
+                });
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.15 });
         observer.observe(section);
     }
 

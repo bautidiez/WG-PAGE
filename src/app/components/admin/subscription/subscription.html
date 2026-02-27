@@ -10,46 +10,63 @@
 </div>
 
 <div class="subscription-container fade-in" *ngIf="!isLoading && userData">
+    <!-- Admin Top Bar -->
+    <div class="admin-topbar">
+        <div class="admin-topbar-left">
+            <img src="assets/logo.png" alt="WG" class="admin-topbar-logo" routerLink="/">
+        </div>
+        <div class="admin-topbar-nav">
+            <button class="topbar-btn" routerLink="/admin/dashboard">📊 Dashboard</button>
+            <button class="topbar-btn" routerLink="/">🏠 Landing</button>
+            <button class="topbar-btn btn-logout" (click)="logout()">🚪 Cerrar sesión</button>
+        </div>
+    </div>
 
-    <button class="btn-back" (click)="goBack()" *ngIf="!isTrialExpired && userData.estadoSuscripcion !== 'vencida'">
-        ← Volver al Dashboard
-    </button>
 
     <div class="header-text">
         <h2>Administrador de Suscripción 💳</h2>
         <p *ngIf="isTrialExpired || userData.estadoSuscripcion === 'vencida'" class="alert-expire">
-            Tu período de prueba ha expirado. Por favor, selecciona un plan para seguir utilizando la plataforma.
+            Tu período de prueba ha expirado. Seleccioná un plan para seguir utilizando la plataforma.
         </p>
         <p *ngIf="!isTrialExpired && userData.estadoSuscripcion === 'trial'" class="alert-trial">
             Estás disfrutando de tu prueba de 7 días. ¡Elegí un plan para no tener interrupciones!
         </p>
-    </div>
 
-    <div class="plans-grid" *ngIf="userData.estadoSuscripcion === 'trial' || userData.estadoSuscripcion === 'vencida'">
-
-        <!-- Plan Mensual -->
-        <div class="plan-card">
-            <h3>Plan Mensual</h3>
-            <div class="price">$15.000 <span>/mes</span></div>
-            <ul class="features">
-                <li>✅ Dispositivos ilimitados</li>
-                <li>✅ Soporte 24/7</li>
-                <li>✅ Edición de respuestas en vivo</li>
-            </ul>
-            <button class="btn-subscribe" (click)="selectPlan('price_mensual_id')">Suscribirme Mensual</button>
+        <!-- Currency Toggle (igual que landing) -->
+        <div class="currency-selector" *ngIf="userData.estadoSuscripcion === 'trial' || userData.estadoSuscripcion === 'vencida'">
+            <button class="currency-btn" [class.active]="currentCurrency === 'USD'" (click)="currentCurrency = 'USD'">
+                USD ($)
+            </button>
+            <button class="currency-btn" [class.active]="currentCurrency === 'ARS'" (click)="currentCurrency = 'ARS'">
+                ARS ($)
+            </button>
         </div>
 
-        <!-- Plan Anual (Destacado) -->
-        <div class="plan-card featured">
-            <div class="badge">Ahorrá 2 Meses</div>
-            <h3>Plan Anual</h3>
-            <div class="price">$150.000 <span>/año</span></div>
+        <div class="exchange-info" *ngIf="currentCurrency === 'ARS'">
+            <span class="exchange-icon">💱</span>
+            <span>{{ getExchangeInfo() }}</span>
+            <button class="refresh-btn" (click)="fetchExchangeRate()" [disabled]="isLoadingRate">
+                <span [class.spinning]="isLoadingRate">🔄</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Plans Grid (side by side) -->
+    <div class="plans-grid" *ngIf="userData.estadoSuscripcion === 'trial' || userData.estadoSuscripcion === 'vencida'">
+        <div class="plan-card" *ngFor="let plan of plans" [class.featured]="plan.featured">
+            <div class="badge" *ngIf="plan.badge">{{ plan.badge }}</div>
+            <h3>Plan {{ plan.name }}</h3>
+            <div class="price">
+                {{ formatPrice(plan.priceUSD) }}
+                <span class="currency-label">{{ getCurrencyLabel() }}</span>
+                <span>{{ plan.period }}</span>
+            </div>
             <ul class="features">
-                <li>✅ Todo lo del plan mensual</li>
-                <li>✅ Facturación simplificada</li>
-                <li>✅ 2 Meses bonificados</li>
+                <li *ngFor="let feature of plan.features">✅ {{ feature }}</li>
             </ul>
-            <button class="btn-subscribe prime" (click)="selectPlan('price_anual_id')">Suscribirme Anual</button>
+            <button class="btn-subscribe" [class.prime]="plan.featured" (click)="selectPlan(plan.stripePriceId)">
+                Suscribirme {{ plan.name }}
+            </button>
         </div>
     </div>
 

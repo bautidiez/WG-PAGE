@@ -127,3 +127,153 @@
         transform: translateY(0);
     }
 }
+
+/* Phone input group */
+.phone-input-group {
+    display: flex;
+    gap: 8px;
+    position: relative;
+}
+
+.phone-prefix-custom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 12px;
+    cursor: pointer;
+    min-width: 110px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    font-weight: 500;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.phone-prefix-custom:hover {
+    border-color: #8b5cf6;
+}
+
+.flag-img {
+    width: 24px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.flag-img-small {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.dropdown-arrow {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-left: auto;
+}
+
+.country-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    max-height: 250px;
+    overflow-y: auto;
+    width: 260px;
+    margin-top: 4px;
+}
+
+.country-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+}
+
+.country-option:hover {
+    background: #f5f3ff;
+}
+
+.country-option .country-code {
+    margin-left: auto;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.phone-number {
+    flex: 1;
+}
+
+
+/* Confirmation step */
+.confirmation-data {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.data-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.data-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-secondary {
+    flex: 1;
+    background: white;
+    color: #7c3aed;
+    border: 2px solid #7c3aed;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #f5f3ff;
+    transform: translateY(-1px);
+}
+
+.confirmation-buttons .btn-submit {
+    flex: 1.5;
+}

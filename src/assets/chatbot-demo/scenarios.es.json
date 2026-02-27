@@ -1,0 +1,327 @@
+[
+  {
+    "id": "h1", "rubro": "hamburgueseria", "businessName": "Burger Club",
+    "address": "Av. San Martín 1200, Centro",
+    "hoursText": "Lunes a Sábado 11:00 a 23:00\nDomingos 12:00 a 22:00",
+    "instagram": "@burgerclub",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Clásica", "price": 4500 },
+      { "name": "Doble Carne", "price": 5800 },
+      { "name": "California", "price": 5200 },
+      { "name": "BBQ Bacon", "price": 6200 },
+      { "name": "Veggie Burger", "price": 4800 },
+      { "name": "Papas Fritas", "price": 2500 },
+      { "name": "Aros de Cebolla", "price": 2800 }
+    ]
+  },
+  {
+    "id": "h2", "rubro": "hamburgueseria", "businessName": "La Parrillita Burger",
+    "address": "Calle Belgrano 340",
+    "hoursText": "Martes a Domingo 18:00 a 01:00",
+    "instagram": "@laparrillitaburger",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": true },
+    "items": [
+      { "name": "Smash Burger", "price": 4200 },
+      { "name": "Triple Stack", "price": 7500 },
+      { "name": "Crispy Chicken", "price": 4900 },
+      { "name": "Cheddar Melt", "price": 5500 },
+      { "name": "Papas con Cheddar", "price": 3200 },
+      { "name": "Nuggets x6", "price": 2800 }
+    ]
+  },
+  {
+    "id": "h3", "rubro": "hamburgueseria", "businessName": "Monstruo Burger",
+    "address": "Av. Colón 2850",
+    "hoursText": "Todos los días 11:30 a 00:00",
+    "instagram": "@monstruoburger",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": true },
+    "items": [
+      { "name": "La Monstruo", "price": 6800 },
+      { "name": "Mini Monstruo", "price": 4500 },
+      { "name": "Wrap Pollo", "price": 4200 },
+      { "name": "Boneless BBQ", "price": 4800 },
+      { "name": "Combo Monstruo (burger+papas+bebida)", "price": 8500 }
+    ]
+  },
+
+  {
+    "id": "l1", "rubro": "lomiteria", "businessName": "Lomitos El Rápido",
+    "address": "Av. Vélez Sarsfield 900",
+    "hoursText": "Lunes a Sábado 19:00 a 02:00\nDomingos 20:00 a 01:00",
+    "instagram": "@lomitoselrapido",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Lomito Completo", "price": 5500 },
+      { "name": "Lomito Especial", "price": 6200 },
+      { "name": "Lomito de Pollo", "price": 4800 },
+      { "name": "Super Lomito", "price": 7000 },
+      { "name": "Papas Fritas", "price": 2200 },
+      { "name": "Milanesa al Pan", "price": 4500 }
+    ]
+  },
+  {
+    "id": "l2", "rubro": "lomiteria", "businessName": "Don Pancho Lomitería",
+    "address": "Bv. San Juan 1450",
+    "hoursText": "Miércoles a Lunes 19:30 a 01:00",
+    "instagram": "@donpancholomitos",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Lomito Don Pancho", "price": 5800 },
+      { "name": "Lomito Napolitano", "price": 6500 },
+      { "name": "Milanesa Napo", "price": 5200 },
+      { "name": "Super Pancho (hot dog)", "price": 3200 },
+      { "name": "Papas con Bacon", "price": 3500 }
+    ]
+  },
+  {
+    "id": "l3", "rubro": "lomiteria", "businessName": "Lomitería 24hs",
+    "address": "Ruta 9 km 12, Local 3",
+    "hoursText": "Abierto las 24hs, todos los días",
+    "instagram": "@lomiteria24hs",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": true },
+    "items": [
+      { "name": "Lomito Clásico", "price": 4800 },
+      { "name": "Lomito Premium", "price": 6800 },
+      { "name": "Sándwich de Bondiola", "price": 5500 },
+      { "name": "Pizza Muzzarella", "price": 5200 },
+      { "name": "Empanadas x6", "price": 3600 }
+    ]
+  },
+
+  {
+    "id": "e1", "rubro": "estetica", "businessName": "BeautyLab Estética",
+    "address": "Calle 9 de Julio 550, Piso 1",
+    "hoursText": "Lunes a Viernes 9:00 a 20:00\nSábados 9:00 a 14:00",
+    "instagram": "@beautylabest",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Corte de pelo", "price": 5000 },
+      { "name": "Tintura completa", "price": 12000 },
+      { "name": "Manicura semipermanente", "price": 6000 },
+      { "name": "Limpieza facial profunda", "price": 8000 },
+      { "name": "Depilación piernas", "price": 7000 },
+      { "name": "Brushing", "price": 4000 }
+    ]
+  },
+  {
+    "id": "e2", "rubro": "estetica", "businessName": "Glow Studio",
+    "address": "Av. General Paz 800",
+    "hoursText": "Lunes a Sábado 10:00 a 21:00",
+    "instagram": "@glowstudiook",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Mechas balayage", "price": 18000 },
+      { "name": "Tratamiento de keratina", "price": 15000 },
+      { "name": "Pedicura spa", "price": 5500 },
+      { "name": "Perfilado de cejas", "price": 3000 },
+      { "name": "Pestañas hilo a hilo", "price": 9000 }
+    ]
+  },
+  {
+    "id": "e3", "rubro": "estetica", "businessName": "Nails & More",
+    "address": "Pasaje Revol 120",
+    "hoursText": "Martes a Sábado 10:00 a 19:00",
+    "instagram": "@nailsandmore",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Manicura clásica", "price": 3500 },
+      { "name": "Uñas esculpidas", "price": 10000 },
+      { "name": "Nail art (por uña)", "price": 800 },
+      { "name": "Esmaltado gel", "price": 5000 },
+      { "name": "Spa de manos", "price": 4500 }
+    ]
+  },
+
+  {
+    "id": "s1", "rubro": "centro_salud", "businessName": "Centro Médico Bienestar",
+    "address": "Av. Hipólito Yrigoyen 1020",
+    "hoursText": "Lunes a Viernes 8:00 a 20:00\nSábados 8:00 a 13:00",
+    "instagram": "@centromedicobienestar",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Consulta médica general", "price": 8000 },
+      { "name": "Consulta pediatría", "price": 9000 },
+      { "name": "Ecografía", "price": 15000 },
+      { "name": "Análisis de laboratorio", "price": 12000 },
+      { "name": "Consulta nutrición", "price": 7500 }
+    ]
+  },
+  {
+    "id": "s2", "rubro": "centro_salud", "businessName": "Clínica SaludPlus",
+    "address": "Bv. Chacabuco 380",
+    "hoursText": "Lunes a Viernes 7:30 a 21:00\nSábados 8:00 a 14:00",
+    "instagram": "@saludplusclinica",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Consulta clínica", "price": 7000 },
+      { "name": "Dermatología", "price": 9500 },
+      { "name": "Cardiología", "price": 11000 },
+      { "name": "Kinesiología", "price": 6000 },
+      { "name": "Odontología general", "price": 5500 }
+    ]
+  },
+  {
+    "id": "s3", "rubro": "centro_salud", "businessName": "Consultorio Dr. Martínez",
+    "address": "Calle Tucumán 650, 2do Piso",
+    "hoursText": "Lunes a Viernes 9:00 a 18:00",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Consulta traumatología", "price": 10000 },
+      { "name": "Consulta clínica", "price": 7500 },
+      { "name": "Certificado médico", "price": 3000 },
+      { "name": "Control de presión + glucemia", "price": 2500 }
+    ]
+  },
+
+  {
+    "id": "i1", "rubro": "indumentaria", "businessName": "Urban Style",
+    "address": "Galería Paseo Central, Local 12",
+    "hoursText": "Lunes a Sábado 10:00 a 21:00\nDomingos 16:00 a 20:00",
+    "instagram": "@urbanstyle.ok",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Remera oversize", "price": 15000 },
+      { "name": "Jean slouchy", "price": 28000 },
+      { "name": "Campera bomber", "price": 42000 },
+      { "name": "Buzo hoodie", "price": 25000 },
+      { "name": "Zapatillas urbanas", "price": 55000 },
+      { "name": "Gorra snapback", "price": 8500 }
+    ]
+  },
+  {
+    "id": "i2", "rubro": "indumentaria", "businessName": "Moda & Onda",
+    "address": "Av. Rivadavia 2000",
+    "hoursText": "Lunes a Sábado 9:30 a 20:30",
+    "instagram": "@modayonda",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": false, "comerLocal": false },
+    "items": [
+      { "name": "Vestido casual", "price": 22000 },
+      { "name": "Blusa estampada", "price": 14000 },
+      { "name": "Pantalón palazzo", "price": 18000 },
+      { "name": "Campera de cuero eco", "price": 38000 },
+      { "name": "Accesorios (collar)", "price": 6000 }
+    ]
+  },
+  {
+    "id": "i3", "rubro": "indumentaria", "businessName": "Threads & Co.",
+    "address": "Calle Caseros 150",
+    "hoursText": "Martes a Sábado 10:00 a 20:00",
+    "instagram": "@threadsandco",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": true, "retiro": true, "petFriendly": true, "comerLocal": false },
+    "items": [
+      { "name": "Camisa lino", "price": 20000 },
+      { "name": "Pantalón cargo", "price": 24000 },
+      { "name": "Remera básica pack x3", "price": 18000 },
+      { "name": "Bermuda algodón", "price": 14000 },
+      { "name": "Cinturón cuero", "price": 12000 }
+    ]
+  },
+
+  {
+    "id": "t1", "rubro": "taller_mecanico", "businessName": "Taller Mecánico López",
+    "address": "Ruta 5 km 3, Galpón 2",
+    "hoursText": "Lunes a Viernes 8:00 a 18:00\nSábados 8:00 a 13:00",
+    "instagram": "@tallerlopez",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Service completo", "price": 35000 },
+      { "name": "Cambio de aceite + filtro", "price": 18000 },
+      { "name": "Alineación y balanceo", "price": 12000 },
+      { "name": "Cambio de pastillas de freno", "price": 15000 },
+      { "name": "Diagnóstico por escáner", "price": 8000 }
+    ]
+  },
+  {
+    "id": "t2", "rubro": "taller_mecanico", "businessName": "AutoFix Centro Automotor",
+    "address": "Av. Circunvalación 4500",
+    "hoursText": "Lunes a Viernes 7:30 a 19:00\nSábados 8:00 a 14:00",
+    "instagram": "@autofixcentro",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Service completo + scanner", "price": 42000 },
+      { "name": "Cambio de correa de distribución", "price": 55000 },
+      { "name": "Reparación de embrague", "price": 60000 },
+      { "name": "Cambio de amortiguadores", "price": 45000 },
+      { "name": "Pre-VTV / Revisión técnica", "price": 10000 }
+    ]
+  },
+  {
+    "id": "t3", "rubro": "taller_mecanico", "businessName": "Mecánica Express",
+    "address": "Calle Mendoza 720",
+    "hoursText": "Lunes a Sábado 8:00 a 20:00",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Cambio de batería", "price": 25000 },
+      { "name": "Reparación de aire acondicionado", "price": 22000 },
+      { "name": "Cambio de cubiertas (x4)", "price": 80000 },
+      { "name": "Chequeo general pre-viaje", "price": 15000 }
+    ]
+  },
+
+  {
+    "id": "g1", "rubro": "gimnasio", "businessName": "Iron House Gym",
+    "address": "Av. Colón 3200, Planta Baja",
+    "hoursText": "Lunes a Viernes 6:00 a 23:00\nSábados 8:00 a 14:00\nDomingos 9:00 a 13:00",
+    "instagram": "@ironhousegym",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Pase mensual musculación", "price": 18000 },
+      { "name": "Pase trimestral musculación", "price": 45000 },
+      { "name": "Clase de spinning", "price": 3500 },
+      { "name": "Clase de funcional", "price": 3000 },
+      { "name": "Entrenamiento personalizado (mes)", "price": 35000 },
+      { "name": "Pase libre (muscu + clases)", "price": 25000 }
+    ]
+  },
+  {
+    "id": "g2", "rubro": "gimnasio", "businessName": "CrossFit Arena",
+    "address": "Ruta 20 km 5, Galpón 8",
+    "hoursText": "Lunes a Viernes 7:00 a 22:00\nSábados 8:00 a 12:00",
+    "instagram": "@crossfitarena",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": true },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": true, "comerLocal": false },
+    "services": [
+      { "name": "Membresía mensual CrossFit", "price": 22000 },
+      { "name": "Plan trimestral CrossFit", "price": 55000 },
+      { "name": "Clase de prueba", "price": 0 },
+      { "name": "Open Gym (acceso libre)", "price": 15000 },
+      { "name": "Coaching individual (sesión)", "price": 8000 }
+    ]
+  },
+  {
+    "id": "g3", "rubro": "gimnasio", "businessName": "Fitness Zone",
+    "address": "Calle San Martín 450",
+    "hoursText": "Lunes a Sábado 6:30 a 22:30\nDomingos 9:00 a 14:00",
+    "instagram": "@fitnesszoneok",
+    "payments": { "efectivo": true, "transferencia": true, "tarjeta": false },
+    "extras": { "delivery": false, "retiro": false, "petFriendly": false, "comerLocal": false },
+    "services": [
+      { "name": "Pase mensual", "price": 15000 },
+      { "name": "Pase semestral", "price": 72000 },
+      { "name": "Yoga (por clase)", "price": 3000 },
+      { "name": "Pilates (por clase)", "price": 3500 },
+      { "name": "Zumba (por clase)", "price": 2500 },
+      { "name": "Nutricionista (consulta)", "price": 7000 }
+    ]
+  }
+]

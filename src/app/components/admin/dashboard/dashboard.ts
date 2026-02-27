@@ -1,69 +1,57 @@
-import { Component, inject, OnInit, Injector, runInInjectionContext } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { Firestore, doc, getDoc, collection, getDocs } from '@angular/fire/firestore';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
-  private authService = inject(AuthService);
-  private firestore = inject(Firestore);
-  private injector = inject(Injector);
+  authService = inject(AuthService);
   private router = inject(Router);
 
   userData: any = null;
-  vinculacionesCount: number = 0;
+  vinculacionesCount = 0;
   isLoading = true;
 
   async ngOnInit() {
-    // ✅ Esperar a que auth esté listo
     await this.authService.authReady;
 
     const user = this.authService.currentUser();
-    if (user) {
-      await this.loadDashboardData(user.uid);
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
     }
-  }
 
-  async loadDashboardData(uid: string) {
-    try {
-      this.isLoading = true;
+    // Leer datos desde la caché del AuthService (ya cargados)
+    this.userData = this.authService.userData();
 
-      // ✅ Todas las llamadas a Firestore dentro de runInInjectionContext para estabilidad
-      this.userData = await runInInjectionContext(this.injector, async () => {
-        const userDocRef = doc(this.firestore, `users/${uid}`);
-        const docSnap = await getDoc(userDocRef);
-        return docSnap.exists() ? docSnap.data() : null;
-      });
+    // Si no hay datos en caché, intentar refrescar
+    if (!this.userData) {
+      this.userData = await this.authService.refreshUserData();
+    }
 
-      if (!this.userData) return;
+    // Si no completó onboarding → mandarlo ahí
+    if (this.userData && !this.userData.datosCompletados) {
+      this.router.navigate(['/admin/onboarding']);
+      return;
+    }
 
-      // Verificar trial
+    // Verificar trial expirado
+    if (this.userData) {
       const now = new Date();
       const trialEnd = new Date(this.userData.fechaFinTrial);
       if (this.userData.estadoSuscripcion === 'trial' && now > trialEnd) {
         this.router.navigate(['/admin/subscription']);
         return;
       }
-
-      // Contar vinculaciones
-      this.vinculacionesCount = await runInInjectionContext(this.injector, async () => {
-        const vinculacionesRef = collection(this.firestore, `users/${uid}/vinculaciones`);
-        const snapshot = await getDocs(vinculacionesRef);
-        return snapshot.size;
-      });
-
-    } catch (error) {
-      console.error("Error loading dashboard:", error);
-    } finally {
-      this.isLoading = false;
     }
+
+    this.isLoading = false;
   }
 
   editData() {
@@ -72,5 +60,9 @@ export class Dashboard implements OnInit {
 
   manageSubscription() {
     this.router.navigate(['/admin/subscription']);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

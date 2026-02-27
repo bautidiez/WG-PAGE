@@ -10,6 +10,19 @@
 </div>
 
 <div class="dashboard-container fade-in" *ngIf="!isLoading && userData">
+    <!-- Admin Top Bar -->
+    <div class="admin-topbar">
+        <div class="admin-topbar-left">
+            <img src="assets/logo.png" alt="WG" class="admin-topbar-logo" routerLink="/">
+        </div>
+        <div class="admin-topbar-nav">
+            <button class="topbar-btn" routerLink="/">🏠 Landing</button>
+            <button class="topbar-btn" routerLink="/admin/settings">⚙️ Ajustes</button>
+            <button class="topbar-btn" routerLink="/admin/subscription">💳 Suscripción</button>
+            <button class="topbar-btn btn-logout" (click)="logout()">🚪 Cerrar sesión</button>
+        </div>
+    </div>
+
     <div class="dashboard-header">
         <div>
             <h2>¡Hola, {{ userData.empresa || userData.nombre }}! 👋</h2>

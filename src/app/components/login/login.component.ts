@@ -250,21 +250,13 @@ export class LoginComponent implements OnInit {
     this.cdr.detectChanges();
 
     if (this.authService.isAuthenticated()) {
-      // Tiene sesión activa → verificar datos y navegar
-      const user = this.authService.currentUser();
-      if (user) {
-        try {
-          const userData = await this.authService.saveUserToFirestore(user);
-          if (!userData.datosCompletados) {
-            await this.router.navigate(['/admin/onboarding']);
-          } else if (userData.trialActivo || userData.estadoSuscripcion === 'activa') {
-            await this.router.navigate(['/admin/dashboard']);
-          } else {
-            await this.router.navigate(['/admin/subscription']);
-          }
-        } catch {
-          await this.router.navigate(['/admin/dashboard']);
-        }
+      const data = this.authService.userData();
+      if (data && !data.datosCompletados) {
+        this.router.navigate(['/admin/onboarding']);
+      } else if (data && (data.trialActivo || data.estadoSuscripcion === 'activa')) {
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.router.navigate(['/admin/dashboard']);
       }
     }
   }

@@ -131,7 +131,13 @@ textarea,
 .logo-container,
 .benefit-card-content,
 .step-day,
-.price-container {
+.price-container,
+.chatbot-simulation-wrapper,
+app-chatbot-en-accion,
+app-simulation-panel,
+app-whatsapp-mock,
+.sim-panel,
+.wa-phone {
     pointer-events: auto;
 }
 

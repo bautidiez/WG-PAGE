@@ -10,10 +10,17 @@
 </div>
 
 <div class="settings-container fade-in" *ngIf="!isLoading && !isSaving">
-
-    <button class="btn-back" (click)="goBack()">
-        ← Volver al Dashboard
-    </button>
+    <!-- Admin Top Bar -->
+    <div class="admin-topbar">
+        <div class="admin-topbar-left">
+            <img src="assets/logo.png" alt="WG" class="admin-topbar-logo" routerLink="/">
+        </div>
+        <div class="admin-topbar-nav">
+            <button class="topbar-btn" routerLink="/admin/dashboard">📊 Dashboard</button>
+            <button class="topbar-btn" routerLink="/">🏠 Landing</button>
+            <button class="topbar-btn btn-logout" (click)="logout()">🚪 Cerrar sesión</button>
+        </div>
+    </div>
 
     <div class="settings-card">
         <div class="header-text">
