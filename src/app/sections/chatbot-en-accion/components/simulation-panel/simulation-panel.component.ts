@@ -1,76 +1,39 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import {
-  Rubro, Intent, Extra, Style, SimulationConfig, RUBRO_INTENTS
+  Rubro, Intent, Extra, Style, SimulationConfig
 } from '../../models/models';
 import { ChatbotDemoService } from '../../services/chatbot-demo.service';
 
 @Component({
   selector: 'app-simulation-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   template: `
     <div class="sim-panel">
 
-      <!-- Rubro selector -->
-      <div class="panel-group">
-        <label class="panel-label">{{ ui.rubroLabel }}</label>
-        <select class="panel-select" [(ngModel)]="selectedRubro" (ngModelChange)="onRubroChange()">
-          <option *ngFor="let r of rubroOptions" [value]="r.value">{{ r.label }}</option>
-        </select>
+      <h3 class="panel-title">{{ ui.intentsLabel || '¿Qué querés simular?' }}</h3>
+
+      <div class="intent-grid">
+        <button *ngFor="let intent of availableIntents"
+                class="intent-chip"
+                [class.selected]="selectedIntents.has(intent.value)"
+                (click)="toggleIntent(intent.value)">
+          <span class="chip-icon">{{ intent.icon }}</span>
+          <span class="chip-label">{{ intent.label }}</span>
+        </button>
       </div>
 
-      <!-- Style selector -->
-      <div class="panel-group">
-        <label class="panel-label">{{ ui.styleLabel }}</label>
-        <div class="chip-row">
-          <button *ngFor="let s of styleOptions"
-                  class="chip"
-                  [class.chip-active]="selectedStyle === s.value"
-                  (click)="selectedStyle = s.value">
-            {{ s.label }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Intents -->
-      <div class="panel-group">
-        <label class="panel-label">{{ ui.intentsLabel }}</label>
-        <div class="chip-row chip-row-wrap">
-          <button *ngFor="let intent of availableIntents"
-                  class="chip chip-intent"
-                  [class.chip-active]="selectedIntents.has(intent.value)"
-                  (click)="toggleIntent(intent.value)">
-            {{ intent.label }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Extras -->
-      <div class="panel-group">
-        <label class="panel-label">{{ ui.extrasLabel }}</label>
-        <div class="chip-row chip-row-wrap">
-          <button *ngFor="let extra of extraOptions"
-                  class="chip chip-extra"
-                  [class.chip-active]="selectedExtras.has(extra.value)"
-                  (click)="toggleExtra(extra.value)">
-            {{ extra.label }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Buttons -->
-      <div class="panel-buttons">
+      <div class="panel-actions">
         <button class="btn-simulate"
                 [disabled]="selectedIntents.size === 0 || isPlaying"
                 (click)="onSimulate()">
-          {{ ui.simulateBtn }}
+          ▶ Simular
         </button>
         <button class="btn-regenerate"
                 [disabled]="isPlaying"
                 (click)="onRegenerate()">
-          {{ ui.regenerateBtn }}
+          🔄 Regenerar
         </button>
       </div>
     </div>
@@ -85,38 +48,29 @@ export class SimulationPanelComponent {
 
   private demoService = inject(ChatbotDemoService);
 
-  selectedRubro: Rubro = Rubro.ALEATORIO;
-  selectedStyle: Style = Style.NEUTRO;
+  // Hardcoded to hamburguesería
+  private readonly rubro = Rubro.HAMBURGUESERIA;
   selectedIntents = new Set<Intent>();
-  selectedExtras = new Set<Extra>();
 
-  get rubroOptions() {
-    const labels = this.ui?.rubros || {};
-    return Object.values(Rubro).map(r => ({ value: r, label: labels[r] || r }));
-  }
-
-  get styleOptions() {
-    const labels = this.ui?.styles || {};
-    return Object.values(Style).map(s => ({ value: s, label: labels[s] || s }));
-  }
+  // Icon map for each intent
+  private intentIcons: Record<string, string> = {
+    PEDIR: '🍔',
+    PRECIOS: '💰',
+    HORARIOS: '🕐',
+    UBICACION: '📍',
+    PAGOS: '💳',
+    DELIVERY_RETIRO: '🛵',
+    PROMOS: '🎉',
+  };
 
   get availableIntents() {
-    const supported = this.demoService.getSupportedIntents(this.selectedRubro);
+    const supported = this.demoService.getSupportedIntents(this.rubro);
     const labels = this.ui?.intents || {};
-    return supported.map(i => ({ value: i, label: labels[i] || i }));
-  }
-
-  get extraOptions() {
-    const labels = this.ui?.extras || {};
-    return Object.values(Extra).map(e => ({ value: e, label: labels[e] || e }));
-  }
-
-  onRubroChange() {
-    // Remove intents that are no longer supported by new rubro
-    const supported = new Set(this.demoService.getSupportedIntents(this.selectedRubro));
-    this.selectedIntents.forEach(i => {
-      if (!supported.has(i)) this.selectedIntents.delete(i);
-    });
+    return supported.map(i => ({
+      value: i,
+      label: labels[i] || i,
+      icon: this.intentIcons[i] || '💬'
+    }));
   }
 
   toggleIntent(intent: Intent) {
@@ -127,21 +81,21 @@ export class SimulationPanelComponent {
     }
   }
 
-  toggleExtra(extra: Extra) {
-    if (this.selectedExtras.has(extra)) {
-      this.selectedExtras.delete(extra);
-    } else {
-      this.selectedExtras.add(extra);
-    }
-  }
-
   private buildConfig(): SimulationConfig {
+    // Randomly pick a style for variety
+    const styles = [Style.FORMAL, Style.NEUTRO, Style.CANCHERO];
+    const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+
+    // Randomly pick some extras for variety
+    const possibleExtras = [Extra.DELIVERY, Extra.PAGO_EFECTIVO, Extra.PAGO_TARJETA, Extra.URGENTE, Extra.PET_FRIENDLY, Extra.COMER_LOCAL];
+    const randomExtras = possibleExtras.filter(() => Math.random() < 0.3);
+
     return {
-      rubro: this.selectedRubro,
-      style: this.selectedStyle,
+      rubro: this.rubro,
+      style: randomStyle,
       intents: Array.from(this.selectedIntents),
-      extras: Array.from(this.selectedExtras),
-      lang: 'es' // actual lang is read from service internally
+      extras: randomExtras,
+      lang: 'es'
     };
   }
 
@@ -151,8 +105,7 @@ export class SimulationPanelComponent {
 
   onRegenerate() {
     if (this.selectedIntents.size === 0) {
-      // Auto-select a random intent for regeneration
-      const supported = this.demoService.getSupportedIntents(this.selectedRubro);
+      const supported = this.demoService.getSupportedIntents(this.rubro);
       if (supported.length > 0) {
         const randomIdx = Math.floor(Math.random() * supported.length);
         this.selectedIntents = new Set<Intent>([supported[randomIdx]]);

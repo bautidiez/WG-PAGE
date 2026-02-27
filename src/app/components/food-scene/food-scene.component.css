@@ -109,6 +109,8 @@
     .food-item-wrapper {
         touch-action: manipulation;
         /* Improve touch response */
+        transform: scale(1.25);
+        /* Make food items slightly bigger on mobile */
     }
 
     .food-item-wrapper:active .image-container,

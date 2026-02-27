@@ -1,49 +1,219 @@
-/* ─── Chatbot en Acción — Layout ─────────────────────── */
+/* ─── Chatbot en Acción — Single Container ────────────── */
 
 :host {
   display: block;
   pointer-events: auto;
 }
 
-.chatbot-simulation-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
-  align-items: start;
-  max-width: 1200px;
+/* Fixed-size container that holds all states */
+.demo-container {
+  width: 380px;
+  height: 640px;
   margin: 2rem auto 0;
-  pointer-events: auto;
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
-.sim-panel-col {
-  display: flex;
-  justify-content: flex-end;
-  pointer-events: auto;
+/* Each state fills the container */
+.demo-state {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.wa-mock-col {
+/* ─── Config State ────────────────────────────────────── */
+.config-state {
   display: flex;
-  justify-content: flex-start;
-  pointer-events: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(160deg, #ffffff 0%, #f5f3ff 100%);
+  gap: 1.5rem;
+}
+
+.config-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.3px;
+  margin: 0;
+  text-align: center;
+}
+
+.config-subtitle {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin: -0.5rem 0 0;
+  line-height: 1.4;
+}
+
+/* ─── Intent Grid ─────────────────────────────────────── */
+.intent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.intent-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.intent-chip:hover {
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.04);
+  color: #6d28d9;
+  transform: translateY(-1px);
+}
+
+.intent-chip:hover .chip-icon {
+  transform: scale(1.15);
+}
+
+.intent-chip.selected {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 3px 12px rgba(124, 58, 237, 0.3);
+  transform: translateY(-1px);
+}
+
+.intent-chip.selected .chip-icon {
+  transform: scale(1.1);
+}
+
+/* ─── Simulate Button ─────────────────────────────────── */
+.btn-simulate {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+  margin-top: 0.5rem;
+}
+
+.btn-simulate:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(124, 58, 237, 0.4);
+}
+
+.btn-simulate:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ─── Chat State ──────────────────────────────────────── */
+.chat-state {
+  position: relative;
+}
+
+.chat-state app-whatsapp-mock {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Done Overlay ────────────────────────────────────── */
+.done-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem 1.5rem 1.2rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5) 40%);
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+
+.btn-new-sim {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #7c3aed;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.btn-new-sim:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: #fff;
 }
 
 /* ─── Responsive ──────────────────────────────────────── */
-@media (max-width: 1000px) {
-  .chatbot-simulation-wrapper {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    max-width: 520px;
+@media (max-width: 767px) {
+  .demo-container {
+    width: 340px;
+    height: 600px;
+    margin: 1.5rem auto 0;
   }
 
-  .sim-panel-col,
-  .wa-mock-col {
-    justify-content: center;
+  .config-state {
+    padding: 1.5rem 1.2rem;
+    gap: 1.2rem;
+  }
+
+  .config-title {
+    font-size: 1.05rem;
+  }
+
+  .intent-chip {
+    font-size: 0.74rem;
+    padding: 0.55rem 0.65rem;
   }
 }
 
-@media (max-width: 480px) {
-  .chatbot-simulation-wrapper {
-    gap: 1rem;
-    margin-top: 1rem;
+@media (max-width: 380px) {
+  .demo-container {
+    width: 310px;
+    height: 560px;
   }
 }
