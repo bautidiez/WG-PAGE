@@ -1,13 +1,13 @@
-/* ─── Chatbot en Acción — Side-by-Side Layout ────────── */
+/* ─── Chatbot en Acción — Side-by-Side Layout ─────────── */
 
 :host {
   display: block;
   pointer-events: auto;
 }
 
-.demo-layout {
+.chatbot-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
   align-items: center;
   max-width: 900px;
@@ -22,132 +22,176 @@
 }
 
 .selector-panel {
-  width: 100%;
-  max-width: 380px;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  transition: opacity 0.4s ease;
-}
-
-.selector-panel.dimmed {
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.selector-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: #1e293b;
-  font-family: 'Montserrat', sans-serif;
-  letter-spacing: -0.3px;
-  margin: 0;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 340px;
 }
 
 .selector-hint {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #64748b;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
   font-family: 'Montserrat', sans-serif;
-  margin: -0.5rem 0 0;
 }
 
-/* ─── Scroll-Picker List ──────────────────────────────── */
-.picker-list {
+.selector-hint strong {
+  color: #7c3aed;
+}
+
+/* ─── Wheel Picker ────────────────────────────────────── */
+.wheel-picker {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #0f0a1e 0%, #1a1035 50%, #0d0820 100%);
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+}
+
+/* Center highlight bar */
+.wheel-highlight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 88%;
+  height: 52px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Scrollable list */
+.wheel-list {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-}
-
-.picker-item {
-  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 14px;
-  background: #fff;
-  color: #475569;
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-family: 'Montserrat', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  text-align: left;
+  gap: 0;
+  padding: 110px 0;
+  overflow-y: auto;
+  height: 100%;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.picker-icon {
-  font-size: 1.15rem;
-  width: 28px;
-  text-align: center;
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
+.wheel-list::-webkit-scrollbar {
+  display: none;
 }
 
-.picker-label {
-  flex: 1;
+/* Fade edges */
+.wheel-picker::before,
+.wheel-picker::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 90px;
+  pointer-events: none;
+  z-index: 3;
 }
 
-.picker-check {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.25);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+.wheel-picker::before {
+  top: 0;
+  background: linear-gradient(to bottom, #0f0a1e 0%, transparent 100%);
+}
+
+.wheel-picker::after {
+  bottom: 0;
+  background: linear-gradient(to top, #0d0820 0%, transparent 100%);
+}
+
+/* Wheel items */
+.wheel-item {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  width: 85%;
+  min-height: 48px;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  scroll-snap-align: center;
   flex-shrink: 0;
 }
 
-.picker-item:hover {
-  border-color: #a78bfa;
-  background: #faf5ff;
-  color: #6d28d9;
-  transform: translateX(4px);
+.wheel-item:hover {
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.picker-item:hover .picker-icon {
-  transform: scale(1.15);
+.wheel-item.active {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
 }
 
-.picker-item.active {
-  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
-  transform: translateX(4px);
+.wi-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
 }
 
-.picker-item.active:hover {
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+.wheel-item.active .wi-icon {
+  font-size: 1.3rem;
 }
 
-/* ─── Footer ──────────────────────────────────────────── */
-.selector-footer {
+.wi-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Selected Tag ────────────────────────────────────── */
+.selected-tag {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  align-items: stretch;
-}
-
-.selected-count {
-  font-size: 0.78rem;
-  color: #8b5cf6;
-  font-weight: 600;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
   font-family: 'Montserrat', sans-serif;
-  text-align: center;
 }
 
+.tag-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+/* ─── Buttons ─────────────────────────────────────────── */
 .btn-simulate {
-  padding: 0.85rem 1.25rem;
+  width: 100%;
+  padding: 0.8rem 1rem;
   border: none;
   border-radius: 14px;
   background: linear-gradient(135deg, #7c3aed, #8b5cf6);
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   font-family: 'Montserrat', sans-serif;
   cursor: pointer;
@@ -166,30 +210,23 @@
   transform: none;
 }
 
-/* Playing indicator */
-.playing-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #8b5cf6;
+.btn-new-sim {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 2px solid #8b5cf6;
+  border-radius: 14px;
+  background: transparent;
+  color: #7c3aed;
+  font-size: 0.88rem;
+  font-weight: 700;
   font-family: 'Montserrat', sans-serif;
-  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.dot-pulse {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #8b5cf6;
-  animation: pulse 1.2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
+.btn-new-sim:hover {
+  background: rgba(139, 92, 246, 0.06);
+  transform: translateY(-1px);
 }
 
 /* ─── RIGHT: WhatsApp Column ──────────────────────────── */
@@ -198,47 +235,60 @@
   justify-content: flex-start;
 }
 
-.wa-container {
-  width: 380px;
-  height: 620px;
-  border-radius: 24px;
+.wa-frame {
+  width: 360px;
+  height: 600px;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
   flex-shrink: 0;
+}
+
+.wa-frame app-whatsapp-mock {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* ─── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
-  .demo-layout {
+  .chatbot-layout {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    max-width: 420px;
+    max-width: 400px;
+    margin: 1.5rem auto 0;
   }
 
-  .selector-col {
-    justify-content: center;
-    order: 1;
-  }
-
+  .selector-col,
   .wa-col {
     justify-content: center;
-    order: 2;
   }
 
-  .wa-container {
-    width: 360px;
+  .selector-panel {
+    max-width: 100%;
+  }
+
+  .wa-frame {
+    width: 100%;
+    max-width: 380px;
     height: 580px;
   }
 }
 
-@media (max-width: 400px) {
-  .wa-container {
-    width: 320px;
-    height: 540px;
+@media (max-width: 420px) {
+  .chatbot-layout {
+    max-width: 100%;
+    padding: 0 12px;
   }
 
-  .picker-item {
-    padding: 0.7rem 0.85rem;
-    font-size: 0.82rem;
+  .wa-frame {
+    max-width: 100%;
+    height: 540px;
+    border-radius: 16px;
+  }
+
+  .wheel-picker {
+    height: 240px;
   }
 }

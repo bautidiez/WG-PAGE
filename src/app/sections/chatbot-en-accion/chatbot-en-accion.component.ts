@@ -15,57 +15,58 @@ type DemoState = 'config' | 'playing' | 'done';
   imports: [CommonModule, WhatsappMockComponent],
   providers: [ChatbotDemoService],
   template: `
-    <div class="demo-layout">
+    <div class="chatbot-layout">
 
       <!-- LEFT: Selector Panel -->
       <div class="selector-col">
-        <div class="selector-panel" [class.dimmed]="state === 'playing'">
+        <div class="selector-panel">
 
-          <h3 class="selector-title">¿Qué querés simular?</h3>
-          <p class="selector-hint">Tocá las opciones y mirá cómo responde</p>
+          <p class="selector-hint">Elegí qué querés ver y tocá <strong>Simular</strong></p>
 
-          <!-- Scroll-picker style selector -->
-          <div class="picker-list">
-            <button *ngFor="let intent of availableIntents; let i = index"
-                    class="picker-item"
-                    [class.active]="selectedIntents.has(intent.value)"
-                    (click)="toggleIntent(intent.value)">
-              <span class="picker-icon">{{ intent.icon }}</span>
-              <span class="picker-label">{{ intent.label }}</span>
-              <span class="picker-check" *ngIf="selectedIntents.has(intent.value)">✓</span>
-            </button>
-          </div>
-
-          <!-- Selected count + button -->
-          <div class="selector-footer">
-            <span class="selected-count" *ngIf="selectedIntents.size > 0">
-              {{ selectedIntents.size }} seleccionad{{ selectedIntents.size === 1 ? 'o' : 'os' }}
-            </span>
-            <button class="btn-simulate"
-                    *ngIf="state !== 'playing'"
-                    [disabled]="selectedIntents.size === 0"
-                    (click)="startSimulation()">
-              {{ state === 'done' ? '🔄 Simular de nuevo' : '▶ Simular' }}
-            </button>
-            <div class="playing-indicator" *ngIf="state === 'playing'">
-              <span class="dot-pulse"></span>
-              Reproduciendo…
+          <!-- Scroll-wheel picker -->
+          <div class="wheel-picker">
+            <div class="wheel-highlight"></div>
+            <div class="wheel-list">
+              <button *ngFor="let intent of availableIntents; let i = index"
+                      class="wheel-item"
+                      [class.active]="selectedIntent === intent.value"
+                      (click)="selectIntent(intent.value)">
+                <span class="wi-icon">{{ intent.icon }}</span>
+                <span class="wi-label">{{ intent.label }}</span>
+              </button>
             </div>
           </div>
 
+          <!-- Selected tag -->
+          <div class="selected-tag" *ngIf="selectedIntent">
+            <span class="tag-label">Selección:</span>
+            <span class="tag-value">{{ getIntentLabel(selectedIntent) }}</span>
+          </div>
+
+          <button class="btn-simulate"
+                  [disabled]="!selectedIntent || isPlaying"
+                  (click)="startSimulation()">
+            ▶ Simular
+          </button>
+
+          <button class="btn-new-sim"
+                  *ngIf="state === 'done'"
+                  (click)="resetToConfig()">
+            🔄 Nueva simulación
+          </button>
         </div>
       </div>
 
-      <!-- RIGHT: WhatsApp Mock (always visible, fixed size) -->
+      <!-- RIGHT: WhatsApp Mock (fixed size, always visible) -->
       <div class="wa-col">
-        <div class="wa-container">
+        <div class="wa-frame">
           <app-whatsapp-mock
             [messages]="displayedMessages"
             [isTyping]="isTyping"
             [businessName]="currentBusinessName"
-            [onlineLabel]="ui.online || 'en línea'"
-            [typingLabel]="ui.typing || 'escribiendo…'"
-            [inputPlaceholder]="ui.inputPlaceholder || 'Mensaje (demo)'"
+            [onlineLabel]="'en línea'"
+            [typingLabel]="'escribiendo…'"
+            [inputPlaceholder]="'Mensaje (demo)'"
             [userTypingText]="userTypingText">
           </app-whatsapp-mock>
         </div>
@@ -83,11 +84,14 @@ export class ChatbotEnAccionComponent implements OnInit {
 
   state: DemoState = 'config';
 
-  selectedIntents = new Set<Intent>();
+  // Single selection (wheel picker)
+  selectedIntent: Intent | null = null;
   private readonly rubro = Rubro.HAMBURGUESERIA;
 
+  // Chat state
   displayedMessages: ChatLine[] = [];
   currentBusinessName = 'Burger Club';
+  isPlaying = false;
   isTyping = false;
   userTypingText = '';
   private playAbort = false;
@@ -102,13 +106,9 @@ export class ChatbotEnAccionComponent implements OnInit {
     PROMOS: '🎉',
   };
 
-  get ui() {
-    return this.demoService.getUI();
-  }
-
   get availableIntents() {
     const supported = this.demoService.getSupportedIntents(this.rubro);
-    const labels = this.ui?.intents || {};
+    const labels = this.demoService.getUI()?.intents || {};
     return supported.map(i => ({
       value: i,
       label: labels[i] || i,
@@ -120,15 +120,18 @@ export class ChatbotEnAccionComponent implements OnInit {
     this.demoService.loadScenarios();
   }
 
-  toggleIntent(intent: Intent) {
-    if (this.selectedIntents.has(intent)) {
-      this.selectedIntents.delete(intent);
-    } else {
-      this.selectedIntents.add(intent);
-    }
+  selectIntent(intent: Intent) {
+    this.selectedIntent = this.selectedIntent === intent ? null : intent;
+  }
+
+  getIntentLabel(intent: Intent): string {
+    const found = this.availableIntents.find(i => i.value === intent);
+    return found ? `${found.icon} ${found.label}` : intent;
   }
 
   async startSimulation() {
+    if (!this.selectedIntent) return;
+
     this.playAbort = true;
     await this.delay(100);
     this.playAbort = false;
@@ -136,6 +139,9 @@ export class ChatbotEnAccionComponent implements OnInit {
     this.displayedMessages = [];
     this.isTyping = false;
     this.userTypingText = '';
+    this.state = 'playing';
+    this.isPlaying = true;
+    this.cdr.detectChanges();
 
     const styles = [Style.FORMAL, Style.NEUTRO, Style.CANCHERO];
     const randomStyle = styles[Math.floor(Math.random() * styles.length)];
@@ -145,13 +151,10 @@ export class ChatbotEnAccionComponent implements OnInit {
     const config: SimulationConfig = {
       rubro: this.rubro,
       style: randomStyle,
-      intents: Array.from(this.selectedIntents),
+      intents: [this.selectedIntent],
       extras: randomExtras,
       lang: 'es'
     };
-
-    this.state = 'playing';
-    this.cdr.detectChanges();
 
     const { scenario, script } = this.demoService.simulate(config);
     this.currentBusinessName = scenario.businessName;
@@ -161,8 +164,21 @@ export class ChatbotEnAccionComponent implements OnInit {
 
     if (!this.playAbort) {
       this.state = 'done';
+      this.isPlaying = false;
       this.cdr.detectChanges();
     }
+  }
+
+  resetToConfig() {
+    this.playAbort = true;
+    this.state = 'config';
+    this.displayedMessages = [];
+    this.isTyping = false;
+    this.userTypingText = '';
+    this.isPlaying = false;
+    this.selectedIntent = null;
+    this.currentBusinessName = 'Burger Club';
+    this.cdr.detectChanges();
   }
 
   private async playConversation(lines: ChatLine[]) {
