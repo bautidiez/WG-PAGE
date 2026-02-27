@@ -186,41 +186,35 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
 
-        // Already animated in this session? Show final state instantly
-        if (sessionStorage.getItem('wg-timeline-animated') === '1') {
-            this.activeStep = 4;
-            const fill = section.querySelector('.timeline-line-fill');
-            if (fill) fill.classList.add('animate');
-            return;
-        }
+        // Gate: don't animate until the user has actually scrolled (prevents page-load trigger)
+        let userHasScrolled = false;
+        window.addEventListener('scroll', () => { userHasScrolled = true; }, { once: true });
 
-        // Delay observer setup so it doesn't fire for elements already in viewport on page load
-        setTimeout(() => {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                // Skip if user hasn't scrolled yet (section was in viewport on load)
+                if (!userHasScrolled) return;
 
-                    // Fire once, then disconnect
-                    observer.disconnect();
-                    sessionStorage.setItem('wg-timeline-animated', '1');
+                // Fire once, then disconnect
+                observer.disconnect();
 
-                    // 1. Start line drawing animation
-                    const fill = section.querySelector('.timeline-line-fill');
-                    if (fill) fill.classList.add('animate');
+                // 1. Start line drawing animation
+                const fill = section.querySelector('.timeline-line-fill');
+                if (fill) fill.classList.add('animate');
 
-                    // 2. Reveal steps sequentially with stagger
-                    const stepDelay = 800;
-                    const initialDelay = 400;
-                    this.ngZone.run(() => {
-                        setTimeout(() => { this.activeStep = 1; this.cdr.detectChanges(); }, initialDelay);
-                        setTimeout(() => { this.activeStep = 2; this.cdr.detectChanges(); }, initialDelay + stepDelay);
-                        setTimeout(() => { this.activeStep = 3; this.cdr.detectChanges(); }, initialDelay + stepDelay * 2);
-                        setTimeout(() => { this.activeStep = 4; this.cdr.detectChanges(); }, initialDelay + stepDelay * 3);
-                    });
+                // 2. Reveal steps sequentially with stagger
+                const stepDelay = 800;
+                const initialDelay = 400;
+                this.ngZone.run(() => {
+                    setTimeout(() => { this.activeStep = 1; this.cdr.detectChanges(); }, initialDelay);
+                    setTimeout(() => { this.activeStep = 2; this.cdr.detectChanges(); }, initialDelay + stepDelay);
+                    setTimeout(() => { this.activeStep = 3; this.cdr.detectChanges(); }, initialDelay + stepDelay * 2);
+                    setTimeout(() => { this.activeStep = 4; this.cdr.detectChanges(); }, initialDelay + stepDelay * 3);
                 });
-            }, { threshold: 0.35 });
-            observer.observe(section);
-        }, 1500); // Wait for page load to complete before observing
+            });
+        }, { threshold: 0.25 });
+        observer.observe(section);
     }
 
     ngOnDestroy(): void {
