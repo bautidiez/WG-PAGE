@@ -36,7 +36,7 @@ type DemoState = 'config' | 'playing' | 'done';
                 <span class="option-label">{{ intent.label }}</span>
                 <span class="option-hint">{{ intent.hint }}</span>
               </div>
-              <span class="option-check" *ngIf="selectedIntents.has(intent.value)">✓</span>
+              <span class="option-check" [class.visible]="selectedIntents.has(intent.value)">✓</span>
             </button>
           </div>
 
