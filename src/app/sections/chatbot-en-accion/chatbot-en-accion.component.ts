@@ -27,6 +27,12 @@ type DemoState = 'config' | 'playing' | 'done';
           </div>
 
           <div class="options-list">
+            <div class="list-controls" *ngIf="availableIntents.length > 0">
+              <button class="btn-select-all" (click)="toggleSelectAll()" [disabled]="isPlaying">
+                {{ isAllSelected ? 'Deseleccionar todo' : 'Seleccionar todo' }}
+              </button>
+            </div>
+
             <button *ngFor="let intent of availableIntents"
                     class="option-row"
                     [class.selected]="selectedIntents.has(intent.value)"
@@ -97,8 +103,6 @@ export class ChatbotEnAccionComponent implements OnInit {
   userTypingText = '';
   private playAbort = false;
 
-  availableIntents: any[] = [];
-
   private intentIcons: Record<string, string> = {
     PEDIR: '🍔',
     PRECIOS: '💰',
@@ -119,12 +123,14 @@ export class ChatbotEnAccionComponent implements OnInit {
     PROMOS: 'Descuentos y combos vigentes',
   };
 
+  availableIntents: any[] = [];
+
   ngOnInit() {
     this.demoService.loadScenarios();
-    this.loadAvailableIntents();
+    this.updateAvailableIntents();
   }
 
-  private loadAvailableIntents() {
+  private updateAvailableIntents() {
     const supported = this.demoService.getSupportedIntents(this.rubro);
     const labels = this.demoService.getUI()?.intents || {};
     this.availableIntents = supported.map(i => ({
@@ -143,6 +149,18 @@ export class ChatbotEnAccionComponent implements OnInit {
     }
   }
 
+  get isAllSelected(): boolean {
+    return this.availableIntents.length > 0 && this.selectedIntents.size === this.availableIntents.length;
+  }
+
+  toggleSelectAll() {
+    if (this.isAllSelected) {
+      this.selectedIntents.clear();
+    } else {
+      this.availableIntents.forEach(i => this.selectedIntents.add(i.value));
+    }
+  }
+
   async startSimulation() {
     if (this.selectedIntents.size === 0) return;
 
@@ -158,7 +176,7 @@ export class ChatbotEnAccionComponent implements OnInit {
     this.cdr.detectChanges();
 
     const styles = [Style.FORMAL, Style.NEUTRO, Style.CANCHERO];
-    const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+    const randomStyle = Style.FORMAL; // Always formal for professional demo
     const possibleExtras = [Extra.DELIVERY, Extra.PAGO_EFECTIVO, Extra.PAGO_TARJETA, Extra.URGENTE, Extra.PET_FRIENDLY, Extra.COMER_LOCAL];
     const randomExtras = possibleExtras.filter(() => Math.random() < 0.25);
 

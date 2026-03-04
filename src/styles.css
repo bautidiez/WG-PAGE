@@ -1,19 +1,18 @@
-/* ==========================================================
-   GLOBAL RESETS & RESPONSIVE BASE
-   ========================================================== */
+/* Global Resets */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scroll from stray elements */
-    -webkit-text-size-adjust: 100%; /* Prevent font scaling on orientation change */
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-img, svg, video, canvas {
+img, video, canvas, svg {
     max-width: 100%;
     height: auto;
     display: block;

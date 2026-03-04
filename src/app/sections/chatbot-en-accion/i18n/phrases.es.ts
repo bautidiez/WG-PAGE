@@ -54,9 +54,10 @@ export const UI_ES = {
 export const PHRASES_ES: Record<string, any> = {
   formal: {
     userGreeting: [
-      'Buenos días, quisiera consultar.',
       'Hola, buenas tardes.',
-      'Buenas, ¿podrían asistirme?'
+      'Buenas! Quisiera hacer una consulta.',
+      'Hola, ¿cómo están?',
+      'Buenas tardes, ¿me podrían ayudar?'
     ],
     botGreeting: [
       '¡Bienvenido/a a {business}! 😊 Soy el asistente virtual. ¿En qué puedo ayudarlo/a?',
@@ -78,23 +79,34 @@ export const PHRASES_ES: Record<string, any> = {
       'Perfecto, muchas gracias.',
       'Excelente, le agradezco.'
     ],
+    userNextIntent: [
+      'Buenísimo. También quería consultar por {intent}.',
+      'Excelente. Una duda más, ¿me pasan info de {intent}?',
+      'Perfecto. ¿Y con respecto a {intent}?',
+      'Bárbaro. ¿Me podrían decir algo sobre {intent}?'
+    ],
+    botNextIntent: [
+      '¡Claro! Con respecto a {intent}:',
+      'Por supuesto, sobre {intent} le comento:',
+      '¡No hay problema! Sobre {intent}, aquí tiene la información:'
+    ],
 
     // ─── Intent-specific ────────────────────────
     askPrices: [
-      'Quisiera conocer los precios, por favor.',
-      '¿Podrían indicarme los precios del catálogo?',
-      'Me gustaría saber qué precios manejan.'
+      '¿Me podrían pasar los precios?',
+      '¿Cuánto sale el menú?',
+      '¿Me pasan la carta con precios?'
     ],
     botPrices: [
       'Con gusto. Le comparto nuestros precios:\n\n{priceList}\n\n¿Le interesa alguno en particular?',
-      'Por supuesto. Estos son nuestros precios actualizados:\n\n{priceList}',
-      'Aquí tiene nuestro catálogo con precios:\n\n{priceList}\n\n¿Desea agregar algo?'
+      'Por supuesto. Le envío nuestro catálogo en PDF para que lo vea tranquilo y elija:\n\n{priceList}',
+      'Aquí tiene nuestro catálogo con precios. Puede chequearlo y decirme qué prefiere:\n\n{priceList}\n\n¿Desea agregar algo?'
     ],
 
     askHours: [
-      '¿Cuál es su horario de atención?',
-      '¿Podrían indicarme los horarios?',
-      'Necesito saber en qué horarios atienden.'
+      '¿En qué horarios atienden?',
+      '¿Cuál es el horario de atención?',
+      '¿Hasta qué hora están abiertos?'
     ],
     botHours: [
       'Nuestro horario de atención es:\n{hours}',
@@ -103,9 +115,9 @@ export const PHRASES_ES: Record<string, any> = {
     ],
 
     askLocation: [
-      '¿Cuál es la dirección del local?',
       '¿Dónde están ubicados?',
-      '¿Me podrían pasar la ubicación?'
+      '¿Me pasan la dirección?',
+      '¿Cuál es la dirección del local?'
     ],
     botLocation: [
       'Nos encontramos en: {address} 📍',
@@ -114,9 +126,9 @@ export const PHRASES_ES: Record<string, any> = {
     ],
 
     askPayments: [
-      '¿Qué medios de pago aceptan?',
-      '¿Cuáles son las formas de pago disponibles?',
-      'Quisiera saber los medios de pago.'
+      '¿Cuáles son los medios de pago?',
+      '¿Qué formas de pago aceptan?',
+      '¿Aceptan tarjeta y transferencia?'
     ],
     botPayments: [
       'Aceptamos los siguientes medios de pago: {paymentMethods} 💳',
@@ -125,9 +137,9 @@ export const PHRASES_ES: Record<string, any> = {
     ],
 
     askDelivery: [
-      '¿Realizan envíos?',
-      '¿Cuentan con servicio de delivery?',
-      '¿Hay opción de delivery o retiro?'
+      '¿Hacen envío?',
+      '¿Tienen delivery?',
+      '¿Se puede pedir con envío a domicilio?'
     ],
     botDelivery: [
       '{deliveryInfo}',
@@ -136,9 +148,9 @@ export const PHRASES_ES: Record<string, any> = {
     ],
 
     askPromos: [
-      '¿Tienen alguna promoción vigente?',
-      '¿Cuentan con combos o promociones?',
-      'Me interesa saber si hay promos disponibles.'
+      '¿Tienen alguna promo?',
+      '¿Hay combos o promociones?',
+      '¿Qué promos tienen vigentes?'
     ],
     botPromos: [
       '¡Sí! Actualmente tenemos estas promociones 🎉:\n\n• 2x1 en {promoItem} los martes\n• Combo {comboItem} + bebida por {comboPrice}',
@@ -190,9 +202,9 @@ export const PHRASES_ES: Record<string, any> = {
 
     // ─── Pedir flow ─────────────────────────────
     askOrder: [
-      'Quisiera realizar un pedido.',
-      'Me gustaría hacer un pedido, por favor.',
-      'Quiero pedir, ¿qué tienen disponible?'
+      'Hola, quiero hacer un pedido.',
+      'Buenas, quisiera pedir para llevar.',
+      '¿Qué tienen disponible? Quiero hacer un pedido.'
     ],
     botOfferItems: [
       '¡Con gusto! Le muestro nuestras opciones:\n\n{itemList}\n\n¿Qué le gustaría pedir?',
@@ -294,12 +306,12 @@ export const PHRASES_ES: Record<string, any> = {
     // Customizations
     customizations: [
       'Al final, sacale cebolla a {item}.',
-      'La {item} sin tomate, por favor.',
+      '{item} sin tomate, por favor.',
       'Sumale extra carne a {item}.',
       '¿Le podés agregar cheddar a {item}?',
       '{item} sin picante, por favor.',
       'Cambio las papas por batatas en {item}.',
-      'La {item} con doble queso, por favor.',
+      '{item} con doble queso, por favor.',
       'Sin mayonesa en {item}.'
     ],
     botCustomConfirm: [
@@ -330,7 +342,10 @@ export const PHRASES_ES: Record<string, any> = {
     userGreeting: [
       'Hola, buenas!',
       'Hola, ¿cómo va?',
-      'Buenas! Quería consultar.'
+      'Buenas! Quería consultar.',
+      'Buenas noches! ¿Andan por ahí?',
+      'Holaaass, tengo una duda.',
+      'Buenass! ¿Me pasan el menú?'
     ],
     botGreeting: [
       '¡Hola! Bienvenido/a a {business} 😊 ¿En qué te puedo ayudar?',
@@ -352,6 +367,17 @@ export const PHRASES_ES: Record<string, any> = {
       'Dale, gracias por la info!',
       'Perfecto, gracias!'
     ],
+    userNextIntent: [
+      'Buenísimo. Che, y otra cosa, ¿por {intent} cómo hacen?',
+      'Genial. También te quería preguntar por {intent}.',
+      'Joyaa. ¿Y me podrías pasar data de {intent}?',
+      'Perfecto. ¿Cómo es el tema de {intent}?'
+    ],
+    botNextIntent: [
+      '¡Dale! Sobre {intent} te cuento:',
+      '¡Obvio! Por {intent} te comento:',
+      'Claro, te paso la info de {intent}:'
+    ],
 
     askPrices: [
       '¿Me pasás los precios?',
@@ -360,8 +386,8 @@ export const PHRASES_ES: Record<string, any> = {
     ],
     botPrices: [
       '¡Sí! Acá te paso los precios:\n\n{priceList}\n\n¿Te interesa algo?',
-      '¡Mirá! Estos son nuestros precios:\n\n{priceList}',
-      'Te paso el catálogo con precios:\n\n{priceList}\n\n¿Qué te copa?'
+      '¡Mirá! Te mando el catálogo en PDF así lo chequeás y elegís lo que más te guste:\n\n{priceList}',
+      'Te paso el catálogo con precios para que lo veas tranqui:\n\n{priceList}\n\n¿Qué te copa?'
     ],
     askHours: [
       '¿En qué horarios atienden?',
@@ -552,12 +578,12 @@ export const PHRASES_ES: Record<string, any> = {
 
     customizations: [
       'Che, sacale cebolla a {item}.',
-      'La {item} sin tomate, porfa.',
+      '{item} sin tomate, porfa.',
       'Sumale extra carne a {item}.',
       '¿Le podés meter cheddar a {item}?',
       '{item} sin picante.',
       'Cambiá las papas por batatas en {item}.',
-      'La {item} con doble queso.',
+      '{item} con doble queso.',
       'Sin mayonesa en {item}.'
     ],
     botCustomConfirm: [
@@ -586,7 +612,10 @@ export const PHRASES_ES: Record<string, any> = {
     userGreeting: [
       'Buenas! Qué onda?',
       'Epa! Todo bien?',
-      'Hola hola! Cómo va?'
+      'Hola hola! Cómo va?',
+      'Buenas noches! ¿Qué sale hoy?',
+      'Holaaasss! 🔥',
+      'Buenass, ¿cómo andan?'
     ],
     botGreeting: [
       'Eyyy! Bienvenido/a a {business} 🔥 ¿Qué te puedo conseguir?',
@@ -608,6 +637,17 @@ export const PHRASES_ES: Record<string, any> = {
       'De una, mortal!',
       'Buenísimo, te pasaste!'
     ],
+    userNextIntent: [
+      'De una! Che, y tiranos data de {intent} tmb.',
+      'Mortal. Y decime, ¿qué onda con {intent}?',
+      'Joya crack. ¿Y por {intent} cómo viene la mano?',
+      'Copado. ¿Me pasás info de {intent}?'
+    ],
+    botNextIntent: [
+      '¡Esaaa! Sobre {intent} te tiro la posta:',
+      '¡Olvidate! Por {intent} te cuento qué onda:',
+      '¡De una! Acá va lo de {intent}:'
+    ],
 
     askPrices: [
       '¿Cuánto sale la joda?',
@@ -615,9 +655,9 @@ export const PHRASES_ES: Record<string, any> = {
       '¿Qué onda los precios?'
     ],
     botPrices: [
-      '¡Mirá estos precios matadores! 🔥\n\n{priceList}\n\n¿Qué te tienta?',
-      'Acá van los precios, regalados 😏:\n\n{priceList}',
-      '¡Te paso los prices! 💰\n\n{priceList}\n\n¿Qué va?'
+      '¡Mirá estos precios matadores! 🔥 Te paso el PDF así elegís tranqui:\n\n{priceList}\n\n¿Qué te tienta?',
+      'Acá van los precios, regalados 😏 Chequeá el catálogo y avisame:\n\n{priceList}',
+      '¡Te paso los prices! 💰 Mirá el menú y decime qué va:\n\n{priceList}\n\n¿Qué va?'
     ],
     askHours: [
       '¿Qué onda los horarios?',

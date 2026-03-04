@@ -46,7 +46,9 @@
             <a href="#servicio" class="nav-link">{{ t('nav.services') }}</a>
             <a href="#video" class="nav-link">{{ t('nav.video') }}</a>
             <a href="#precios" class="nav-link">{{ t('nav.pricing') }}</a>
+            <!-- HIDDEN: Panel Admin - Re-enable when ready
             <a routerLink="/login" class="nav-link admin-link">Panel Admin <span class="lock-icon">🔒</span></a>
+            -->
         </div>
 
         <button class="nav-button" (click)="openWhatsApp('Consulta General Header')">
@@ -66,7 +68,9 @@
     </div> <a href="#inicio" (click)="closeMenu()">{{ t('nav.home') }}</a> <a href="#servicio" (click)="closeMenu()">{{
         t('nav.services') }}</a> <a href="#video" (click)="closeMenu()">{{ t('nav.video') }}</a> <a href="#precios"
         (click)="closeMenu()">{{ t('nav.pricing') }}</a>
+    <!-- HIDDEN: Panel Admin - Re-enable when ready
     <a routerLink="/login" (click)="closeMenu()" class="admin-link">Panel Admin <span class="lock-icon">🔒</span></a>
+    -->
 </div>
 <div class="app-container" [class.loading]="isLoading">
     <!-- NEW 3D FOOD SCENE IN CONTAINER -->
@@ -84,7 +88,9 @@
                             {{ t('hero.cta') }}
                             <span class="arrow">→</span>
                         </button>
+                        <!-- HIDDEN: Demo link - Re-enable when ready
                         <a class="demo-link-text" (click)="goToDemo()">Probar Demo Gratis &rarr;</a>
+                        -->
                         <p class="hero-cta-hint">{{ t('hero.hint') }}</p>
                     </div>
                 </div>
@@ -111,14 +117,27 @@
                 </div>
 
                 <!-- Beneficios orbitales -->
+                <!-- SVG Connecting Ring -->
+                <svg class="orbital-ring" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.3" />
+                            <stop offset="50%" style="stop-color:#ec4899;stop-opacity:0.15" />
+                            <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.3" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="350" cy="350" r="310" fill="none" stroke="url(#ringGradient)" stroke-width="2"
+                        stroke-dasharray="12 8" />
+                    <circle cx="350" cy="350" r="310" fill="none" stroke="rgba(139,92,246,0.08)" stroke-width="40" />
+                </svg>
+
                 <div *ngFor="let benefit of getBenefitsTranslated(); let i = index" class="benefit-card-orbital"
                     [class.active]="selectedBenefit === i" [style.transform]="getBenefitOrbitalPosition(i)"
                     (click)="selectBenefit(i)">
 
                     <div class="benefit-card-content">
                         <img class="benefit-icon" [src]="'assets/benefits/logo' + (i + 1) + '.png'"
-                            [alt]="'Icono beneficio ' + (i + 1)" loading="lazy" decoding="async"
-                            width="90" height="90">
+                            [alt]="'Icono beneficio ' + (i + 1)" loading="lazy" decoding="async" width="90" height="90">
 
                         <h4 class="benefit-title">{{ benefit.title }}</h4>
                     </div>
@@ -138,20 +157,28 @@
                 <p class="section-subtitle">{{ t('timeline.subtitle') }}</p>
             </div>
 
-            <div class="timeline-container">
+            <div class="timeline-container relative-container">
+
+
                 <div class="timeline-line">
-                    <div class="timeline-line-fill"></div>
+                    <div class="timeline-line-fill timeline-line-gsap" style="width: 0%; height: 100%;"></div>
                 </div>
 
-                <div class="timeline-step" *ngFor="let step of getTimelineSteps(); let i = index"
-                    [class.active]="activeStep >= (i + 1)">
-                    <div class="step-dot"></div>
-                    <div class="step-content">
-                        <div class="step-day">{{ step.day }}</div>
+                <div class="timeline-step" *ngFor="let step of getTimelineSteps(); let i = index" [class.active]="true"
+                    style="position: relative; z-index: 1;">
+
+                    <!-- Bubble label above the dot -->
+                    <div class="step-day timeline-pill">{{ step.day }}</div>
+
+                    <div class="step-dot timeline-dot" tabindex="0" [attr.aria-label]="step.day + ': ' + step.title">
+                        <span class="dot-ring"></span>
+                    </div>
+
+                    <div class="step-content timeline-card">
                         <h3 class="step-title">{{ step.title }}</h3>
                         <p class="step-description">{{ step.description }}</p>
                         <ul class="step-checklist">
-                            <li *ngFor="let item of step.checklist">✓ {{ item }}</li>
+                            <li class="card-feature" *ngFor="let item of step.checklist">✓ {{ item }}</li>
                         </ul>
                     </div>
                 </div>
@@ -168,7 +195,7 @@
         </div>
     </section>
 
-    <!-- Admin CTA Section -->
+    <!-- HIDDEN: Admin CTA Section - Re-enable when ready
     <section class="admin-cta-section" id="admin">
         <div class="container">
             <div class="admin-cta-card">
@@ -187,7 +214,6 @@
                 </div>
                 <div class="admin-content-right">
                     <div class="admin-mockup-wrapper">
-                        <!-- We reuse the dashboard concept visually -->
                         <div class="admin-glass-panel animate-360-float">
                             <div class="glass-header">
                                 <div class="dots"><span></span><span></span><span></span></div>
@@ -200,7 +226,6 @@
                                 </div>
                                 <div class="mock-graph"></div>
                             </div>
-                            <!-- A lock icon fading over the mockup -->
                             <div class="lock-overlay">
                                 <span>🔒</span>
                             </div>
@@ -210,6 +235,7 @@
             </div>
         </div>
     </section>
+    -->
 
     <!-- Pricing Section -->
     <section class="pricing-section" id="precios">
@@ -331,9 +357,11 @@
                         {{ t('nav.pricing') }}
                     </a>
 
+                    <!-- HIDDEN: Panel Admin footer link - Re-enable when ready
                     <a routerLink="/login" class="footer-nav-link" style="color: #8b5cf6; font-weight: 700;">
                         Panel Admin 🔒
                     </a>
+                    -->
 
                     <a href="" (click)="openWhatsApp('Solicitud Demo Footer'); $event.preventDefault()"
                         class="footer-nav-link" style="cursor: pointer; font-weight: 600;">

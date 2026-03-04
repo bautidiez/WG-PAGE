@@ -10,6 +10,10 @@ import { ChatbotEnAccionComponent } from '../../sections/chatbot-en-accion/chatb
 import { TranslationService } from '../../services/translation.service';
 import { WhatsAppService } from '../../services/whatsapp.service';
 import { ExchangeRateService } from '../../services/exchange-rate.service';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
     selector: 'app-landing',
@@ -39,6 +43,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
     selectedBenefit: number | null = null;
     activeStep = 0;
     currentCurrency: 'USD' | 'ARS' = 'USD';
+    private timelineAnimated = false;
 
     // Three.js (kept for canvas compatibility)
     scene!: THREE.Scene;
@@ -147,10 +152,66 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setupVisibilityListener();
         if (this.threeCanvas && this.scene) { this.initThree(); this.animate(0); }
         this.observeElements();
-        this.animateTimeline();
+
         setTimeout(() => {
-            this.ngZone.run(() => { this.isLoading = false; this.cdr.detectChanges(); });
+            this.ngZone.run(() => {
+                this.isLoading = false;
+                this.cdr.detectChanges();
+
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    this.initTimelineAnimations();
+                } else {
+                    gsap.set('.timeline-line-gsap', window.innerWidth >= 768 ? { width: '100%' } : { height: '100%' });
+                }
+
+                setTimeout(() => ScrollTrigger.refresh(), 100);
+            });
         }, 2000);
+    }
+
+    private initTimelineAnimations(): void {
+        // Adjust for mobile vs desktop using width
+        const isDesktop = window.innerWidth >= 768;
+        const yMultiplier = isDesktop ? 1 : 0.5;
+
+        // Rendimiento y prevenir FOUC usando gsap.set
+        gsap.set(['.timeline-section .section-title', '.timeline-section .section-subtitle'], { opacity: 0, y: 30 * yMultiplier });
+        gsap.set('.timeline-card', { opacity: 0, y: 60 * yMultiplier });
+        gsap.set('.timeline-pill', { opacity: 0, y: -40 * yMultiplier });
+        gsap.set('.timeline-dot', { opacity: 0, scale: 0 });
+        gsap.set('.timeline-line-gsap', isDesktop ? { width: '0%' } : { height: '0%' });
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.timeline-section',
+                start: 'top 75%',
+                once: true,
+            }
+        });
+
+        tl.to('.timeline-section .section-title', { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', clearProps: 'transform' })
+            .to('.timeline-section .section-subtitle', { y: 0, opacity: 1, duration: 0.5, clearProps: 'transform' }, '-=0.3')
+            .to('.timeline-line-gsap', isDesktop ? { width: '100%', duration: 1.5, ease: 'power2.inOut' } : { height: '100%', duration: 1.5, ease: 'power2.inOut' }, '-=0.2')
+            .to('.timeline-pill', { y: 0, opacity: 1, stagger: 0.15, ease: 'back.out(2.5)', duration: 0.7, clearProps: 'transform' }, '-=1.2')
+            .to('.timeline-dot', { scale: 1, opacity: 1, stagger: 0.2, ease: 'back.out(2)', duration: 0.5, clearProps: 'transform' }, '-=0.8')
+            .to('.timeline-card', { y: 0, opacity: 1, stagger: 0.18, ease: 'power3.out', duration: 0.7, clearProps: 'transform' }, '-=0.3');
+
+        this.initParallax();
+    }
+
+    private initParallax(): void {
+        gsap.to('.emoji-left', {
+            scrollTrigger: { trigger: '.timeline-section', start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+            y: -80, rotation: 15
+        });
+        gsap.to('.emoji-right', {
+            scrollTrigger: { trigger: '.timeline-section', start: 'top bottom', end: 'bottom top', scrub: 2 },
+            y: -40, rotation: -10
+        });
+        gsap.to('.emoji-bg', {
+            scrollTrigger: { trigger: '.timeline-section', scrub: 3 },
+            y: -20
+        });
     }
 
     setupVisibilityListener(): void {
@@ -173,52 +234,11 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
         document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
     }
 
-    animateTimeline(): void {
-        const section = document.querySelector('.timeline-section');
-        if (!section) return;
-
-        // Respect prefers-reduced-motion — show everything immediately
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReduced) {
-            this.activeStep = 4;
-            const fill = section.querySelector('.timeline-line-fill');
-            if (fill) fill.classList.add('animate');
-            return;
-        }
-
-        // Gate: don't animate until the user has actually scrolled (prevents page-load trigger)
-        let userHasScrolled = false;
-        window.addEventListener('scroll', () => { userHasScrolled = true; }, { once: true });
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                // Skip if user hasn't scrolled yet (section was in viewport on load)
-                if (!userHasScrolled) return;
-
-                // Fire once, then disconnect
-                observer.disconnect();
-
-                // 1. Start line drawing animation
-                const fill = section.querySelector('.timeline-line-fill');
-                if (fill) fill.classList.add('animate');
-
-                // 2. Reveal steps sequentially with stagger
-                const stepDelay = 800;
-                const initialDelay = 400;
-                this.ngZone.run(() => {
-                    setTimeout(() => { this.activeStep = 1; this.cdr.detectChanges(); }, initialDelay);
-                    setTimeout(() => { this.activeStep = 2; this.cdr.detectChanges(); }, initialDelay + stepDelay);
-                    setTimeout(() => { this.activeStep = 3; this.cdr.detectChanges(); }, initialDelay + stepDelay * 2);
-                    setTimeout(() => { this.activeStep = 4; this.cdr.detectChanges(); }, initialDelay + stepDelay * 3);
-                });
-            });
-        }, { threshold: 0.25 });
-        observer.observe(section);
-    }
+    // Animación antigua mediante scroll variables properties eliminada a favor de GSAP
 
     ngOnDestroy(): void {
         this.observer?.disconnect();
         if (this.animationId) cancelAnimationFrame(this.animationId);
+        ScrollTrigger.getAll().forEach(t => t.kill());
     }
 }

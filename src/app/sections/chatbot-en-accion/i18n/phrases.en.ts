@@ -54,9 +54,10 @@ export const UI_EN = {
 export const PHRASES_EN: Record<string, any> = {
   formal: {
     userGreeting: [
-      'Good morning, I\'d like to inquire.',
-      'Hello, good afternoon.',
-      'Hi, could you assist me please?'
+      'Hi, good afternoon.',
+      'Hello! I\'d like to ask something.',
+      'Hi, how are you?',
+      'Good afternoon, could you help me?'
     ],
     botGreeting: [
       'Welcome to {business}! 😊 I\'m the virtual assistant. How may I help you?',
@@ -78,21 +79,32 @@ export const PHRASES_EN: Record<string, any> = {
       'Perfect, thank you so much.',
       'Excellent, I appreciate your help.'
     ],
+    userNextIntent: [
+      'Great. I also wanted to ask about {intent}.',
+      'Excellent. One more thing, could you give me info on {intent}?',
+      'Perfect. And what about {intent}?',
+      'Wonderful. Could you tell me something about {intent}?'
+    ],
+    botNextIntent: [
+      'Sure! Regarding {intent}:',
+      'Of course, about {intent} I can tell you:',
+      'No problem! Regarding {intent}, here is the information:'
+    ],
 
     askPrices: [
-      'I\'d like to know your prices, please.',
-      'Could you share your pricing catalog?',
-      'I\'d like to see what prices you offer.'
+      'Can you share the prices?',
+      'How much is the menu?',
+      'Could you send me the price list?'
     ],
     botPrices: [
       'Of course. Here are our prices:\n\n{priceList}\n\nWould any of these interest you?',
-      'Certainly. Our current pricing:\n\n{priceList}',
-      'Here\'s our catalog with prices:\n\n{priceList}\n\nWould you like to add anything?'
+      'Certainly. I\'m sending our catalog in PDF so you can take a look and choose:\n\n{priceList}',
+      'Here\'s our updated catalog. Feel free to check it and let me know what you\'d like:\n\n{priceList}'
     ],
     askHours: [
-      'What are your business hours?',
-      'Could you tell me your opening hours?',
-      'I need to know your hours of operation.'
+      'What are your opening hours?',
+      'What time do you open and close?',
+      'How late are you open?'
     ],
     botHours: [
       'Our business hours are:\n{hours}',
@@ -120,9 +132,9 @@ export const PHRASES_EN: Record<string, any> = {
       'You can pay via: {paymentMethods} 💳'
     ],
     askDelivery: [
-      'Do you offer delivery?',
-      'Do you have a delivery service?',
-      'Is there a delivery or pickup option?'
+      'Do you deliver?',
+      'Do you have delivery?',
+      'Can I order for delivery?'
     ],
     botDelivery: [
       '{deliveryInfo}',
@@ -130,9 +142,9 @@ export const PHRASES_EN: Record<string, any> = {
       'Let me share: {deliveryInfo}'
     ],
     askPromos: [
-      'Do you have any current promotions?',
-      'Are there any combos or deals available?',
-      'I\'d like to know about your promotions.'
+      'Do you have any promos?',
+      'Are there any deals or combos?',
+      'What promotions do you have right now?'
     ],
     botPromos: [
       'Yes! We currently have these promotions 🎉:\n\n• 2-for-1 on {promoItem} on Tuesdays\n• {comboItem} + drink combo for {comboPrice}',
@@ -181,9 +193,9 @@ export const PHRASES_EN: Record<string, any> = {
     ],
 
     askOrder: [
-      'I\'d like to place an order.',
-      'I\'d like to order, please.',
-      'I want to order. What\'s available?'
+      'Hi, I\'d like to place an order.',
+      'Hello, I want to order for takeout.',
+      'What\'s available? I want to order.'
     ],
     botOfferItems: [
       'Of course! Here are our options:\n\n{itemList}\n\nWhat would you like to order?',
@@ -278,12 +290,12 @@ export const PHRASES_EN: Record<string, any> = {
 
     customizations: [
       'Actually, hold the onions on {item}.',
-      'The {item} without tomato, please.',
+      '{item} without tomato, please.',
       'Add extra meat to {item}.',
       'Can you add cheddar to {item}?',
       '{item} with no spice, please.',
       'Switch the fries for sweet potato on {item}.',
-      'The {item} with double cheese, please.',
+      '{item} with double cheese, please.',
       'No mayo on {item}.'
     ],
     botCustomConfirm: [
@@ -312,7 +324,10 @@ export const PHRASES_EN: Record<string, any> = {
     userGreeting: [
       'Hi there!',
       'Hey, how\'s it going?',
-      'Hello! I had a question.'
+      'Hello! I had a question.',
+      'Good evening! You guys open?',
+      'Hiiii, just a quick one.',
+      'Heyy! Can I see the menu?'
     ],
     botGreeting: [
       'Hi! Welcome to {business} 😊 How can I help you?',
@@ -334,6 +349,17 @@ export const PHRASES_EN: Record<string, any> = {
       'Cool, thanks for the info!',
       'Perfect, thanks!'
     ],
+    userNextIntent: [
+      'Great. Hey, and another thing, how about {intent}?',
+      'Cool. I also wanted to ask you about {intent}.',
+      'Nice. Could you give me some data on {intent}?',
+      'Perfect. What about {intent}?'
+    ],
+    botNextIntent: [
+      'Sure! About {intent}:',
+      'Of course! Regarding {intent}:',
+      'Sure, here is the info on {intent}:'
+    ],
 
     askPrices: [
       'Can you share the prices?',
@@ -342,8 +368,8 @@ export const PHRASES_EN: Record<string, any> = {
     ],
     botPrices: [
       'Sure! Here are our prices:\n\n{priceList}\n\nAnything catch your eye?',
-      'Check it out! Our prices:\n\n{priceList}',
-      'Here\'s our catalog with prices:\n\n{priceList}\n\nWhat sounds good?'
+      'Check it out! I\'m sending the PDF catalog so you can pick your favorite:\n\n{priceList}',
+      'Here\'s our catalog with prices. Take your time to look through it:\n\n{priceList}'
     ],
     askHours: [
       'What hours are you open?',
@@ -534,12 +560,12 @@ export const PHRASES_EN: Record<string, any> = {
 
     customizations: [
       'Hey, hold the onions on {item}.',
-      'The {item} without tomato, please.',
+      '{item} without tomato, please.',
       'Add extra meat to {item}.',
       'Can you add cheddar to {item}?',
       '{item} with no spice.',
       'Switch the fries for sweet potato on {item}.',
-      'The {item} with double cheese.',
+      '{item} with double cheese.',
       'No mayo on {item}.'
     ],
     botCustomConfirm: [
@@ -568,7 +594,10 @@ export const PHRASES_EN: Record<string, any> = {
     userGreeting: [
       'Hey! What\'s up?',
       'Yo! How\'s it going?',
-      'Hey hey! What\'s good?'
+      'Hey hey! What\'s good?',
+      'Good evening! What\'s on the menu?',
+      'Hiiiiii! 🔥',
+      'Heyy, you guys open?'
     ],
     botGreeting: [
       'Ayy! Welcome to {business} 🔥 What can I get you?',
@@ -590,6 +619,17 @@ export const PHRASES_EN: Record<string, any> = {
       'For real, that\'s great!',
       'Amazing, thanks a ton!'
     ],
+    userNextIntent: [
+      'Awesome! Hey, give us some info on {intent} too.',
+      'Sweet. And tell me, what\'s up with {intent}?',
+      'Nice one. And how about {intent}?',
+      'Cool. Can you give me the lowdown on {intent}?'
+    ],
+    botNextIntent: [
+      'Nice! About {intent}, here\'s the deal:',
+      'No worries! On {intent}, here\'s what\'s up:',
+      'Sure! Here\'s the info on {intent}:'
+    ],
 
     askPrices: [
       'What\'s the damage?',
@@ -597,9 +637,9 @@ export const PHRASES_EN: Record<string, any> = {
       'What are the prices looking like?'
     ],
     botPrices: [
-      'Check out these killer prices! 🔥\n\n{priceList}\n\nWhat\'s calling your name?',
-      'Here are the prices, can\'t beat \'em 😏:\n\n{priceList}',
-      'The prices! 💰\n\n{priceList}\n\nWhat\'ll it be?'
+      'Check out these killer prices! 🔥 Check the PDF catalog and pick something:\n\n{priceList}',
+      'Here are the prices, can\'t beat \'em 😏 Look through the catalog and let me know:\n\n{priceList}',
+      'The prices! 💰 Take a look at the menu and tell me what\'s up:\n\n{priceList}'
     ],
     askHours: [
       'What are the hours?',
@@ -790,12 +830,12 @@ export const PHRASES_EN: Record<string, any> = {
 
     customizations: [
       'Yo, hold the onions on {item}.',
-      'The {item} no tomato, cool?',
+      '{item} no tomato, cool?',
       'Throw extra meat on {item}!',
       'Can you add cheddar to {item}?',
       '{item} no spice, please.',
       'Switch fries for sweet potato on {item}.',
-      'The {item} double cheese 🔥',
+      '{item} double cheese 🔥',
       'No mayo on {item}.'
     ],
     botCustomConfirm: [

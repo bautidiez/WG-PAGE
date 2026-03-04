@@ -100,7 +100,8 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         for (let i = 0; i < count; i++) {
-            this.foodItems.push(this.createItem(i, w, h, forbiddenRects));
+            const item = this.createItem(i, w, h, forbiddenRects);
+            if (item) this.foodItems.push(item);
         }
     }
 
@@ -113,7 +114,7 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
         // Distribute strictly: 50% left margin (15%), 50% right margin (15%)
         const roll = Math.random();
         let x: number, y: number;
-        const maxAttempts = 60;
+        const maxAttempts = 100; // Increased attempts for collision avoidance
         let attempts = 0;
         let overlaps = false;
 
@@ -133,12 +134,29 @@ export class FoodSceneComponent implements OnInit, AfterViewInit, OnDestroy {
                 overlaps = true;
             }
 
-            // Check bounding boxes for collision
+            // Check bounding boxes for collision with UI
             if (!overlaps) {
                 for (const rect of forbiddenRects) {
                     const centerX = x + size / 2;
                     const centerY = y + size / 2;
                     if (centerX > rect.left && centerX < rect.right && centerY > rect.top && centerY < rect.bottom) {
+                        overlaps = true;
+                        break;
+                    }
+                }
+            }
+
+            // [NEW] Check collision with ALREADY PLACED items
+            if (!overlaps) {
+                for (const existing of this.foodItems) {
+                    // Check if they are in the same general Y area (optimization)
+                    if (Math.abs(y - existing.yPercent / 100 * bh) > bh * 0.1) continue;
+
+                    const dx = x - (existing.xPercent / 100 * bw);
+                    const dy = y - (existing.yPercent / 100 * bh);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const minDist = (size + existing.width) * 0.7; // 0.7 factor roughly avoids touching circles
+                    if (dist < minDist) {
                         overlaps = true;
                         break;
                     }

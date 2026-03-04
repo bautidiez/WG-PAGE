@@ -38,7 +38,23 @@ import { ChatLine } from '../../models/models';
           <div class="wa-bubble"
                [class.wa-bubble-user]="msg.sender === 'user'"
                [class.wa-bubble-bot]="msg.sender === 'bot'">
-            <span class="wa-msg-text" [innerHTML]="formatText(msg.text)"></span>
+            <!-- PDF Attachment Card -->
+            <div *ngIf="isPdf(msg.text)" class="wa-pdf-card">
+              <div class="wa-pdf-icon">
+                <svg width="26" height="32" viewBox="0 0 26 32" fill="none">
+                  <path d="M16 0H3C1.34 0 0 1.34 0 3v26c0 1.66 1.34 3 3 3h20c1.66 0 3-1.34 3-3V10L16 0z" fill="#E53935"/>
+                  <path d="M16 0v7c0 1.66 1.34 3 3 3h7L16 0z" fill="#EF9A9A"/>
+                  <text x="13" y="24" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="sans-serif">PDF</text>
+                </svg>
+              </div>
+              <div class="wa-pdf-info">
+                <span class="wa-pdf-name">{{ getPdfName(msg.text) }}</span>
+                <span class="wa-pdf-meta">{{ getPdfSize() }} · PDF</span>
+              </div>
+              <div class="wa-pdf-download">⬇</div>
+            </div>
+            <!-- Regular text message -->
+            <span *ngIf="!isPdf(msg.text)" class="wa-msg-text" [innerHTML]="formatText(msg.text)"></span>
             <span class="wa-timestamp">{{ msg.timestamp || '' }}</span>
           </div>
         </div>
@@ -96,7 +112,7 @@ export class WhatsappMockComponent implements AfterViewChecked {
     try {
       const el = this.chatContainer.nativeElement;
       el.scrollTop = el.scrollHeight;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   trackMessage(index: number, msg: ChatLine): string {
@@ -105,5 +121,20 @@ export class WhatsappMockComponent implements AfterViewChecked {
 
   formatText(text: string): string {
     return text.replace(/\n/g, '<br>');
+  }
+
+  isPdf(text: string): boolean {
+    return /\.pdf$/i.test(text.trim());
+  }
+
+  getPdfName(text: string): string {
+    // Remove emoji prefixes like 📎
+    return text.replace(/^[\s📎🔗]+/, '').trim();
+  }
+
+  getPdfSize(): string {
+    // Simulates a realistic file size
+    const sizes = ['245 KB', '312 KB', '1.2 MB', '890 KB', '567 KB'];
+    return sizes[Math.floor(Math.random() * sizes.length)];
   }
 }

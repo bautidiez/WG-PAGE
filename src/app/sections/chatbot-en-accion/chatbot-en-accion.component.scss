@@ -70,6 +70,37 @@
   scrollbar-color: rgba(124, 58, 237, 0.15) transparent;
 }
 
+.list-controls {
+  padding: 0.5rem 1.5rem 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-select-all {
+  background: transparent;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: #7c3aed;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    background: rgba(124, 58, 237, 0.08);
+    border-color: #8b5cf6;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 .options-list::-webkit-scrollbar {
   width: 4px;
 }
@@ -287,35 +318,36 @@
     height: auto;
     gap: 1.5rem;
     width: 100%;
-    max-width: 450px;
+    max-width: 380px;
     margin: 1.5rem auto 0;
   }
 
   .panel-col {
     flex: none;
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
   }
 
   .selection-panel {
     height: auto;
-    max-height: 450px;
+    max-height: 400px;
   }
 
   .wa-col {
     flex: none;
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
   }
 
   .wa-frame {
-    height: 580px;
+    height: min(560px, 80vh);
   }
 }
 
 @media (max-width: 420px) {
   .chatbot-layout {
-    padding: 0 1rem;
+    max-width: 100%;
+    padding: 0 12px;
   }
 
   .panel-col,
@@ -324,7 +356,7 @@
   }
 
   .wa-frame {
-    height: 540px;
+    height: 520px;
     border-radius: 14px;
   }
 
@@ -333,14 +365,14 @@
   }
 
   .panel-header {
-    padding: 1.25rem 1.25rem 0.75rem;
+    padding: 1.2rem 1.2rem 0.8rem;
   }
 
   .option-row {
-    padding: 0.7rem 1.25rem;
+    padding: 0.65rem 1.2rem;
   }
 
   .panel-footer {
-    padding: 0.75rem 1.25rem;
+    padding: 0.8rem 1.2rem;
   }
 }
