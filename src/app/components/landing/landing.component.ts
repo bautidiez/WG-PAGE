@@ -158,11 +158,8 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.isLoading = false;
                 this.cdr.detectChanges();
 
-                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    this.initTimelineAnimations();
-                } else {
-                    gsap.set('.timeline-line-gsap', window.innerWidth >= 768 ? { width: '100%' } : { height: '100%' });
-                }
+                // Siempre iniciar animaciones
+                this.initTimelineAnimations();
 
                 setTimeout(() => ScrollTrigger.refresh(), 100);
             });

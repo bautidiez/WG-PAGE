@@ -161,7 +161,7 @@
 
 
                 <div class="timeline-line">
-                    <div class="timeline-line-fill timeline-line-gsap" style="width: 0%; height: 100%;"></div>
+                    <div class="timeline-line-fill timeline-line-gsap"></div>
                 </div>
 
                 <div class="timeline-step" *ngFor="let step of getTimelineSteps(); let i = index" [class.active]="true"
@@ -256,7 +256,13 @@
                 </div>
 
                 <div class="exchange-info" *ngIf="currentCurrency === 'ARS'">
-                    <span class="exchange-icon">💱</span>
+                    <span class="exchange-icon" style="background: linear-gradient(135deg, #0284c7, #3b82f6); padding: 4px; border-radius: 50%; color: white; display: inline-flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                            <text x="12" y="16" font-size="12" font-weight="bold" fill="currentColor" stroke="none" text-anchor="middle">$</text>
+                        </svg>
+                    </span>
                     <span>{{ getExchangeInfo() }}</span>
                     <button class="refresh-btn" (click)="fetchExchangeRate()" [disabled]="isLoadingRate">
                         <span [class.spinning]="isLoadingRate">🔄</span>
